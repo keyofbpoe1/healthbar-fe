@@ -9,6 +9,7 @@ export default class UserDelete extends Component {
       checkLogin: this.props.checkLogin,
       redirectFunc: this.props.redirectFunc,
       id: this.props.id,
+      setErrorMsg: this.props.setErrorMsg,
     }
   }
 
@@ -24,10 +25,16 @@ export default class UserDelete extends Component {
       };
 
       fetch(reqURL, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-          this.state.checkLogin()
-          this.state.redirectFunc('/')
+        .then(response => response.json())
+        .then(data => {
+          if (data.status.code != 200) {
+            this.state.setErrorMsg(data.status.message);
+          }
+          else {
+            this.state.setErrorMsg('');
+            this.state.checkLogin()
+            this.state.redirectFunc('/')
+          }
         })
         .catch(error => console.log('error', error));
     }

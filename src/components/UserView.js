@@ -13,6 +13,7 @@ export default class UserView extends Component {
       checkLogin: this.props.checkLogin,
       redirectFunc: this.props.redirectFunc,
       user: {},
+      errorMsg: '',
     }
   }
 
@@ -39,9 +40,16 @@ export default class UserView extends Component {
     this.getUser();
   }
 
+  setErrorMsg = (msg) => {
+    this.setState({
+      errorMsg: msg,
+    });
+  }
+
   render () {
     return (
       <>
+        <p className="rederror">{this.state.errorMsg}</p>
         <table>
           <tbody>
             { this.state.userLoggedin
@@ -51,7 +59,7 @@ export default class UserView extends Component {
                   <td>
                     <Link to={"/useredit?id=" + this.state.user.id}><button type="button">Edit</button></Link>
                     &nbsp;
-                    <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} />
+                    <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} setErrorMsg={this.setErrorMsg} />
                   </td>
                 </tr>
                 :<></>

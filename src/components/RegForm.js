@@ -14,6 +14,7 @@ export default class RegForm extends Component {
       bio: '',
       checkLogin: this.props.checkLogin,
       redirectFunc: this.props.redirectFunc,
+      errorMsg: '',
     }
   }
 
@@ -23,6 +24,10 @@ export default class RegForm extends Component {
 
   handleLogin = (event) => {
     event.preventDefault();
+
+    this.setState({
+      errorMsg: '',
+    });
 
     let reqURL = this.state.baseURL + this.state.endpt;
 
@@ -48,14 +53,21 @@ export default class RegForm extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        this.state.checkLogin()
         this.setState({
           username: '',
           email: '',
           password: '',
           bio: ''
         })
-        this.state.redirectFunc('/')
+        if (data.status.code === 401) {
+          this.setState({
+            errorMsg: data.status.message,
+          })
+        }
+        else {
+          this.state.checkLogin()
+          this.state.redirectFunc('/')
+        }
       })
       .catch(error => console.log('error', error));
   }
@@ -64,6 +76,7 @@ export default class RegForm extends Component {
     return (
       <form onSubmit={this.handleLogin}>
         <h3>Login</h3>
+        <p className="rederror">{this.state.errorMsg}</p>
         <label htmlFor="username"></label>
         <input type="text" id="username" name="username" onChange={this.handleChange} value={this.state.username} placeholder="username" required/>
         <br/>

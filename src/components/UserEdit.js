@@ -17,6 +17,7 @@ export default class UserEdit extends Component {
       curUser: this.props.curUser,
       userLoggedin: this.props.userLoggedin,
       user: {},
+      errorMsg: '',
     }
   }
 
@@ -54,6 +55,10 @@ export default class UserEdit extends Component {
   handleUsUpdate = (event) => {
     event.preventDefault();
 
+    this.setState({
+      errorMsg: '',
+    });
+
     let reqURL = this.state.baseURL + this.state.endpt + this.state.user.id;
 
     let myHeaders = new Headers();
@@ -77,13 +82,20 @@ export default class UserEdit extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        this.state.checkLogin()
         this.setState({
           username: '',
           email: '',
           bio: ''
         })
-        this.state.redirectFunc('/users?id=' + this.state.user.id)
+        if (data.status.code != 200) {
+          this.setState({
+            errorMsg: data.status.message,
+          })
+        }
+        else {
+          this.state.checkLogin()
+          this.state.redirectFunc('/users?id=' + this.state.user.id)
+        }
       })
       .catch(error => console.log('error', error));
   }
@@ -95,6 +107,7 @@ export default class UserEdit extends Component {
           ? (this.state.curUser.id == this.state.user.id
             ? <form onSubmit={this.handleUsUpdate}>
                 <h3>Edit Profile</h3>
+                <p className="rederror">{this.state.errorMsg}</p>
                 <label htmlFor="username"></label>
                 <input type="text" id="username" name="username" onChange={this.handleChange} value={this.state.username} placeholder="username" required/>
                 <br/>
