@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserDelete from '../components/UserDelete.js'
 import { Link } from "react-router-dom";
 
 export default class UserView extends Component {
@@ -47,7 +48,11 @@ export default class UserView extends Component {
               ? (this.state.curUser.id == this.state.user.id
                 ? <tr>
                   <td></td>
-                  <td><Link to={"/useredit?id=" + this.state.user.id}><button type="button">Edit</button></Link></td>
+                  <td>
+                    <Link to={"/useredit?id=" + this.state.user.id}><button type="button">Edit</button></Link>
+                    &nbsp;
+                    <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} />
+                  </td>
                 </tr>
                 :<></>
               )
