@@ -75,7 +75,7 @@ export default class RegForm extends Component {
   render () {
     return (
       <form onSubmit={this.handleLogin}>
-        <h3>Login</h3>
+        <h3>Register</h3>
         <p className="rederror">{this.state.errorMsg}</p>
         <label htmlFor="username"></label>
         <input type="text" id="username" name="username" onChange={this.handleChange} value={this.state.username} placeholder="username" required/>
