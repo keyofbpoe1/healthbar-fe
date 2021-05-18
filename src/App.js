@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import LoginForm from './components/LoginForm.js'
 import LogoutForm from './components/LogoutForm.js'
 import RegForm from './components/RegForm.js'
+import UserView from './components/UserView.js'
+import UserEdit from './components/UserEdit.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -25,10 +27,12 @@ export default class App extends Component {
       curUser: {},
       redirect: false,
       redURL: '/',
+      loaded: false,
     }
   }
 
   checkLogin = () => {
+    console.log("checking...");
       let requestOptions = {
         credentials: 'include',
         method: 'GET',
@@ -43,6 +47,7 @@ export default class App extends Component {
             this.setState({
               userLoggedin: true,
               curUser: data.curus,
+              loaded: true,
             })
           }
         })
@@ -52,6 +57,7 @@ export default class App extends Component {
           this.setState({
             userLoggedin: false,
             curUser: {},
+            loaded: true,
           })
         });
   }
@@ -94,6 +100,9 @@ export default class App extends Component {
               { this.state.userLoggedin &&
                 <>
                   <li>
+                    <Link to={"/users?id=" + this.state.curUser.id}>My Profile</Link>
+                  </li>
+                  <li>
                     <LogoutForm baseURL={this.state.baseURL} endpt={this.state.userEndPt} checkLogin={this.checkLogin} redirectFunc={this.redirectFunc} />
                   </li>
                 </>
@@ -109,6 +118,18 @@ export default class App extends Component {
             </Route>
             <Route path="/register">
               <RegForm baseURL={this.state.baseURL} endpt={this.state.userEndPt} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+            </Route>
+            <Route path="/users">
+              {this.state.loaded
+                ? <UserView baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+                : <></>
+              }
+            </Route>
+            <Route path="/useredit">
+              {this.state.loaded
+                ? <UserEdit baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+                : <></>
+              }
             </Route>
           {/*  <Route path="/newdog">
               <DogNewForm baseURL={this.state.baseURL} userLoggedin={this.state.userLoggedin} curUser={this.state.curUser} redirectFunc={this.redirectFunc} />
