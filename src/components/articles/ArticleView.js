@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ArticleDelete from '../articles/ArticleDelete.js'
+import NewDiscussion from '../discussions/NewDiscussion.js'
 import { Link } from "react-router-dom";
 
 export default class ArticleView extends Component {
@@ -14,6 +15,7 @@ export default class ArticleView extends Component {
       redirectFunc: this.props.redirectFunc,
       article: {author:{}},
       errorMsg: '',
+      isloaded: false,
     }
   }
 
@@ -29,8 +31,12 @@ export default class ArticleView extends Component {
     fetch(this.state.baseURL +  this.state.endpt + idParam, requestOptions)
       .then(response => response.json())
       .then(data => {
+        console.log('here');
         console.log(data)
-        this.setState({ article: data.data })
+        this.setState({
+          article: data.data,
+          isloaded: true,
+        })
       })
       .catch(error => console.log('error', error));
   }
@@ -63,6 +69,10 @@ export default class ArticleView extends Component {
         <h3>{this.state.article.title}</h3>
         <p>{this.state.article.category}</p>
         <div>{this.state.article.body}</div>
+        {this.state.isloaded
+          ? <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} />
+          : <></>
+        }
       </>
     )
   }

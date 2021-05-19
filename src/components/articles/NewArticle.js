@@ -40,8 +40,6 @@ export default class NewArticle extends Component {
       body: this.state.body,
     });
 
-    console.log(raw);
-
     let requestOptions = {
       credentials: 'include',
       method: 'POST',
@@ -95,7 +93,7 @@ export default class NewArticle extends Component {
             </select>
             <br/>
             <label htmlFor="body"></label>
-            <textarea id="body" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.body} placeholder="Article body / exercise description"></textarea>
+            <textarea id="body" name="body" rows="8" cols="80" onChange={this.handleChange} value={this.state.body} placeholder="Article body / exercise description"></textarea>
             <br/>
             <input type="submit" value="Save"/>
             <Link to="/"><button type="button">Cancel</button></Link>
