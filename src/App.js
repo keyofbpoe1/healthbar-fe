@@ -8,6 +8,8 @@ import RegForm from './components/RegForm.js'
 import UserView from './components/UserView.js'
 import UserEdit from './components/UserEdit.js'
 import NewArticle from './components/NewArticle.js'
+import ArticleView from './components/ArticleView.js'
+import ArticleEdit from './components/ArticleEdit.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -135,6 +137,18 @@ export default class App extends Component {
             <Route path="/newarticle">
               {this.state.loaded
                 ? <NewArticle baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+                : <></>
+              }
+            </Route>
+            <Route path="/articles">
+              {this.state.loaded
+                ? <ArticleView baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+                : <></>
+              }
+            </Route>
+            <Route path="/editarticle">
+              {this.state.loaded
+                ? <ArticleEdit baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
                 : <></>
               }
             </Route>
