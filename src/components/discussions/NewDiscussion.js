@@ -14,6 +14,7 @@ export default class NewDiscussion extends Component {
       errorMsg: '',
       curUser: this.props.curUser,
       userLoggedin: this.props.userLoggedin,
+      addComment: this.props.addComment,
     }
   }
 
@@ -59,8 +60,7 @@ export default class NewDiscussion extends Component {
           })
         }
         else {
-          // this.state.checkLogin()
-          // this.state.redirectFunc('/')
+          this.state.addComment(data.data)
         }
       })
       .catch(error => console.log('error', error));

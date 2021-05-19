@@ -16,6 +16,7 @@ export default class ArticleView extends Component {
       article: {author:{}},
       errorMsg: '',
       isloaded: false,
+      discussions: {},
     }
   }
 
@@ -35,6 +36,7 @@ export default class ArticleView extends Component {
         console.log(data)
         this.setState({
           article: data.data,
+          discussions: data.discussions,
           isloaded: true,
         })
       })
@@ -48,6 +50,14 @@ export default class ArticleView extends Component {
   setErrorMsg = (msg) => {
     this.setState({
       errorMsg: msg,
+    });
+  }
+
+  addComment = (com) => {
+    const copyDiscussions = [...this.state.discussions];
+    copyDiscussions.push(com);
+    this.setState({
+      discussions: copyDiscussions,
     });
   }
 
@@ -70,7 +80,23 @@ export default class ArticleView extends Component {
         <p>{this.state.article.category}</p>
         <div>{this.state.article.body}</div>
         {this.state.isloaded
-          ? <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} />
+          ? <>
+              <h3>Discussion</h3>
+              <table>
+                <tbody>
+                  { this.state.discussions.map((comment, ind) => {
+                    return (
+                      <tr>
+                        <td><Link to={"/users?id=" + comment.author.id}>{comment.author.username}</Link></td>
+                        <td>{comment.comment}</td>
+                      </tr>
+                    )
+                  })
+                  }
+                </tbody>
+              </table>
+              <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
+            </>
           : <></>
         }
       </>
