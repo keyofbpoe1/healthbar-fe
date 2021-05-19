@@ -2,14 +2,14 @@
 import './App.css';
 
 import React, { Component } from 'react';
-import LoginForm from './components/LoginForm.js'
-import LogoutForm from './components/LogoutForm.js'
-import RegForm from './components/RegForm.js'
-import UserView from './components/UserView.js'
-import UserEdit from './components/UserEdit.js'
-import NewArticle from './components/NewArticle.js'
-import ArticleView from './components/ArticleView.js'
-import ArticleEdit from './components/ArticleEdit.js'
+import LoginForm from './components/users/LoginForm.js'
+import LogoutForm from './components/users/LogoutForm.js'
+import RegForm from './components/users/RegForm.js'
+import UserView from './components/users/UserView.js'
+import UserEdit from './components/users/UserEdit.js'
+import NewArticle from './components/articles/NewArticle.js'
+import ArticleView from './components/articles/ArticleView.js'
+import ArticleEdit from './components/articles/ArticleEdit.js'
 import {
   BrowserRouter as Router,
   Switch,

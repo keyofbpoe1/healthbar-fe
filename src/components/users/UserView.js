@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserDelete from '../components/UserDelete.js'
+import UserDelete from '../users/UserDelete.js'
 import { Link } from "react-router-dom";
 
 export default class UserView extends Component {

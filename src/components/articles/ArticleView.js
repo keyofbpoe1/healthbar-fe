@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ArticleDelete from '../components/ArticleDelete.js'
+import ArticleDelete from '../articles/ArticleDelete.js'
 import { Link } from "react-router-dom";
 
 export default class ArticleView extends Component {
