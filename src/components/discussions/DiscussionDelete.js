@@ -33,7 +33,7 @@ export default class DiscussionDelete extends Component {
             // this.state.setErrorMsg(data.status.message);
           }
           else {
-            this.state.addComment(this.state.ind, 'remove')
+            this.state.addComment(null, 'remove', this.state.ind)
             // this.state.setErrorMsg('');
             // this.state.checkLogin()
             // this.state.redirectFunc('/')

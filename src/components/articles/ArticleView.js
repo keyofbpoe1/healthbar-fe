@@ -54,14 +54,17 @@ export default class ArticleView extends Component {
     });
   }
 
-  addComment = (com, act) => {
+  addComment = (com, act, ind) => {
     const copyDiscussions = [...this.state.discussions];
     switch (act) {
       case 'add':
         copyDiscussions.push(com);
         break;
         case 'remove':
-          copyDiscussions.splice(com, 1);
+          copyDiscussions.splice(ind, 1);
+          break;
+        case 'update':
+          copyDiscussions.splice(ind, com);
           break;
       default:
     }

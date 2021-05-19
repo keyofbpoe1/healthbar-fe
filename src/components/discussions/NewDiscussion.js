@@ -60,7 +60,7 @@ export default class NewDiscussion extends Component {
           })
         }
         else {
-          this.state.addComment(data.data, 'add')
+          this.state.addComment(data.data, 'add', null)
         }
       })
       .catch(error => console.log('error', error));
