@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserDelete from '../components/UserDelete.js'
+import ArticleDelete from '../components/ArticleDelete.js'
 import { Link } from "react-router-dom";
 
 export default class ArticleView extends Component {
@@ -50,7 +50,11 @@ export default class ArticleView extends Component {
       <>
         { this.state.userLoggedin
           ? (this.state.curUser.id == this.state.article.author.id
-            ? <Link to={"/editarticle?id=" + this.state.article.id}><button type="button">Edit</button></Link>
+            ? <>
+                <Link to={"/editarticle?id=" + this.state.article.id}><button type="button">Edit</button></Link>
+                &nbsp;
+                <ArticleDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.article.id} setErrorMsg={this.setErrorMsg} />
+              </>
             :<></>
           )
           : <></>
