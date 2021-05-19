@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ArticleDelete from '../articles/ArticleDelete.js'
+import DiscussionView from '../discussions/DiscussionView.js'
 import NewDiscussion from '../discussions/NewDiscussion.js'
 import { Link } from "react-router-dom";
 
@@ -53,9 +54,17 @@ export default class ArticleView extends Component {
     });
   }
 
-  addComment = (com) => {
+  addComment = (com, act) => {
     const copyDiscussions = [...this.state.discussions];
-    copyDiscussions.push(com);
+    switch (act) {
+      case 'add':
+        copyDiscussions.push(com);
+        break;
+        case 'remove':
+          copyDiscussions.splice(com, 1);
+          break;
+      default:
+    }
     this.setState({
       discussions: copyDiscussions,
     });
@@ -86,10 +95,7 @@ export default class ArticleView extends Component {
                 <tbody>
                   { this.state.discussions.map((comment, ind) => {
                     return (
-                      <tr>
-                        <td><Link to={"/users?id=" + comment.author.id}>{comment.author.username}</Link></td>
-                        <td>{comment.comment}</td>
-                      </tr>
+                      <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
                     )
                   })
                   }
