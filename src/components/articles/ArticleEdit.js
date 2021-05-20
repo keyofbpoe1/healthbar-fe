@@ -92,7 +92,7 @@ export default class ArticleEdit extends Component {
         }
         else {
           this.state.checkLogin()
-          this.state.redirectFunc('/articles?id=' + this.state.article.id)      
+          this.state.redirectFunc('/articles?id=' + this.state.article.id)
         }
       })
       .catch(error => console.log('error', error));
@@ -102,7 +102,7 @@ export default class ArticleEdit extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.article.author.id
+          ? (this.state.curUser.id == this.state.article.author.id || this.state.curUser.role == 'admin'
             ? <form onSubmit={this.handleArtUpdate}>
                 <h3>Edit Article</h3>
                 <p className="rederror">{this.state.errorMsg}</p>

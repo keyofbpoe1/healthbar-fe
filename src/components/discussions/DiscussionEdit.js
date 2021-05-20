@@ -104,7 +104,7 @@ export default class DiscussionEdit extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.fullComment.author.id
+          ? (this.state.curUser.id == this.state.fullComment.author.id || this.state.curUser.role == 'admin'
             ? <form onSubmit={this.handleDiscUpdate}>
                 <p className="rederror">{this.state.errorMsg}</p>
                 <label htmlFor="comment"></label>

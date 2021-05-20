@@ -39,7 +39,7 @@ export default class DiscussionView extends Component {
               : <>
                   {this.state.com.comment}
                   { this.state.userLoggedin
-                    ? (this.state.curUser.id == this.state.com.author.id
+                    ? (this.state.curUser.id == this.state.com.author.id || this.state.curUser.role == 'admin'
                       ? <>
                           <button type="button" onClick={this.toggleEdit}>Edit</button>
                           &nbsp;
