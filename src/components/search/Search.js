@@ -17,27 +17,29 @@ export default class UserView extends Component {
       articles: [],
       users: [],
       artLength: 0,
+      page: 1,
+      limit: 1,
     }
   }
 
   searchArticles = () => {
     let urlParams = new URLSearchParams(window.location.search);
     let queryParam = urlParams.get('query');
-    let page = 1;
-    let limit = 1;
-    if (urlParams.get('page')) {
-      page = urlParams.get('page');
-    }
-    if (urlParams.get('limit')) {
-      limit = urlParams.get('limit');
-    }
+    // let page = 1;
+    // let limit = 1;
+    // if (urlParams.get('page')) {
+    //   page = urlParams.get('page');
+    // }
+    // if (urlParams.get('limit')) {
+    //   limit = urlParams.get('limit');
+    // }
     let requestOptions = {
       credentials: 'include',
       method: 'GET',
       redirect: 'follow'
     };
 
-    fetch(this.state.baseURL +  this.state.artEndpt + queryParam + '/' + page + '/' + limit, requestOptions)
+    fetch(this.state.baseURL +  this.state.artEndpt + queryParam + '/' + this.state.page + '/' + this.state.limit, requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log(data)
@@ -52,21 +54,21 @@ export default class UserView extends Component {
   searchUsers = () => {
     let urlParams = new URLSearchParams(window.location.search);
     let queryParam = urlParams.get('query');
-    let page = 1;
-    let limit = 1;
-    if (urlParams.get('page')) {
-      page = urlParams.get('page');
-    }
-    if (urlParams.get('limit')) {
-      limit = urlParams.get('limit');
-    }
+    // let page = 1;
+    // let limit = 1;
+    // if (urlParams.get('page')) {
+    //   page = urlParams.get('page');
+    // }
+    // if (urlParams.get('limit')) {
+    //   limit = urlParams.get('limit');
+    // }
     let requestOptions = {
       credentials: 'include',
       method: 'GET',
       redirect: 'follow'
     };
 
-    fetch(this.state.baseURL +  this.state.userEndpt + queryParam + '/' + page + '/' + limit, requestOptions)
+    fetch(this.state.baseURL +  this.state.userEndpt + queryParam + '/' + this.state.page + '/' + this.state.limit, requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log(data)
@@ -89,6 +91,13 @@ export default class UserView extends Component {
     });
   }
 
+  iterPage = () => {
+    this.setState({ page: this.state.page + 1  }, () => {
+      this.searchArticles();
+      this.searchUsers();
+    });
+  }
+
   render () {
     return (
       <>
@@ -103,6 +112,7 @@ export default class UserView extends Component {
           })
           }
         </ul>
+        <button type="button" onClick={this.iterPage}>></button>
         <h3>Users</h3>
         <ul>
           { this.state.users.map((user, ind) => {
