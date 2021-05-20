@@ -18,6 +18,7 @@ export default class UserEdit extends Component {
       userLoggedin: this.props.userLoggedin,
       user: {},
       errorMsg: '',
+      role: '',
     }
   }
 
@@ -39,6 +40,7 @@ export default class UserEdit extends Component {
           username: data.data.username,
           email: data.data.email,
           bio: data.data.bio,
+          role: data.data.role,
         })
       })
       .catch(error => console.log('error', error));
@@ -67,7 +69,8 @@ export default class UserEdit extends Component {
     let raw = JSON.stringify({
       username: this.state.username,
       email: this.state.email,
-      bio: this.state.bio
+      bio: this.state.bio,
+      role: this.state.role,
     });
 
     let requestOptions = {
@@ -104,7 +107,7 @@ export default class UserEdit extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.user.id
+          ? (this.state.curUser.id == this.state.user.id || this.state.curUser.role == 'admin'
             ? <form onSubmit={this.handleUsUpdate}>
                 <h3>Edit Profile</h3>
                 <p className="rederror">{this.state.errorMsg}</p>
@@ -117,6 +120,19 @@ export default class UserEdit extends Component {
                 <label htmlFor="bio"></label>
                 <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!"></textarea>
                 <br/>
+                { this.state.curUser.role == 'admin' &&
+                  <>
+                    <label htmlFor="role"></label>
+                    <select name="role" id="role" onChange={this.handleChange} value={this.state.role} required>
+                      <option disabled value=""> -- Select -- </option>
+                      <option value="user">User</option>
+                      <option value="professional">Professional</option>
+                      <option value="admin">Admin</option>
+                    </select>
+                    <br/>
+                  </>
+                }
+
                 <input type="submit" value="Update"/>
                 <Link to="/"><button type="button">Cancel</button></Link>
               </form>

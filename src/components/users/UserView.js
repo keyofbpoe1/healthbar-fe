@@ -14,11 +14,11 @@ export default class UserView extends Component {
       redirectFunc: this.props.redirectFunc,
       user: {},
       errorMsg: '',
+      articles: [],
     }
   }
 
   getUser = () => {
-    console.log(this.state);
     let urlParams = new URLSearchParams(window.location.search);
     let idParam = urlParams.get('id');
     let requestOptions = {
@@ -31,7 +31,10 @@ export default class UserView extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data)
-        this.setState({ user: data.data })
+        this.setState({
+          user: data.data,
+          articles : data.articles,
+        })
       })
       .catch(error => console.log('error', error));
   }
@@ -53,15 +56,17 @@ export default class UserView extends Component {
         <table>
           <tbody>
             { this.state.userLoggedin
-              ? (this.state.curUser.id == this.state.user.id
-                ? <tr>
-                  <td></td>
-                  <td>
-                    <Link to={"/useredit?id=" + this.state.user.id}><button type="button">Edit</button></Link>
-                    &nbsp;
-                    <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} setErrorMsg={this.setErrorMsg} />
-                  </td>
-                </tr>
+              ? (this.state.curUser.id == this.state.user.id || this.state.curUser.role == 'admin'
+                ? <>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <Link to={"/useredit?id=" + this.state.user.id}><button type="button">Edit</button></Link>
+                      &nbsp;
+                      <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} setErrorMsg={this.setErrorMsg} />
+                    </td>
+                  </tr>
+                  </>
                 :<></>
               )
               : <></>
@@ -78,8 +83,32 @@ export default class UserView extends Component {
               <td>Bio:</td>
               <td>{this.state.user.bio}</td>
             </tr>
+            <tr>
+              <td>Role:</td>
+              <td>{this.state.user.role}</td>
+            </tr>
           </tbody>
         </table>
+
+            <h3>Articles</h3>
+            {this.state.curUser.id == this.state.user.id &&
+                <tr>
+                  <td></td>
+                  <td>
+                    <Link to={"/newarticle"}><button type="button">New Article</button></Link>
+                  </td>
+                </tr>
+              }
+            <ul>
+                { this.state.articles.map((article, ind) => {
+                  return (
+                    <li key={'arts-' + ind}>
+                      <Link to={"/articles?id=" + article.id}>{article.title}</Link>
+                    </li>
+                  )
+                })
+                }
+            </ul>
       </>
 
     )

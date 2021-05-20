@@ -33,7 +33,6 @@ export default class ArticleView extends Component {
     fetch(this.state.baseURL +  this.state.endpt + idParam, requestOptions)
       .then(response => response.json())
       .then(data => {
-        console.log('here');
         console.log(data)
         this.setState({
           article: data.data,
@@ -77,7 +76,7 @@ export default class ArticleView extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.article.author.id
+          ? (this.state.curUser.id == this.state.article.author.id || this.state.curUser.role == 'admin'
             ? <>
                 <Link to={"/editarticle?id=" + this.state.article.id}><button type="button">Edit</button></Link>
                 &nbsp;
@@ -89,6 +88,7 @@ export default class ArticleView extends Component {
         }
         <p className="rederror">{this.state.errorMsg}</p>
         <h3>{this.state.article.title}</h3>
+        <p>By: <Link to={"/users?id=" + this.state.article.author.id}>{this.state.article.author.username}</Link></p>
         <p>{this.state.article.category}</p>
         <div>{this.state.article.body}</div>
         {this.state.isloaded
