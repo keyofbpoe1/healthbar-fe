@@ -64,7 +64,7 @@ export default class NewArticle extends Component {
         }
         else {
           this.state.checkLogin()
-          this.state.redirectFunc('/')
+          this.state.redirectFunc('/users?id=' + this.state.curUser.id)
         }
       })
       .catch(error => console.log('error', error));

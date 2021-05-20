@@ -16,24 +16,34 @@ export default class UserView extends Component {
       errorMsg: '',
       articles: [],
       users: [],
+      artLength: 0,
     }
   }
 
   searchArticles = () => {
     let urlParams = new URLSearchParams(window.location.search);
     let queryParam = urlParams.get('query');
+    let page = 1;
+    let limit = 1;
+    if (urlParams.get('page')) {
+      page = urlParams.get('page');
+    }
+    if (urlParams.get('limit')) {
+      limit = urlParams.get('limit');
+    }
     let requestOptions = {
       credentials: 'include',
       method: 'GET',
       redirect: 'follow'
     };
 
-    fetch(this.state.baseURL +  this.state.artEndpt + queryParam, requestOptions)
+    fetch(this.state.baseURL +  this.state.artEndpt + queryParam + '/' + page + '/' + limit, requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log(data)
         this.setState({
           articles : data.data,
+          artLength: data.artlength,
         })
       })
       .catch(error => console.log('error', error));
@@ -42,18 +52,27 @@ export default class UserView extends Component {
   searchUsers = () => {
     let urlParams = new URLSearchParams(window.location.search);
     let queryParam = urlParams.get('query');
+    let page = 1;
+    let limit = 1;
+    if (urlParams.get('page')) {
+      page = urlParams.get('page');
+    }
+    if (urlParams.get('limit')) {
+      limit = urlParams.get('limit');
+    }
     let requestOptions = {
       credentials: 'include',
       method: 'GET',
       redirect: 'follow'
     };
 
-    fetch(this.state.baseURL +  this.state.userEndpt + queryParam, requestOptions)
+    fetch(this.state.baseURL +  this.state.userEndpt + queryParam + '/' + page + '/' + limit, requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log(data)
         this.setState({
           users : data.data,
+          usersLength: data.userlength,
         })
       })
       .catch(error => console.log('error', error));

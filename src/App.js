@@ -33,7 +33,9 @@ export default class App extends Component {
       redURL: '/',
       loaded: false,
       searchTerm: '',
-      searchType: 'article',
+      // searchType: 'article',
+      // searchPage: 1,
+      // searchLimit: 1,
     }
   }
 
@@ -132,7 +134,7 @@ export default class App extends Component {
 
           <div>
             <form onSubmit={this.searchSubmit}>
-              <input type="text" placeholder="Search..." id="searchTerm" id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} />
+              <input type="text" placeholder="Search..." id="searchTerm" id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} required />
               <button type="submit">?</button>
             </form>
           </div>
