@@ -75,12 +75,25 @@ export default class App extends Component {
   }
 
   clearRedirect = () => {
-    this.setState({ redirect: false, redURL: '/'});
+    this.setState({ loaded: false }, () => {
+      this.setState({ redirect: false, redURL: '/' , loaded: true });
+    });
   }
 
   redirectFunc = (url) => {
-    this.setState({ redirect: true, redURL: url});
-    setTimeout(this.clearRedirect, 3000);
+    // this.setState({ loaded: false }, () => {
+      this.setState({
+        redirect: true,
+        redURL: url,
+      }, () => {
+        this.clearRedirect();
+      });
+    // });
+      // redirect: true,
+      // redURL: url}, () => {
+      //   this.clearRedirect();
+      // });
+    // setTimeout(this.clearRedirect, 3000);
   }
 
   handleChange = (event) => {
@@ -89,12 +102,13 @@ export default class App extends Component {
 
   searchSubmit = (e) => {
     e.preventDefault();
+    this.redirectFunc('/search?query=' + this.state.searchTerm);
     this.setState({
-      redirect: true,
-      redURL: '/search?query=' + this.state.searchTerm,
+      // redirect: true,
+      // redURL: '/search?query=' + this.state.searchTerm,
       searchTerm: '',
     });
-    setTimeout(this.clearRedirect, 3000);
+    // setTimeout(this.clearRedirect, 3000);
   }
 
   render () {
@@ -122,7 +136,7 @@ export default class App extends Component {
               { this.state.userLoggedin &&
                 <>
                   <li>
-                    <Link to={"/users?id=" + this.state.curUser.id}>My Profile</Link>
+                    <Link to={"/users?id=" + this.state.curUser.id} onClick={this.clearRedirect}>My Profile</Link>
                   </li>
                   <li>
                     <LogoutForm baseURL={this.state.baseURL} endpt={this.state.userEndPt} checkLogin={this.checkLogin} redirectFunc={this.redirectFunc} />
@@ -149,37 +163,34 @@ export default class App extends Component {
               <RegForm baseURL={this.state.baseURL} endpt={this.state.userEndPt} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
             </Route>
             <Route path="/users">
-              {this.state.loaded
-                ? <UserView baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
-                : <></>
+              {this.state.loaded &&
+                <UserView baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
               }
             </Route>
             <Route path="/useredit">
-              {this.state.loaded
-                ? <UserEdit baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
-                : <></>
+              {this.state.loaded &&
+                <UserEdit baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
               }
             </Route>
             <Route path="/newarticle">
-              {this.state.loaded
-                ? <NewArticle baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
-                : <></>
+              {this.state.loaded &&
+                <NewArticle baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
               }
             </Route>
             <Route path="/articles">
-              {this.state.loaded
-                ? <ArticleView baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
-                : <></>
+              {this.state.loaded &&
+                <ArticleView baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
               }
             </Route>
             <Route path="/editarticle">
-              {this.state.loaded
-                ? <ArticleEdit baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
-                : <></>
+              {this.state.loaded &&
+                <ArticleEdit baseURL={this.state.baseURL} endpt={this.state.articleEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
               }
             </Route>
             <Route path="/search">
-              <Search baseURL={this.state.baseURL} userEndpt={'/users/search/'} artEndpt={'/api/v1/articles/search/'} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+              {this.state.loaded &&
+                <Search baseURL={this.state.baseURL} userEndpt={'/users/search/'} artEndpt={'/api/v1/articles/search/'} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+              }
             </Route>
             <Route path="/">
               <h1>home</h1>
