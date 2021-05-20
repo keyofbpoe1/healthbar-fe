@@ -134,7 +134,7 @@ export default class UserEdit extends Component {
                 }
 
                 <input type="submit" value="Update"/>
-                <Link to="/"><button type="button">Cancel</button></Link>
+                <Link to={"/users?id=" + this.state.user.id}><button type="button">Cancel</button></Link>
               </form>
             : <h1>Unauthorized</h1>
           )

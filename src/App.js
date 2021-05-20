@@ -10,6 +10,7 @@ import UserEdit from './components/users/UserEdit.js'
 import NewArticle from './components/articles/NewArticle.js'
 import ArticleView from './components/articles/ArticleView.js'
 import ArticleEdit from './components/articles/ArticleEdit.js'
+import Search from './components/search/Search.js'
 import {
   BrowserRouter as Router,
   Switch,
@@ -31,6 +32,8 @@ export default class App extends Component {
       redirect: false,
       redURL: '/',
       loaded: false,
+      searchTerm: '',
+      searchType: 'article',
     }
   }
 
@@ -78,6 +81,20 @@ export default class App extends Component {
     setTimeout(this.clearRedirect, 3000);
   }
 
+  handleChange = (event) => {
+    this.setState({ [event.currentTarget.id]: event.currentTarget.value});
+  }
+
+  searchSubmit = (e) => {
+    e.preventDefault();
+    this.setState({
+      redirect: true,
+      redURL: '/search?query=' + this.state.searchTerm,
+      searchTerm: '',
+    });
+    setTimeout(this.clearRedirect, 3000);
+  }
+
   render () {
     return (
       <Router>
@@ -112,6 +129,13 @@ export default class App extends Component {
               }
             </ul>
           </nav>
+
+          <div>
+            <form onSubmit={this.searchSubmit}>
+              <input type="text" placeholder="Search..." id="searchTerm" id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} />
+              <button type="submit">?</button>
+            </form>
+          </div>
 
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
@@ -152,15 +176,9 @@ export default class App extends Component {
                 : <></>
               }
             </Route>
-          {/*  <Route path="/newdog">
-              <DogNewForm baseURL={this.state.baseURL} userLoggedin={this.state.userLoggedin} curUser={this.state.curUser} redirectFunc={this.redirectFunc} />
+            <Route path="/search">
+              <Search baseURL={this.state.baseURL} userEndpt={'/users/search/'} artEndpt={'/api/v1/articles/search/'} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
             </Route>
-            <Route path="/dogdisp">
-              <ShowDogForm baseURL={this.state.baseURL} />
-            </Route>
-            <Route path="/dogedit">
-                <EditDogForm baseURL={this.state.baseURL} userLoggedin={this.state.userLoggedin} curUser={this.state.curUser} redirectFunc={this.redirectFunc} />
-            </Route>*/}
             <Route path="/">
               <h1>home</h1>
             </Route>

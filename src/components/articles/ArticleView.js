@@ -17,7 +17,7 @@ export default class ArticleView extends Component {
       article: {author:{}},
       errorMsg: '',
       isloaded: false,
-      discussions: {},
+      discussions: [],
     }
   }
 
@@ -91,24 +91,37 @@ export default class ArticleView extends Component {
         <p>By: <Link to={"/users?id=" + this.state.article.author.id}>{this.state.article.author.username}</Link></p>
         <p>{this.state.article.category}</p>
         <div>{this.state.article.body}</div>
-        {this.state.isloaded
-          ? <>
-              <h3>Discussion</h3>
-              <table>
-                <tbody>
-                  { this.state.discussions.map((comment, ind) => {
-                    return (
-                      <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
-                    )
-                  })
-                  }
-                </tbody>
-              </table>
-              <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
-            </>
-          : <></>
-        }
+        <h3>Discussion</h3>
+        <table>
+          <tbody>
+            { this.state.discussions.map((comment, ind) => {
+              return (
+                <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
+              )
+            })
+            }
+          </tbody>
+        </table>
+        <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
       </>
     )
   }
 }
+
+// {this.state.isloaded
+//   ? <>
+//       <h3>Discussion</h3>
+//       <table>
+//         <tbody>
+//           { this.state.discussions.map((comment, ind) => {
+//             return (
+//               <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
+//             )
+//           })
+//           }
+//         </tbody>
+//       </table>
+//       <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
+//     </>
+//   : <></>
+// }
