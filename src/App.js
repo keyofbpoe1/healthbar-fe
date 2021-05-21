@@ -133,7 +133,12 @@ export default class App extends Component {
         }
 
         <Navbar bg="light" expand="lg">
-          <Navbar.Brand><Link to="/">React-Bootstrap</Link></Navbar.Brand>
+          <Navbar.Brand>
+            <Link to="/">
+              <img src="/hb-favicon.png" alt="healthBar" height="25px"/>
+              &nbsp;
+              healthBar
+            </Link></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">

@@ -15,6 +15,9 @@ code {
 [class*="navbar"] a {
     color:rgba(0,0,0,.5);
 }
+[class*="navbar"] img {
+    vertical-align: top;
+}
 
 [class*="navbar"] a:hover {
     color:rgba(0,0,0,.7);
