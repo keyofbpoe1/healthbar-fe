@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { Editor } from '@tinymce/tinymce-react';
 
 export default class NewArticle extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ export default class NewArticle extends Component {
       errorMsg: '',
       curUser: this.props.curUser,
       userLoggedin: this.props.userLoggedin,
+      tinykey: process.env.REACT_APP_TINYKEY,
     }
   }
 
@@ -37,7 +39,7 @@ export default class NewArticle extends Component {
     let raw = JSON.stringify({
       title: this.state.title,
       category: this.state.category,
-      body: this.state.body,
+      body: window.document.getElementById("body").value,
     });
 
     let requestOptions = {
@@ -70,6 +72,12 @@ export default class NewArticle extends Component {
       .catch(error => console.log('error', error));
   }
 
+  handleEditorChange = () => {
+    let iframe = window.document.getElementById("body_ifr");
+    let elmnt = iframe.contentWindow.document.getElementsByTagName('body')[0].innerHTML;
+    window.document.getElementById("body").value = elmnt;
+  }
+
   render () {
     return (
       <>
@@ -93,13 +101,37 @@ export default class NewArticle extends Component {
             </select>
             <br/>
             <label htmlFor="body"></label>
-            <textarea id="body" name="body" rows="8" cols="80" onChange={this.handleChange} value={this.state.body} placeholder="Article body / exercise description"></textarea>
+
+
+            <Editor
+              id="body"
+              name="body"
+              apiKey={this.state.tinykey}
+              init={{
+                height: 200,
+                menubar: false,
+                plugins: [
+                  'advlist autolink lists link image imagetools emoticons',
+                  'charmap print preview anchor help',
+                  'searchreplace visualblocks code',
+                  'insertdatetime media table paste wordcount'
+                ],
+                toolbar:
+                  'undo redo | formatselect | bold italic | \
+                  alignleft aligncenter alignright | \
+                  bullist numlist outdent indent | link image media | help'
+              }}
+              onChange={this.handleEditorChange}
+            />
+
             <br/>
             <input type="submit" value="Save"/>
             <Link to="/"><button type="button">Cancel</button></Link>
           </form>
         : <h1>Unauthorized</h1>
       }
+      {/*value={this.state.body}*/}
+      {/*<textarea id="body" name="body" rows="8" cols="80" onChange={this.handleChange} value={this.state.body} placeholder="Article body / exercise description"></textarea>*/}
       </>
     )
   }
