@@ -11,6 +11,7 @@ import NewArticle from './components/articles/NewArticle.js'
 import ArticleView from './components/articles/ArticleView.js'
 import ArticleEdit from './components/articles/ArticleEdit.js'
 import Search from './components/search/Search.js'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -18,6 +19,19 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
+
+import {
+  Button,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Form,
+  FormControl,
+  InputGroup,
+} from 'react-bootstrap';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 
 export default class App extends Component {
   constructor(props) {
@@ -117,6 +131,55 @@ export default class App extends Component {
         {this.state.redirect &&
           <Redirect push to={this.state.redURL} />
         }
+
+        <Navbar bg="light" expand="lg">
+          <Navbar.Brand><Link to="/">React-Bootstrap</Link></Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link><Link to="/">Home</Link></Nav.Link>
+              <Nav.Link><Link to="/about">About</Link></Nav.Link>
+              <NavDropdown title="Account" id="basic-nav-dropdown">
+                {this.state.userLoggedin
+                  ?
+                    <>
+                      <NavDropdown.Item><Link to={"/users?id=" + this.state.curUser.id} onClick={this.clearRedirect}>My Profile</Link></NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      <NavDropdown.Item><LogoutForm baseURL={this.state.baseURL} endpt={this.state.userEndPt} checkLogin={this.checkLogin} redirectFunc={this.redirectFunc} /></NavDropdown.Item>
+                    </>
+                  :
+                    <>
+                      <NavDropdown.Item><Link to="/login">Login</Link></NavDropdown.Item>
+                      <NavDropdown.Item><Link to="/register">Register</Link></NavDropdown.Item>
+                    </>
+                }
+                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+            <Form inline onSubmit={this.searchSubmit}>
+              <InputGroup>
+                <FormControl
+                  type="text"
+                  placeholder="Search"
+                  id="searchTerm"
+                  value={this.state.searchTerm}
+                  onChange={this.handleChange}
+                  required
+                />
+                <InputGroup.Append>
+                  <Button type="submit" variant="outline-info"><FontAwesomeIcon icon={faSearch} /></Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Form>
+
+
+          </Navbar.Collapse>
+        </Navbar>
+
         <div>
           <nav>
             <ul>
@@ -149,7 +212,7 @@ export default class App extends Component {
           <div>
             <form onSubmit={this.searchSubmit}>
               <input type="text" placeholder="Search..." id="searchTerm" id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} required />
-              <button type="submit">?</button>
+              <Button type="submit">?</Button>
             </form>
           </div>
 
@@ -191,6 +254,9 @@ export default class App extends Component {
               {this.state.loaded &&
                 <Search baseURL={this.state.baseURL} userEndpt={'/users/search/'} artEndpt={'/api/v1/articles/search/'} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
               }
+            </Route>
+            <Route path="/about">
+              <h1>about</h1>
             </Route>
             <Route path="/">
               <h1>home</h1>
