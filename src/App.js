@@ -174,7 +174,7 @@ export default class App extends Component {
         {this.state.redirect &&
           <Redirect push to={this.state.redURL} />
         }
-
+        <div>
         <Navbar bg="light" expand="lg">
           <Navbar.Brand>
             <Link to="/">
@@ -223,11 +223,10 @@ export default class App extends Component {
                 </InputGroup.Append>
               </InputGroup>
             </Form>
-
-
           </Navbar.Collapse>
         </Navbar>
 
+{/*
         <div>
           <nav>
             <ul>
@@ -257,12 +256,15 @@ export default class App extends Component {
             </ul>
           </nav>
 
+
           <div>
             <form onSubmit={this.searchSubmit}>
               <input type="text" placeholder="Search..." id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} required />
               <Button type="submit">?</Button>
             </form>
           </div>
+
+          */}
 
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
