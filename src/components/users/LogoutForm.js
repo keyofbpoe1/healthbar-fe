@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {
+  Button,
+} from 'react-bootstrap';
 
 export default class LogoutForm extends Component {
   constructor(props) {
@@ -31,7 +34,7 @@ export default class LogoutForm extends Component {
 
   render () {
     return (
-      <button type="button" onClick={this.onLogout}>Logout</button>
+      <Button type="button" onClick={this.onLogout}>Logout</Button>
     )
   }
 }

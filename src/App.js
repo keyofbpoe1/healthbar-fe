@@ -28,6 +28,8 @@ import {
   Form,
   FormControl,
   InputGroup,
+  Tabs,
+  Tab,
 } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -201,11 +203,6 @@ export default class App extends Component {
                       <NavDropdown.Item><Link to="/register">Register</Link></NavDropdown.Item>
                     </>
                 }
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Form inline onSubmit={this.searchSubmit}>
@@ -309,30 +306,32 @@ export default class App extends Component {
               <h1>about</h1>
             </Route>
             <Route path="/">
-              <>
-                <h3>Recent Entries</h3>
-                <ul>
-                { this.state.entries.map((entry, ind) => {
-                  return (
-                    <li key={'entry-' + ind}>
-                      {entry.title}
-                    </li>
-                  )
-                })
-                }
-                </ul>
-                <h3>News From the Web</h3>
-                <ul>
-                { this.state.news.map((article, ind) => {
-                  return (
-                    <li key={'news-' + ind}>
-                      {article.title}
-                    </li>
-                  )
-                })
-                }
-                </ul>
-              </>
+              <Tabs defaultActiveKey="entries" id="uncontrolled-tab-healthbar">
+                <Tab eventKey="entries" title="Recent Entries">
+                  <ul>
+                  { this.state.entries.map((entry, ind) => {
+                    return (
+                      <li key={'entry-' + ind}>
+                        {entry.title}
+                      </li>
+                    )
+                  })
+                  }
+                  </ul>
+                </Tab>
+                <Tab eventKey="news" title="News From the Web">
+                  <ul>
+                  { this.state.news.map((article, ind) => {
+                    return (
+                      <li key={'news-' + ind}>
+                        {article.title}
+                      </li>
+                    )
+                  })
+                  }
+                  </ul>
+                </Tab>
+              </Tabs>
             </Route>
           </Switch>
         </div>
