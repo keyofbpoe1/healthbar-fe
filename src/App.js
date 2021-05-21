@@ -172,6 +172,14 @@ export default class App extends Component {
 
   render () {
     return (
+      <div className="hb-app" style={{
+        // backgroundImage: `url("/hb-bg1.jpg")`,
+        // backgroundSize: 'cover',
+        // '-webkit-background-size': 'cover,'
+        // '-moz-background-size': 'cover',
+        // '-o-background-size': 'cover',
+
+      }}>
       <Router>
         {this.state.redirect &&
           <Redirect push to={this.state.redURL} />
@@ -335,7 +343,11 @@ export default class App extends Component {
             </Route>
           </Switch>
         </div>
+        <div className="sticky-footer">
+          footer
+        </div>
       </Router>
+      </div>
     )
   }
 }
