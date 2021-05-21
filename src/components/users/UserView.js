@@ -56,7 +56,7 @@ export default class UserView extends Component {
         <table>
           <tbody>
             { this.state.userLoggedin
-              ? (this.state.curUser.id == this.state.user.id || this.state.curUser.role == 'admin'
+              ? (this.state.curUser.id === this.state.user.id || this.state.curUser.role === 'admin'
                 ? <>
                   <tr>
                     <td></td>
@@ -91,7 +91,7 @@ export default class UserView extends Component {
         </table>
 
             <h3>Articles</h3>
-            {this.state.curUser.id == this.state.user.id &&
+            {this.state.curUser.id === this.state.user.id &&
                 <tr>
                   <td></td>
                   <td>

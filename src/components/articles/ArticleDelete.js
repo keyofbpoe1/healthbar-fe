@@ -27,7 +27,7 @@ export default class ArticleDelete extends Component {
       fetch(reqURL, requestOptions)
         .then(response => response.json())
         .then(data => {
-          if (data.status.code != 200) {
+          if (data.status.code !== 200) {
             this.state.setErrorMsg(data.status.message);
           }
           else {

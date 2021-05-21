@@ -90,7 +90,7 @@ export default class UserEdit extends Component {
           email: '',
           bio: ''
         })
-        if (data.status.code != 200) {
+        if (data.status.code !== 200) {
           this.setState({
             errorMsg: data.status.message,
           })
@@ -107,7 +107,7 @@ export default class UserEdit extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.user.id || this.state.curUser.role == 'admin'
+          ? (this.state.curUser.id === this.state.user.id || this.state.curUser.role === 'admin'
             ? <form onSubmit={this.handleUsUpdate}>
                 <h3>Edit Profile</h3>
                 <p className="rederror">{this.state.errorMsg}</p>
@@ -120,7 +120,7 @@ export default class UserEdit extends Component {
                 <label htmlFor="bio"></label>
                 <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!"></textarea>
                 <br/>
-                { this.state.curUser.role == 'admin' &&
+                { this.state.curUser.role === 'admin' &&
                   <>
                     <label htmlFor="role"></label>
                     <select name="role" id="role" onChange={this.handleChange} value={this.state.role} required>

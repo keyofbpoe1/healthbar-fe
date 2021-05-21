@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export default class DiscussionEdit extends Component {
   constructor(props) {
@@ -84,7 +84,7 @@ export default class DiscussionEdit extends Component {
         //   category: '',
         //   body: ''
         // })
-        if (data.status.code != 200) {
+        if (data.status.code !== 200) {
           this.setState({
             errorMsg: data.status.message,
           })
@@ -104,7 +104,7 @@ export default class DiscussionEdit extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.fullComment.author.id || this.state.curUser.role == 'admin'
+          ? (this.state.curUser.id === this.state.fullComment.author.id || this.state.curUser.role === 'admin'
             ? <form onSubmit={this.handleDiscUpdate}>
                 <p className="rederror">{this.state.errorMsg}</p>
                 <label htmlFor="comment"></label>

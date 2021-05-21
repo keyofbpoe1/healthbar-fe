@@ -50,11 +50,15 @@ export default class App extends Component {
       // searchType: 'article',
       // searchPage: 1,
       // searchLimit: 1,
+      newsapi: process.env.REACT_APP_NEWSURI,
+      entries: [],
+      totalEntries: 0,
+      news: [],
+      totalNews: 0,
     }
   }
 
   checkLogin = () => {
-    console.log("checking...");
       let requestOptions = {
         credentials: 'include',
         method: 'GET',
@@ -84,8 +88,47 @@ export default class App extends Component {
         });
   }
 
+  getNews = () => {
+    let requestOptions = {
+      // credentials: 'include',
+      method: 'GET',
+      // redirect: 'follow'
+    };
+
+    fetch(this.state.newsapi + '&page=1', requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+          news: data.articles,
+          totalNews: data.totalResults,
+        })
+      })
+      .catch(error => { console.log('error', error) });
+  }
+
+  getEntries = () => {
+    let requestOptions = {
+      credentials: 'include',
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    fetch(this.state.baseURL + this.state.articleEndPt, requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        this.setState({
+          entries: data.data,
+        })
+      })
+      .catch(error => { console.log('error', error) });
+  }
+
   componentDidMount(){
     this.checkLogin();
+    this.getNews();
+    this.getEntries();
   }
 
   clearRedirect = () => {
@@ -216,7 +259,7 @@ export default class App extends Component {
 
           <div>
             <form onSubmit={this.searchSubmit}>
-              <input type="text" placeholder="Search..." id="searchTerm" id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} required />
+              <input type="text" placeholder="Search..." id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} required />
               <Button type="submit">?</Button>
             </form>
           </div>
@@ -264,7 +307,30 @@ export default class App extends Component {
               <h1>about</h1>
             </Route>
             <Route path="/">
-              <h1>home</h1>
+              <>
+                <h3>Recent Entries</h3>
+                <ul>
+                { this.state.entries.map((entry, ind) => {
+                  return (
+                    <li key={'entry-' + ind}>
+                      {entry.title}
+                    </li>
+                  )
+                })
+                }
+                </ul>
+                <h3>News From the Web</h3>
+                <ul>
+                { this.state.news.map((article, ind) => {
+                  return (
+                    <li key={'news-' + ind}>
+                      {article.title}
+                    </li>
+                  )
+                })
+                }
+                </ul>
+              </>
             </Route>
           </Switch>
         </div>

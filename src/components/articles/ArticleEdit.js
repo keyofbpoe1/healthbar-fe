@@ -85,7 +85,7 @@ export default class ArticleEdit extends Component {
           category: '',
           body: ''
         })
-        if (data.status.code != 200) {
+        if (data.status.code !== 200) {
           this.setState({
             errorMsg: data.status.message,
           })
@@ -102,7 +102,7 @@ export default class ArticleEdit extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.article.author.id || this.state.curUser.role == 'admin'
+          ? (this.state.curUser.id === this.state.article.author.id || this.state.curUser.role === 'admin'
             ? <form onSubmit={this.handleArtUpdate}>
                 <h3>Edit Article</h3>
                 <p className="rederror">{this.state.errorMsg}</p>

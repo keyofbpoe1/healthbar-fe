@@ -76,7 +76,7 @@ export default class ArticleView extends Component {
     return (
       <>
         { this.state.userLoggedin
-          ? (this.state.curUser.id == this.state.article.author.id || this.state.curUser.role == 'admin'
+          ? (this.state.curUser.id === this.state.article.author.id || this.state.curUser.role === 'admin'
             ? <>
                 <Link to={"/editarticle?id=" + this.state.article.id}><button type="button">Edit</button></Link>
                 &nbsp;
