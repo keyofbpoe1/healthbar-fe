@@ -22,6 +22,7 @@ export default class UserView extends Component {
       user: {},
       errorMsg: '',
       articles: [],
+      artsEndPt: this.props.artsEndPt,
     }
   }
 
@@ -116,7 +117,10 @@ export default class UserView extends Component {
               </tr>
             }
             {this.state.articles.length > 0 &&
-              <ArticlesDisplay articles={this.state.articles} />
+              <ArticlesDisplay
+                baseURL={this.state.baseURL}
+                endpt={this.state.artsEndPt + '/userarticles/' + this.state.user.id}
+              />
             }
         </Tab>
       </Tabs>

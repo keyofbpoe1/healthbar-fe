@@ -262,7 +262,7 @@ export default class App extends Component {
             </Route>
             <Route path="/users">
               {this.state.loaded &&
-                <UserView baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
+                <UserView baseURL={this.state.baseURL} endpt={this.state.userEndPt} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} artsEndPt={this.state.articleEndPt} />
               }
             </Route>
             <Route path="/useredit">
@@ -297,8 +297,8 @@ export default class App extends Component {
               <Tabs defaultActiveKey="entries" id="uncontrolled-tab-healthbar">
                 <Tab eventKey="entries" title="Recent Entries">
                   <ArticlesDisplay
-                  baseURL={this.state.baseURL}
-                  endpt={this.state.articleEndPt + '/allarticles'}
+                    baseURL={this.state.baseURL}
+                    endpt={this.state.articleEndPt + '/allarticles'}
                   />
                 </Tab>
                 <Tab eventKey="news" title="News From the Web">

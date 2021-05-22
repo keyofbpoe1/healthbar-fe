@@ -77,8 +77,17 @@ export default class UserView extends Component {
       .catch(error => console.log('error', error));
   }
 
+  setSearch = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    let queryParam = urlParams.get('query');
+    this.setState({
+      searchQuery : queryParam,
+    });
+  }
+
   componentDidMount(){
-    this.searchArticles();
+    this.setSearch();
+    // this.searchArticles();
     this.searchUsers();
   }
 
@@ -99,10 +108,12 @@ export default class UserView extends Component {
     return (
       <Tabs defaultActiveKey="entries" id="uncontrolled-tab-searchtabs">
         <Tab eventKey="entries" title="Entries">
-          {this.state.articles.length > 0 &&
-            <ArticlesDisplay articles={this.state.articles} />
+          {this.state.searchQuery &&
+            <ArticlesDisplay
+              baseURL={this.state.baseURL}
+              endpt={this.state.artEndpt + '/' + this.state.searchQuery}
+            />
           }
-          <button type="button" onClick={this.iterPage}>></button>
         </Tab>
         <Tab eventKey="users" title="Users">
           <ul>
