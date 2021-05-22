@@ -112,14 +112,14 @@ export default class NewArticle extends Component {
                 menubar: false,
                 plugins: [
                   'advlist autolink lists link image imagetools emoticons',
-                  'charmap print preview anchor help',
+                  'charmap print preview anchor help fullscreen',
                   'searchreplace visualblocks code',
                   'insertdatetime media table paste wordcount'
                 ],
                 toolbar:
                   'undo redo | formatselect | bold italic | \
                   alignleft aligncenter alignright | \
-                  bullist numlist outdent indent | link image media | help'
+                  bullist numlist outdent indent | link image media | fullscreen preview | help'
               }}
               onChange={this.handleEditorChange}
             />
