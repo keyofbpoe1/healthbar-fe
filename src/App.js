@@ -10,6 +10,7 @@ import UserEdit from './components/users/UserEdit.js'
 import NewArticle from './components/articles/NewArticle.js'
 import ArticleView from './components/articles/ArticleView.js'
 import ArticleEdit from './components/articles/ArticleEdit.js'
+import ArticlesDisplay from './components/articles/ArticlesDisplay.js'
 import Search from './components/search/Search.js'
 
 import {
@@ -182,7 +183,6 @@ export default class App extends Component {
   dateTrim = (val) => {
     let d = new Date(val);
     return d.toDateString();
-    // return val.replace(/\s\d\d\:\d\d\:\d\d.*/gmi, '');
   }
 
   authTrim = (val) => {
@@ -190,36 +190,6 @@ export default class App extends Component {
       val = '';
     }
     return val;
-  }
-
-  categoryIcon = (val) => {
-    let retVal = faBurn;
-    switch (val) {
-      case 'cardio':
-        retVal = faHeartbeat;
-        break;
-      case 'dance':
-        retVal = faShoePrints;
-        break;
-      case 'endurance':
-        retVal = faRunning;
-        break;
-      case 'flexibility':
-        retVal = faWalking;
-        break;
-      case 'recovery':
-        retVal = faSpa;
-        break;
-      case 'strength':
-        retVal = faBurn;
-        break;
-      case 'weight':
-        retVal = faDumbbell;
-        break;
-      default:
-        //nothing
-    }
-    return <FontAwesomeIcon icon={retVal} style={{ fontSize: '100px' }} />;
   }
 
   render () {
@@ -277,46 +247,6 @@ export default class App extends Component {
           </Navbar.Collapse>
         </Navbar>
 
-{/*
-        <div>
-          <nav>
-            <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-              {!this.state.userLoggedin &&
-                <>
-                  <li>
-                    <Link to="/login">Login</Link>
-                  </li>
-                  <li>
-                     <Link to="/register">Register</Link>
-                  </li>
-                </>
-              }
-              { this.state.userLoggedin &&
-                <>
-                  <li>
-                    <Link to={"/users?id=" + this.state.curUser.id} onClick={this.clearRedirect}>My Profile</Link>
-                  </li>
-                  <li>
-                    <LogoutForm baseURL={this.state.baseURL} endpt={this.state.userEndPt} checkLogin={this.checkLogin} redirectFunc={this.redirectFunc} />
-                  </li>
-                </>
-              }
-            </ul>
-          </nav>
-
-
-          <div>
-            <form onSubmit={this.searchSubmit}>
-              <input type="text" placeholder="Search..." id="searchTerm" value={this.state.searchTerm} onChange={this.handleChange} required />
-              <Button type="submit">?</Button>
-            </form>
-          </div>
-
-          */}
-
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <div className="sittit">
@@ -366,25 +296,10 @@ export default class App extends Component {
             <Route path="/">
               <Tabs defaultActiveKey="entries" id="uncontrolled-tab-healthbar">
                 <Tab eventKey="entries" title="Recent Entries">
-                  <table className="artstable">
-                    <tbody>
-                      { this.state.entries.map((entry, ind) => {
-                        return (
-                          <tr>
-                            <td><Link to={"/articles?id=" + entry.id}>{this.categoryIcon(entry.category)}</Link></td>
-                            <td>
-                              <Link to={"/articles?id=" + entry.id}>{entry.title}</Link>
-                              <br/>
-                              <Link to={"/users?id=" + entry.author.id}>{entry.author.username}</Link>
-                              <br/>
-                              {this.dateTrim(entry.created_date)}
-                            </td>
-                          </tr>
-                        )
-                      })
-                      }
-                    </tbody>
-                  </table>
+                  <ArticlesDisplay
+                  baseURL={this.state.baseURL}
+                  endpt={this.state.articleEndPt + '/allarticles'}
+                  />
                 </Tab>
                 <Tab eventKey="news" title="News From the Web">
                   <table className="artstable">
@@ -429,9 +344,22 @@ export default class App extends Component {
   }
 }
 
-// <Route path="/login">
-//   <LoginForm baseURL={this.state.baseURL} checkLogin={this.checkLogin} redirectFunc={this.redirectFunc}/>
-// </Route>
-// <Route path="/register">
-//   <RegistrationForm baseURL={this.state.baseURL} checkLogin={this.checkLogin} redirectFunc={this.redirectFunc}/>
-// </Route>
+// <table className="artstable">
+//   <tbody>
+//     { this.state.entries.map((entry, ind) => {
+//       return (
+//         <tr>
+//           <td><Link to={"/articles?id=" + entry.id}>{this.categoryIcon(entry.category)}</Link></td>
+//           <td>
+//             <Link to={"/articles?id=" + entry.id}>{entry.title}</Link>
+//             <br/>
+//             <Link to={"/users?id=" + entry.author.id}>{entry.author.username}</Link>
+//             <br/>
+//             {this.dateTrim(entry.created_date)}
+//           </td>
+//         </tr>
+//       )
+//     })
+//     }
+//   </tbody>
+// </table>

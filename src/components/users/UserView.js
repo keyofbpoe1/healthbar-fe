@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserDelete from '../users/UserDelete.js'
+import ArticlesDisplay from '../articles/ArticlesDisplay.js'
 import { Link } from "react-router-dom";
 
 import {
@@ -114,16 +115,9 @@ export default class UserView extends Component {
                 </td>
               </tr>
             }
-          <ul>
-              { this.state.articles.map((article, ind) => {
-                return (
-                  <li key={'arts-' + ind}>
-                    <Link to={"/articles?id=" + article.id}>{article.title}</Link>
-                  </li>
-                )
-              })
-              }
-          </ul>
+            {this.state.articles.length > 0 &&
+              <ArticlesDisplay articles={this.state.articles} />
+            }
         </Tab>
       </Tabs>
     )

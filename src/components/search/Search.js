@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-// import UserDelete from '../users/UserDelete.js'
+import ArticlesDisplay from '../articles/ArticlesDisplay.js'
 import { Link } from "react-router-dom";
+
+import {
+  Tabs,
+  Tab,
+} from 'react-bootstrap';
 
 export default class UserView extends Component {
   constructor(props) {
@@ -25,14 +30,6 @@ export default class UserView extends Component {
   searchArticles = () => {
     let urlParams = new URLSearchParams(window.location.search);
     let queryParam = urlParams.get('query');
-    // let page = 1;
-    // let limit = 1;
-    // if (urlParams.get('page')) {
-    //   page = urlParams.get('page');
-    // }
-    // if (urlParams.get('limit')) {
-    //   limit = urlParams.get('limit');
-    // }
     let requestOptions = {
       credentials: 'include',
       method: 'GET',
@@ -100,31 +97,26 @@ export default class UserView extends Component {
 
   render () {
     return (
-      <>
-        <h3>Articles</h3>
-        <ul>
-          { this.state.articles.map((article, ind) => {
-            return (
-              <li key={'arts-' + ind}>
-                <Link to={"/articles?id=" + article.id}>{article.title}</Link>
-              </li>
-            )
-          })
+      <Tabs defaultActiveKey="entries" id="uncontrolled-tab-searchtabs">
+        <Tab eventKey="entries" title="Entries">
+          {this.state.articles.length > 0 &&
+            <ArticlesDisplay articles={this.state.articles} />
           }
-        </ul>
-        <button type="button" onClick={this.iterPage}>></button>
-        <h3>Users</h3>
-        <ul>
-          { this.state.users.map((user, ind) => {
-            return (
-              <li key={'users-' + ind}>
-                <Link to={"/users?id=" + user.id}>{user.username}</Link>
-              </li>
-            )
-          })
-          }
-        </ul>
-      </>
+          <button type="button" onClick={this.iterPage}>></button>
+        </Tab>
+        <Tab eventKey="users" title="Users">
+          <ul>
+            { this.state.users.map((user, ind) => {
+              return (
+                <li key={'users-' + ind}>
+                  <Link to={"/users?id=" + user.id}>{user.username}</Link>
+                </li>
+              )
+            })
+            }
+          </ul>
+        </Tab>
+      </Tabs>
     )
   }
 }
