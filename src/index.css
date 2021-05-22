@@ -111,3 +111,7 @@ body {
 .artstable td {
   padding: 1em;
 }
+
+.disccont {
+  white-space: pre-line;
+}

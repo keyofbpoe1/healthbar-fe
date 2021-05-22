@@ -19,6 +19,7 @@ export default class ArticleView extends Component {
       errorMsg: '',
       isloaded: false,
       discussions: [],
+      commentLoad: false,
     }
   }
 
@@ -39,6 +40,7 @@ export default class ArticleView extends Component {
           article: data.data,
           discussions: data.discussions,
           isloaded: true,
+          commentLoad: true,
         })
       })
       .catch(error => console.log('error', error));
@@ -56,15 +58,21 @@ export default class ArticleView extends Component {
 
   addComment = (com, act, ind) => {
     const copyDiscussions = [...this.state.discussions];
+    this.setState({
+      discussions: [],
+    });
+    let myInd;
     switch (act) {
       case 'add':
         copyDiscussions.push(com);
         break;
         case 'remove':
-          copyDiscussions.splice(ind, 1);
+          myInd = copyDiscussions.findIndex(x => x.id === ind)
+          copyDiscussions.splice(myInd, 1);
           break;
         case 'update':
-          copyDiscussions.splice(ind, com);
+          myInd = copyDiscussions.findIndex(x => x.id === ind)
+          copyDiscussions.splice(myInd, 1, com);
           break;
       default:
     }
@@ -95,18 +103,21 @@ export default class ArticleView extends Component {
         <article>
         <div className="content" dangerouslySetInnerHTML={{__html: this.state.article.body}}></div>
         </article>
-        <h3>Discussion</h3>
+        <h4>Comments</h4>
+        {this.state.isloaded &&
+          <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
+        }
         <table>
           <tbody>
-            { this.state.discussions.map((comment, ind) => {
-              return (
-                <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
-              )
-            })
+            {this.state.commentLoad &&
+               this.state.discussions.map((comment, ind) => {
+                return (
+                  <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
+                )
+              })
             }
           </tbody>
         </table>
-        <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
       </>
     )
   }

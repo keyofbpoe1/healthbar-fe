@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 export default class DiscussionEdit extends Component {
   constructor(props) {
@@ -19,33 +19,6 @@ export default class DiscussionEdit extends Component {
       updateComment: this.props.updateComment
     }
   }
-
-  // getArticle = () => {
-  //   let urlParams = new URLSearchParams(window.location.search);
-  //   let idParam = urlParams.get('id');
-  //   let requestOptions = {
-  //     credentials: 'include',
-  //     method: 'GET',
-  //     redirect: 'follow'
-  //   };
-  //
-  //   fetch(this.state.baseURL +  this.state.endpt + idParam, requestOptions)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       console.log(data)
-  //       this.setState({
-  //         article: data.data,
-  //         title: data.data.title,
-  //         category: data.data.category,
-  //         body: data.data.body,
-  //       })
-  //     })
-  //     .catch(error => console.log('error', error));
-  // }
-  //
-  // componentDidMount(){
-  //   this.getArticle();
-  // }
 
   handleChange = (event) => {
     this.setState({ [event.currentTarget.id]: event.currentTarget.value});
@@ -90,7 +63,7 @@ export default class DiscussionEdit extends Component {
           })
         }
         else {
-          this.state.addComment(data.data, 'update', this.state.ind);
+          this.state.addComment(data.data, 'update', this.state.id);
           this.state.updateComment(data.data);
           this.state.toggleEdit();
           // this.state.checkLogin()
@@ -108,10 +81,11 @@ export default class DiscussionEdit extends Component {
             ? <form onSubmit={this.handleDiscUpdate}>
                 <p className="rederror">{this.state.errorMsg}</p>
                 <label htmlFor="comment"></label>
-                <textarea id="comment" name="comment" rows="8" cols="80" onChange={this.handleChange} value={this.state.comment} placeholder="comment..."></textarea>
+                <textarea id="comment" name="comment" rows="3" cols="50" onChange={this.handleChange} value={this.state.comment} placeholder="comment..."></textarea>
                 <br/>
-                <input type="submit" value="Save"/>
-                <button type="button" onClick={this.state.toggleEdit}>Cancel</button>
+                <Button type="submit" value="Save">Save</Button>
+                &nbsp;
+                <Button type="button" onClick={this.state.toggleEdit}>Cancel</Button>
               </form>
             : <h1>Unauthorized</h1>
           )

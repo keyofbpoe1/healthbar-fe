@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 export default class NewDiscussion extends Component {
   constructor(props) {
@@ -75,13 +75,14 @@ export default class NewDiscussion extends Component {
       <>
       { this.state.userLoggedin
         ? <form onSubmit={this.handleNewDisc}>
-            <h3>New Comment</h3>
+            <h5>New Comment</h5>
             <p className="rederror">{this.state.errorMsg}</p>
             <label htmlFor="comment"></label>
-            <textarea id="comment" name="comment" rows="8" cols="80" onChange={this.handleChange} value={this.state.comment} placeholder="comment..."></textarea>
+            <textarea id="comment" name="comment" rows="3" cols="50" onChange={this.handleChange} value={this.state.comment} placeholder="comment..."></textarea>
             <br/>
-            <input type="submit" value="Add"/>
-            <button type="button" onClick={this.clearComment}>Cancel</button>
+            <Button type="submit" value="Add">Add</Button>
+            &nbsp;
+            <Button type="button" onClick={this.clearComment}>Cancel</Button>
           </form>
         : <></>
       }

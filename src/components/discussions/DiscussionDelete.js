@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 
 export default class DiscussionDelete extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ export default class DiscussionDelete extends Component {
             // this.state.setErrorMsg(data.status.message);
           }
           else {
-            this.state.addComment(null, 'remove', this.state.ind)
+            this.state.addComment(null, 'remove', this.state.id)
             // this.state.setErrorMsg('');
             // this.state.checkLogin()
             // this.state.redirectFunc('/')
@@ -45,7 +46,7 @@ export default class DiscussionDelete extends Component {
 
   render () {
     return (
-      <button type="button" onClick={this.onArtDelete}>Delete Comment</button>
+      <Button type="button" onClick={this.onArtDelete}>Delete</Button>
     )
   }
 }
