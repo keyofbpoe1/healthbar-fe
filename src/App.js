@@ -43,6 +43,10 @@ import {
   faShoePrints,
   faSpa,
   faWalking,
+  faAngleRight,
+  faAngleLeft,
+  faAngleDoubleRight,
+  faAngleDoubleLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default class App extends Component {
@@ -67,6 +71,8 @@ export default class App extends Component {
       totalEntries: 0,
       news: [],
       totalNews: 0,
+      newsPage: 1,
+      totNewsPgs: 10,
     }
   }
 
@@ -107,13 +113,18 @@ export default class App extends Component {
       // redirect: 'follow'
     };
 
-    fetch(this.state.newsapi + '&page=1', requestOptions)
+    fetch(this.state.newsapi + '&page=' + this.state.newsPage, requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log(data)
+        let totNewsPgs = Math.ceil(parseInt(data.totalResults) / 10);
+        if (totNewsPgs > 10) {
+          totNewsPgs = 10;
+        }
         this.setState({
           news: data.articles,
-          totalNews: data.totalResults,
+          totNewsPgs: data.totalResults,
+          totNewsPgs: totNewsPgs,
         })
       })
       .catch(error => { console.log('error', error) });
@@ -190,6 +201,31 @@ export default class App extends Component {
       val = '';
     }
     return val;
+  }
+
+  iterNews = (e) => {
+    e.preventDefault();
+    let newPg = 1;
+    switch (e.currentTarget.id) {
+      case 'firstpage':
+        newPg = 1;
+        break;
+      case 'downpage':
+          newPg = this.state.newsPage - 1;
+        break;
+      case 'uppage':
+        newPg = this.state.newsPage + 1;
+        break;
+      case 'lastpage':
+        newPg = this.state.totNewsPgs;
+        break;
+      default:
+        newPg = 1;
+    }
+    this.setState({ newsPage: newPg }, () => {
+      this.getNews();
+    });
+    console.log(this.state);
   }
 
   render () {
@@ -324,6 +360,21 @@ export default class App extends Component {
                           </tr>
                         )
                       })
+                      }
+                      {this.state.newsPage !== 1 &&
+                        <>
+                          <a id="firstpage" href="" onClick={this.iterNews}><FontAwesomeIcon icon={faAngleDoubleLeft} /></a>
+                          &nbsp;
+                          <a id="downpage" href="" onClick={this.iterNews}><FontAwesomeIcon icon={faAngleLeft} /></a>
+                        </>
+                      }
+                      {this.state.newsPage !== this.state.totNewsPgs &&
+                        <>
+                          &nbsp;
+                          <a id="uppage" href="" onClick={this.iterNews}><FontAwesomeIcon icon={faAngleRight} /></a>
+                          &nbsp;
+                          <a id="lastpage" href="" onClick={this.iterNews}><FontAwesomeIcon icon={faAngleDoubleRight} /></a>
+                        </>
                       }
                     </tbody>
                   </table>

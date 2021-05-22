@@ -156,8 +156,6 @@ export default class ArticlesDisplay extends Component {
               <a id="lastpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleDoubleRight} /></a>
             </>
           }
-
-
         </tbody>
       </table>
     )
