@@ -37,11 +37,15 @@ body {
     text-decoration: none;
 }
 
+.hb-app {
+  padding-bottom: 2.5em;
+}
+
 .sticky-footer {
    position: fixed;
-   left: 0;
    bottom: 0;
    width: 100%;
+   height: 2.0em;
    background-color: #f8f9fa;
    color: rgba(0,0,0,.5);
    text-align: center;

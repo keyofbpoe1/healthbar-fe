@@ -3,6 +3,7 @@ import ArticleDelete from '../articles/ArticleDelete.js'
 import DiscussionView from '../discussions/DiscussionView.js'
 import NewDiscussion from '../discussions/NewDiscussion.js'
 import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 export default class ArticleView extends Component {
   constructor(props) {
@@ -78,7 +79,7 @@ export default class ArticleView extends Component {
         { this.state.userLoggedin
           ? (this.state.curUser.id === this.state.article.author.id || this.state.curUser.role === 'admin'
             ? <>
-                <Link to={"/editarticle?id=" + this.state.article.id}><button type="button">Edit</button></Link>
+                <Link to={"/editarticle?id=" + this.state.article.id}><Button type="button">Edit</Button></Link>
                 &nbsp;
                 <ArticleDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.article.id} setErrorMsg={this.setErrorMsg} />
               </>
@@ -90,7 +91,8 @@ export default class ArticleView extends Component {
         <h3>{this.state.article.title}</h3>
         <p>By: <Link to={"/users?id=" + this.state.article.author.id}>{this.state.article.author.username}</Link></p>
         <p>{this.state.article.category}</p>
-        <div>{this.state.article.body}</div>
+        {/*<div>{this.state.article.body}</div>*/}
+        <div className="content" dangerouslySetInnerHTML={{__html: this.state.article.body}}></div>
         <h3>Discussion</h3>
         <table>
           <tbody>

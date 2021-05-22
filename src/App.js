@@ -172,14 +172,8 @@ export default class App extends Component {
 
   render () {
     return (
-      <div className="hb-app" style={{
-        // backgroundImage: `url("/hb-bg1.jpg")`,
-        // backgroundSize: 'cover',
-        // '-webkit-background-size': 'cover,'
-        // '-moz-background-size': 'cover',
-        // '-o-background-size': 'cover',
-
-      }}>
+      <>
+      <div className="hb-app">
       <Router>
         {this.state.redirect &&
           <Redirect push to={this.state.redURL} />
@@ -320,7 +314,7 @@ export default class App extends Component {
                   { this.state.entries.map((entry, ind) => {
                     return (
                       <li key={'entry-' + ind}>
-                        {entry.title}
+                        <Link to={"/articles?id=" + entry.id}>{entry.title}</Link>
                       </li>
                     )
                   })
@@ -332,7 +326,7 @@ export default class App extends Component {
                   { this.state.news.map((article, ind) => {
                     return (
                       <li key={'news-' + ind}>
-                        {article.title}
+                        <Link to={"/articles?id=" + article.id}>{article.title}</Link>
                       </li>
                     )
                   })
@@ -343,11 +337,13 @@ export default class App extends Component {
             </Route>
           </Switch>
         </div>
-        <div className="sticky-footer">
-          footer
-        </div>
+
       </Router>
       </div>
+      <div className="sticky-footer">
+        footer
+      </div>
+      </>
     )
   }
 }

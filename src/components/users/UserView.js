@@ -83,17 +83,25 @@ export default class UserView extends Component {
                 <td>{this.state.user.username}</td>
               </tr>
               <tr>
-                <td>Email:</td>
-                <td>{this.state.user.email}</td>
-              </tr>
-              <tr>
                 <td>Bio:</td>
                 <td>{this.state.user.bio}</td>
               </tr>
-              <tr>
-                <td>Role:</td>
-                <td>{this.state.user.role}</td>
-              </tr>
+              { this.state.userLoggedin
+                ? (this.state.curUser.id === this.state.user.id || this.state.curUser.role === 'admin'
+                  ? <>
+                    <tr>
+                      <td>Email:</td>
+                      <td>{this.state.user.email}</td>
+                    </tr>
+                    <tr>
+                      <td>Role:</td>
+                      <td>{this.state.user.role}</td>
+                    </tr>
+                    </>
+                  :<></>
+                )
+                : <></>
+              }
             </tbody>
           </table>
         </Tab>

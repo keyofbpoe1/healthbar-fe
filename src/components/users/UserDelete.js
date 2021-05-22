@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 
 export default class UserDelete extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ export default class UserDelete extends Component {
 
   render () {
     return (
-      <button type="button" onClick={this.onUserDelete}>Delete Account</button>
+      <Button type="button" onClick={this.onUserDelete}>Delete</Button>
     )
   }
 }

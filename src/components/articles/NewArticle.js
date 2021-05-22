@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
+import { Button } from 'react-bootstrap';
 
 export default class NewArticle extends Component {
   constructor(props) {
@@ -125,8 +126,9 @@ export default class NewArticle extends Component {
             />
 
             <br/>
-            <input type="submit" value="Save"/>
-            <Link to="/"><button type="button">Cancel</button></Link>
+            <Button type="submit" value="Save">Save</Button>
+            &nbsp;
+            <Link to={'/users.id=' + this.state.curUser.id}><Button type="button">Cancel</Button></Link>
           </form>
         : <h1>Unauthorized</h1>
       }

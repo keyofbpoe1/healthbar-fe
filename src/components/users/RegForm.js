@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 export default class RegForm extends Component {
   constructor(props) {
@@ -92,8 +93,9 @@ export default class RegForm extends Component {
         <label htmlFor="bio"></label>
         <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!"></textarea>
         <br/>
-        <input type="submit" value="Register"/>
-        <Link to="/"><button type="button">Cancel</button></Link>
+        <Button type="submit" value="Register">Register</Button>
+        &nbsp;
+        <Link to="/"><Button type="button">Cancel</Button></Link>
       </form>
     )
   }

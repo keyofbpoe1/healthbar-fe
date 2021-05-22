@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 export default class LoginForm extends Component {
   constructor(props) {
@@ -76,8 +77,9 @@ export default class LoginForm extends Component {
         <label htmlFor="password"></label>
         <input type="password" id="password" name="password" onChange={this.handleChange} value={this.state.password} placeholder="password" required/>
         <br/>
-        <input type="submit" value="Login"/>
-        <Link to="/"><button type="button">Cancel</button></Link>
+        <Button type="submit" value="Login">Login</Button>
+        &nbsp;
+        <Link to="/"><Button type="button">Cancel</Button></Link>
       </form>
     )
   }
