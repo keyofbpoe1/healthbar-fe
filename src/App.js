@@ -33,7 +33,16 @@ import {
 } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import {
+  faSearch,
+  faBurn,
+  faHeartbeat,
+  faRunning,
+  faDumbbell,
+  faShoePrints,
+  faSpa,
+  faWalking,
+} from '@fortawesome/free-solid-svg-icons'
 
 export default class App extends Component {
   constructor(props) {
@@ -170,6 +179,49 @@ export default class App extends Component {
     // setTimeout(this.clearRedirect, 3000);
   }
 
+  dateTrim = (val) => {
+    let d = new Date(val);
+    return d.toDateString();
+    // return val.replace(/\s\d\d\:\d\d\:\d\d.*/gmi, '');
+  }
+
+  authTrim = (val) => {
+    if (val.match(/http/gmi)) {
+      val = '';
+    }
+    return val;
+  }
+
+  categoryIcon = (val) => {
+    let retVal = faBurn;
+    switch (val) {
+      case 'cardio':
+        retVal = faHeartbeat;
+        break;
+      case 'dance':
+        retVal = faShoePrints;
+        break;
+      case 'endurance':
+        retVal = faRunning;
+        break;
+      case 'flexibility':
+        retVal = faWalking;
+        break;
+      case 'recovery':
+        retVal = faSpa;
+        break;
+      case 'strength':
+        retVal = faBurn;
+        break;
+      case 'weight':
+        retVal = faDumbbell;
+        break;
+      default:
+        //nothing
+    }
+    return <FontAwesomeIcon icon={retVal} style={{ fontSize: '100px' }} />;
+  }
+
   render () {
     return (
       <>
@@ -267,6 +319,10 @@ export default class App extends Component {
 
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
+          <div className="sittit">
+            <h1>a health and fitness app</h1>
+          </div>
+          <div className="sitcont">
           <Switch>
             <Route path="/login">
               <LoginForm baseURL={this.state.baseURL} endpt={this.state.userEndPt} redirectFunc={this.redirectFunc} checkLogin={this.checkLogin} />
@@ -310,32 +366,57 @@ export default class App extends Component {
             <Route path="/">
               <Tabs defaultActiveKey="entries" id="uncontrolled-tab-healthbar">
                 <Tab eventKey="entries" title="Recent Entries">
-                  <ul>
-                  { this.state.entries.map((entry, ind) => {
-                    return (
-                      <li key={'entry-' + ind}>
-                        <Link to={"/articles?id=" + entry.id}>{entry.title}</Link>
-                      </li>
-                    )
-                  })
-                  }
-                  </ul>
+                  <table className="artstable">
+                    <tbody>
+                      { this.state.entries.map((entry, ind) => {
+                        return (
+                          <tr>
+                            <td><Link to={"/articles?id=" + entry.id}>{this.categoryIcon(entry.category)}</Link></td>
+                            <td>
+                              <Link to={"/articles?id=" + entry.id}>{entry.title}</Link>
+                              <br/>
+                              <Link to={"/users?id=" + entry.author.id}>{entry.author.username}</Link>
+                              <br/>
+                              {this.dateTrim(entry.created_date)}
+                            </td>
+                          </tr>
+                        )
+                      })
+                      }
+                    </tbody>
+                  </table>
                 </Tab>
                 <Tab eventKey="news" title="News From the Web">
-                  <ul>
-                  { this.state.news.map((article, ind) => {
-                    return (
-                      <li key={'news-' + ind}>
-                        <Link to={"/articles?id=" + article.id}>{article.title}</Link>
-                      </li>
-                    )
-                  })
-                  }
-                  </ul>
+                  <table className="artstable">
+                    <tbody>
+                      { this.state.news.map((article, ind) => {
+                        return (
+                          <tr>
+                            <td>
+                              <a href={article.url} target="_blank" rel="noreferrer">
+                                <img src={article.urlToImage} alt="img" className="artimg" />
+                              </a>
+                            </td>
+                            <td>
+                              <a href={article.url} target="_blank" rel="noreferrer">
+                                {article.title}
+                              </a>
+                              <br/>
+                              {this.authTrim(article.author)}
+                              <br/>
+                              {this.dateTrim(article.publishedAt)}
+                            </td>
+                          </tr>
+                        )
+                      })
+                      }
+                    </tbody>
+                  </table>
                 </Tab>
               </Tabs>
             </Route>
           </Switch>
+          </div>
         </div>
 
       </Router>

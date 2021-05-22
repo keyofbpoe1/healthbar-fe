@@ -41,6 +41,26 @@ body {
   padding-bottom: 2.5em;
 }
 
+.sittit {
+  text-align: center;
+  font-style: italic;
+  color: #00acb5;
+  background-color: rgba(0,0,0,.7);
+  padding: .5em;
+  margin-bottom: .5em;
+}
+
+.sitcont {
+  background-color: rgba(0,0,0,.6);
+  margin: 0 3em 0 3em;
+  color: #fff;
+  border-radius: .25rem;
+}
+
+.sitcont a {
+  color: #77f8ff;
+}
+
 .sticky-footer {
    position: fixed;
    bottom: 0;
@@ -49,4 +69,45 @@ body {
    background-color: #f8f9fa;
    color: rgba(0,0,0,.5);
    text-align: center;
+}
+
+/* .artul, .newsul {
+  list-style-type: none;
+  width: fit-content;
+  padding: 1em 2.5em 0 2.5em;
+}
+
+.authul, .newsul li {
+  list-style-type: none;
+  border-bottom:  1px solid gray;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.artimg {
+  max-height: 100px;
+  margin-right: 1em;
+  display: inline-table;
+  vertical-align: middle;
+}
+
+.inlineart {
+  display: inline-table;
+  vertical-align: middle;
+} */
+
+.artimg {
+  max-height: 100px;
+}
+
+.artstable {
+  margin-left: 3em;
+}
+
+.artstable tr {
+  border-bottom: 1px solid gray;
+}
+
+.artstable td {
+  padding: 1em;
 }

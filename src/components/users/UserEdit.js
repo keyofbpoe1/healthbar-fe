@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { Button } from 'react-bootstrap';
 
 export default class UserEdit extends Component {
   constructor(props) {
@@ -133,8 +134,9 @@ export default class UserEdit extends Component {
                   </>
                 }
 
-                <input type="submit" value="Update"/>
-                <Link to={"/users?id=" + this.state.user.id}><button type="button">Cancel</button></Link>
+                <Button type="submit" value="Update">Update</Button>
+                &nbsp;
+                <Link to={"/users?id=" + this.state.user.id}><Button type="button">Cancel</Button></Link>
               </form>
             : <h1>Unauthorized</h1>
           )

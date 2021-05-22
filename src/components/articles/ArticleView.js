@@ -90,9 +90,11 @@ export default class ArticleView extends Component {
         <p className="rederror">{this.state.errorMsg}</p>
         <h3>{this.state.article.title}</h3>
         <p>By: <Link to={"/users?id=" + this.state.article.author.id}>{this.state.article.author.username}</Link></p>
-        <p>{this.state.article.category}</p>
+        <p>Category: {this.state.article.category}</p>
         {/*<div>{this.state.article.body}</div>*/}
+        <article>
         <div className="content" dangerouslySetInnerHTML={{__html: this.state.article.body}}></div>
+        </article>
         <h3>Discussion</h3>
         <table>
           <tbody>
