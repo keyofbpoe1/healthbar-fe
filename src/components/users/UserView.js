@@ -9,6 +9,11 @@ import {
   Tab,
 } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faUserEdit,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class UserView extends Component {
   constructor(props) {
     super(props)
@@ -70,7 +75,7 @@ export default class UserView extends Component {
                     <tr>
                       <td></td>
                       <td>
-                        <Link to={"/useredit?id=" + this.state.user.id}><Button type="button">Edit</Button></Link>
+                        <Link to={"/useredit?id=" + this.state.user.id}><FontAwesomeIcon icon={faUserEdit} title="Edit Account" /></Link>
                         &nbsp;
                         <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} setErrorMsg={this.setErrorMsg} />
                       </td>
@@ -86,7 +91,9 @@ export default class UserView extends Component {
               </tr>
               <tr>
                 <td>Bio:</td>
-                <td>{this.state.user.bio}</td>
+                <td>
+                  <div className="disccont" dangerouslySetInnerHTML={{__html: this.state.user.bio}}></div>
+                </td>
               </tr>
               { this.state.userLoggedin
                 ? (this.state.curUser.id === this.state.user.id || this.state.curUser.role === 'admin'

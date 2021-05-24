@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faUserSlash,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class UserDelete extends Component {
   constructor(props) {
     super(props)
@@ -14,7 +19,8 @@ export default class UserDelete extends Component {
     }
   }
 
-  onUserDelete = () => {
+  onUserDelete = (e) => {
+    e.preventDefault();
     let confDelete = window.confirm('Are you sure you want to delete your account?');
     if (confDelete) {
       let reqURL = this.state.baseURL + this.state.endpt + this.state.id;
@@ -43,7 +49,7 @@ export default class UserDelete extends Component {
 
   render () {
     return (
-      <Button type="button" onClick={this.onUserDelete}>Delete</Button>
+      <a href="" onClick={this.onUserDelete}><FontAwesomeIcon icon={faUserSlash} title="Delete Account" /></a>
     )
   }
 }

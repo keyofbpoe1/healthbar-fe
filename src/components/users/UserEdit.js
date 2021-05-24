@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSave,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class UserEdit extends Component {
   constructor(props) {
     super(props)
@@ -106,7 +112,7 @@ export default class UserEdit extends Component {
 
   render () {
     return (
-      <>
+      <div className="editingdiv">
         { this.state.userLoggedin
           ? (this.state.curUser.id === this.state.user.id || this.state.curUser.role === 'admin'
             ? <form onSubmit={this.handleUsUpdate}>
@@ -133,16 +139,17 @@ export default class UserEdit extends Component {
                     <br/>
                   </>
                 }
-
-                <Button type="submit" value="Update">Update</Button>
-                &nbsp;
-                <Link to={"/users?id=" + this.state.user.id}><Button type="button">Cancel</Button></Link>
+                <div className="righttxt">
+                  <a href="" onClick={this.handleUsUpdate} title="Save"><FontAwesomeIcon icon={faSave} /></a>
+                  &nbsp;
+                  <Link to={"/users?id=" + this.state.user.id}><FontAwesomeIcon icon={faTrash} /></Link>
+                </div>
               </form>
             : <h1>Unauthorized</h1>
           )
           : <h1>Unauthorized</h1>
         }
-      </>
+      </div>
     )
   }
 }

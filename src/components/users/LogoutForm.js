@@ -34,7 +34,7 @@ export default class LogoutForm extends Component {
 
   render () {
     return (
-      <Button type="button" onClick={this.onLogout}>Logout</Button>
+      <Button type="button" variant="outline-info" onClick={this.onLogout}>Logout</Button>
     )
   }
 }

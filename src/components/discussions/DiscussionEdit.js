@@ -90,9 +90,9 @@ export default class DiscussionEdit extends Component {
                 <textarea id="comment" name="comment" rows="3" cols="50" onChange={this.handleChange} value={this.state.comment} placeholder="comment..."></textarea>
                 <br/>
                 <div className="righttxt">
-                <a href="" onClick={this.handleDiscUpdate} title="Save"><FontAwesomeIcon icon={faSave} /></a>
-                &nbsp;
-                <a href="" onClick={this.state.toggleEdit} title="Discard Changes"><FontAwesomeIcon icon={faTrash} /></a>
+                  <a href="" onClick={this.handleDiscUpdate} title="Save"><FontAwesomeIcon icon={faSave} /></a>
+                  &nbsp;
+                  <a href="" onClick={this.state.toggleEdit} title="Discard Changes"><FontAwesomeIcon icon={faTrash} /></a>
                 </div>
               </form>
             : <h1>Unauthorized</h1>

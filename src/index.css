@@ -96,7 +96,8 @@ body {
   vertical-align: middle;
 } */
 
-.tab-content, .fullcomsdiv {
+.tab-content, .fullcomsdiv, .editingdiv {
+  width: fit-content;
   padding: 1em 3em 1em 3em;
 }
 
@@ -163,4 +164,23 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
   border-radius: .25rem;
+}
+
+.input-group {
+  margin-top: 5px;
+}
+
+.input-group-text {
+  width: 50px;
+  justify-content: center;
+}
+
+.logindiv {
+  margin: auto;
+  text-align: center;
+}
+
+.sminp {
+  margin-top: 5px;
+  width: fit-content;
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
-import { Button } from 'react-bootstrap';
+import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
 export default class NewArticle extends Component {
   constructor(props) {
@@ -81,16 +81,14 @@ export default class NewArticle extends Component {
 
   render () {
     return (
-      <>
+      <div className="editingdiv">
       { this.state.userLoggedin
         ? <form onSubmit={this.handleNewArt}>
             <h3>New Article</h3>
             <p className="rederror">{this.state.errorMsg}</p>
-            <label htmlFor="title"></label>
-            <input type="text" id="title" name="title" onChange={this.handleChange} value={this.state.title} placeholder="title" required/>
-            <br/>
-            <label htmlFor="category"></label>
-            <select name="category" id="category" onChange={this.handleChange} value={this.state.category} required>
+            <FormControl className="sminp" type="text" id="title" name="title" onChange={this.handleChange} value={this.state.title} placeholder="title" required/>
+
+            <FormControl className="sminp" as="select" name="category" id="category" onChange={this.handleChange} value={this.state.category} required>
               <option disabled value=""> -- Select -- </option>
               <option value="cardio">Cardio</option>
               <option value="dance">Dance</option>
@@ -99,8 +97,7 @@ export default class NewArticle extends Component {
               <option value="recovery">Recovery</option>
               <option value="strength">Strength</option>
               <option value="weight">Weight Training</option>
-            </select>
-            <br/>
+            </FormControl>
             <label htmlFor="body"></label>
 
 
@@ -134,7 +131,7 @@ export default class NewArticle extends Component {
       }
       {/*value={this.state.body}*/}
       {/*<textarea id="body" name="body" rows="8" cols="80" onChange={this.handleChange} value={this.state.body} placeholder="Article body / exercise description"></textarea>*/}
-      </>
+      </div>
     )
   }
 }

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import { Button, InputGroup, FormControl } from 'react-bootstrap';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faUser,
+  faKey,
+} from '@fortawesome/free-solid-svg-icons'
 
 export default class LoginForm extends Component {
   constructor(props) {
@@ -68,19 +74,50 @@ export default class LoginForm extends Component {
 
   render () {
     return (
-      <form onSubmit={this.handleLogin}>
-        <h3>Login</h3>
-        <p className="rederror">{this.state.errorMsg}</p>
-        <label htmlFor="username"></label>
-        <input type="text" id="username" name="username" onChange={this.handleChange} value={this.state.username} placeholder="username" required/>
-        <br/>
-        <label htmlFor="password"></label>
-        <input type="password" id="password" name="password" onChange={this.handleChange} value={this.state.password} placeholder="password" required/>
-        <br/>
-        <Button type="submit" value="Login">Login</Button>
-        &nbsp;
-        <Link to="/"><Button type="button">Cancel</Button></Link>
-      </form>
+      <div className="editingdiv logindiv">
+        <form onSubmit={this.handleLogin}>
+          <h3>Login</h3>
+          <p className="rederror">{this.state.errorMsg}</p>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faUser} />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              type="text"
+              id="username"
+              name="username"
+              onChange={this.handleChange}
+              value={this.state.username}
+              placeholder="username"
+              required
+            />
+          </InputGroup>
+
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faKey} />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              type="password"
+              id="password"
+              name="password"
+              onChange={this.handleChange}
+              value={this.state.password}
+              placeholder="password"
+              required
+            />
+          </InputGroup>
+          <br/>
+
+            <Button type="submit" value="Login">Login</Button>
+            &nbsp;
+            <Link to="/"><Button type="button">Cancel</Button></Link>
+        </form>
+      </div>
     )
   }
 }

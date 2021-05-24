@@ -149,13 +149,13 @@ export default class ArticleView extends Component {
       <div className="tab-content">
         { this.state.userLoggedin
           ? (this.state.curUser.id === this.state.article.author.id || this.state.curUser.role === 'admin'
-            ? <>
+            ? <div className="righttxt">
                 <Link to={"/editarticle?id=" + this.state.article.id} title="Edit Entry">
                   <FontAwesomeIcon icon={faEdit} />
                 </Link>
                 &nbsp;
                 <ArticleDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.article.id} setErrorMsg={this.setErrorMsg} />
-              </>
+              </div>
             :<></>
           )
           : <></>
