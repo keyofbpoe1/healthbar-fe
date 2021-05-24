@@ -90,7 +90,8 @@ export default class LoginForm extends Component {
               name="username"
               onChange={this.handleChange}
               value={this.state.username}
-              placeholder="username"
+              placeholder="Username"
+              title="Username"
               required
             />
           </InputGroup>
@@ -107,7 +108,8 @@ export default class LoginForm extends Component {
               name="password"
               onChange={this.handleChange}
               value={this.state.password}
-              placeholder="password"
+              placeholder="Password"
+              title="Password"
               required
             />
           </InputGroup>

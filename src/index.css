@@ -184,3 +184,11 @@ body {
   margin-top: 5px;
   width: fit-content;
 }
+
+.regdiv .sminp {
+  margin: 5px auto 5px auto;
+}
+
+textarea {
+  border-radius: .25rem;
+}

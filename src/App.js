@@ -273,10 +273,11 @@ export default class App extends Component {
                   id="searchTerm"
                   value={this.state.searchTerm}
                   onChange={this.handleChange}
+                  title="Search"
                   required
                 />
                 <InputGroup.Append>
-                  <Button type="submit" variant="outline-info"><FontAwesomeIcon icon={faSearch} /></Button>
+                  <Button type="submit" variant="outline-info" title="Search"><FontAwesomeIcon icon={faSearch} /></Button>
                 </InputGroup.Append>
               </InputGroup>
             </Form>

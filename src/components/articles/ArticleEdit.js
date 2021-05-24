@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
-import { Button } from 'react-bootstrap';
+import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
 export default class ArticleEdit extends Component {
   constructor(props) {
@@ -109,17 +109,14 @@ export default class ArticleEdit extends Component {
 
   render () {
     return (
-      <>
+      <div className="editingdiv">
         { this.state.userLoggedin
           ? (this.state.curUser.id === this.state.article.author.id || this.state.curUser.role === 'admin'
             ? <form onSubmit={this.handleArtUpdate}>
                 <h3>Edit Article</h3>
                 <p className="rederror">{this.state.errorMsg}</p>
-                <label htmlFor="title"></label>
-                <input type="text" id="title" name="title" onChange={this.handleChange} value={this.state.title} placeholder="title" required/>
-                <br/>
-                <label htmlFor="category"></label>
-                <select name="category" id="category" onChange={this.handleChange} value={this.state.category} required>
+                <FormControl className="sminp" type="text" id="title" name="title" onChange={this.handleChange} value={this.state.title} placeholder="title" required/>
+                <FormControl className="sminp" as="select" name="category" id="category" onChange={this.handleChange} value={this.state.category} required>
                   <option disabled value=""> -- Select -- </option>
                   <option value="cardio">Cardio</option>
                   <option value="dance">Dance</option>
@@ -128,9 +125,8 @@ export default class ArticleEdit extends Component {
                   <option value="recovery">Recovery</option>
                   <option value="strength">Strength</option>
                   <option value="weight">Weight Training</option>
-                </select>
+                </FormControl>
                 <br/>
-                <label htmlFor="body"></label>
                 <Editor
                   id="body"
                   name="body"
@@ -161,7 +157,7 @@ export default class ArticleEdit extends Component {
           )
           : <h1>Unauthorized</h1>
         }
-      </>
+      </div>
     )
   }
 }

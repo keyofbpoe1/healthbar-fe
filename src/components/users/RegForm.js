@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import { Button, InputGroup, FormControl } from 'react-bootstrap';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faUser,
+  faKey,
+} from '@fortawesome/free-solid-svg-icons'
 
 export default class RegForm extends Component {
   constructor(props) {
@@ -75,30 +81,90 @@ export default class RegForm extends Component {
 
   render () {
     return (
-      <div className="editingdiv">
+      <div className="editingdiv logindiv regdiv">
         <form onSubmit={this.handleLogin}>
           <h3>Register</h3>
           <p className="rederror">{this.state.errorMsg}</p>
-          <label htmlFor="username"></label>
-          <input type="text" id="username" name="username" onChange={this.handleChange} value={this.state.username} placeholder="username" required/>
-          <br/>
-          <label htmlFor="email"></label>
-          <input type="email" id="email" name="email" onChange={this.handleChange} value={this.state.email} placeholder="email address" required/>
-          <br/>
-          <label htmlFor="password"></label>
-          <label htmlFor="confpassword"></label>
-          <input type="password" id="confpassword" name="confpassword" onChange={this.handleChange} value={this.state.confpassword} placeholder="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
-          <br/>
-          <input type="password" id="password" name="password" onChange={this.handleChange} value={this.state.password} placeholder="confirm password" pattern={this.state.confpassword} title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
-          <br/>
-          <label htmlFor="bio"></label>
-          <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!"></textarea>
-          <br/>
-          <div className="righttxt">
+
+          <InputGroup className="sminp">
+            <InputGroup.Prepend>
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faUser} />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              type="text"
+              id="username"
+              name="username"
+              onChange={this.handleChange}
+              value={this.state.username}
+              placeholder="Username"
+              title="Username"
+              required
+            />
+          </InputGroup>
+
+          <InputGroup className="sminp">
+            <InputGroup.Prepend>
+              <InputGroup.Text style={{fontWeight: "bold"}}>
+                @
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              type="email"
+              id="email"
+              name="email"
+              onChange={this.handleChange}
+              value={this.state.email}
+              placeholder="Email Address"
+              title="Email Address"
+              required
+            />
+          </InputGroup>
+
+          <InputGroup className="sminp">
+            <InputGroup.Prepend>
+              <InputGroup.Text style={{fontWeight: "bold"}}>
+                <FontAwesomeIcon icon={faKey} />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              type="password"
+              id="confpassword"
+              name="confpassword"
+              onChange={this.handleChange}
+              value={this.state.confpassword}
+              placeholder="password"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              required
+            />
+          </InputGroup>
+
+          <InputGroup className="sminp">
+            <InputGroup.Prepend>
+              <InputGroup.Text style={{fontWeight: "bold"}}>
+                <FontAwesomeIcon icon={faKey} />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <FormControl
+              type="password"
+              id="password"
+              name="password"
+              onChange={this.handleChange}
+              value={this.state.password}
+              placeholder="confirm password"
+              pattern={this.state.confpassword}
+              title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+              required
+            />
+          </InputGroup>
+
+          <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!" title="Tell us about yourself!"></textarea>
+          <br/><br/>
             <Button type="submit" value="Register">Register</Button>
             &nbsp;
             <Link to="/"><Button type="button">Cancel</Button></Link>
-          </div>
         </form>
       </div>
     )

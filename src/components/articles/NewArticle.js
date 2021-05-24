@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSave,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class NewArticle extends Component {
   constructor(props) {
     super(props)
@@ -98,9 +104,7 @@ export default class NewArticle extends Component {
               <option value="strength">Strength</option>
               <option value="weight">Weight Training</option>
             </FormControl>
-            <label htmlFor="body"></label>
-
-
+            <br/>
             <Editor
               id="body"
               name="body"
@@ -123,9 +127,11 @@ export default class NewArticle extends Component {
             />
 
             <br/>
-            <Button type="submit" value="Save">Save</Button>
-            &nbsp;
-            <Link to={'/users.id=' + this.state.curUser.id}><Button type="button">Cancel</Button></Link>
+            <div className="righttxt">
+              <a href="" onClick={this.handleNewArt}><FontAwesomeIcon title="Save" icon={faSave} style={{ fontSize: '25px' }} /></a>
+              &nbsp;&nbsp;&nbsp;
+              <Link to={'/users?id=' + this.state.curUser.id}><FontAwesomeIcon title="Discard Entry" icon={faTrash} style={{ fontSize: '25px' }} /></Link>
+            </div>
           </form>
         : <h1>Unauthorized</h1>
       }

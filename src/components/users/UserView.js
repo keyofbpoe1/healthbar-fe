@@ -12,6 +12,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faUserEdit,
+  faPlusCircle,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default class UserView extends Component {
@@ -118,8 +119,8 @@ export default class UserView extends Component {
           {this.state.curUser.id === this.state.user.id &&
               <tr>
                 <td></td>
-                <td>
-                  <Link to={"/newarticle"}><Button type="button">New Article</Button></Link>
+                <td style={{textAlign: "right"}}>
+                  <Link to={"/newarticle"}><FontAwesomeIcon icon={faPlusCircle} title="New Entry" style={{ fontSize: '25px' }} />&nbsp;New Entry</Link>
                 </td>
               </tr>
             }
