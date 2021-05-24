@@ -190,10 +190,11 @@ export default class ArticleView extends Component {
                   {this.state.isloaded &&
                     <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
                   }
+                  {this.state.discussions.length > 0 &&
                   <div className="commentscroll">
                     <table className="disctab">
                       <tbody>
-                        {this.state.commentLoad &&
+                        {this.state.commentLoad && this.state.discussions.length > 0 &&
                            this.state.discussions.map((comment, ind) => {
                             return (
                               <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
@@ -203,6 +204,7 @@ export default class ArticleView extends Component {
                       </tbody>
                     </table>
                   </div>
+                }
                 </div>
               </Collapse>
             </div>

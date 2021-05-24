@@ -128,7 +128,7 @@ export default class NewArticle extends Component {
 
             <br/>
             <div className="righttxt">
-              <a href="" onClick={this.handleNewArt}><FontAwesomeIcon title="Save" icon={faSave} style={{ fontSize: '25px' }} /></a>
+              <a href="" onClick={this.handleNewArt}><FontAwesomeIcon title="Save Entry" icon={faSave} style={{ fontSize: '25px' }} /></a>
               &nbsp;&nbsp;&nbsp;
               <Link to={'/users?id=' + this.state.curUser.id}><FontAwesomeIcon title="Discard Entry" icon={faTrash} style={{ fontSize: '25px' }} /></Link>
             </div>

@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSave,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class ArticleEdit extends Component {
   constructor(props) {
     super(props)
@@ -149,9 +155,12 @@ export default class ArticleEdit extends Component {
                   onChange={this.handleEditorChange}
                 />
                 <br/>
-                <Button type="submit" value="Save">Save</Button>
-                &nbsp;
-                <Link to="/"><Button type="button">Cancel</Button></Link>
+                <div className="righttxt">
+                  <a href="" onClick={this.handleArtUpdate}><FontAwesomeIcon title="Save Changes" icon={faSave} style={{ fontSize: '25px' }} /></a>
+                  &nbsp;&nbsp;&nbsp;
+                  <Link to={'/articles?id=' + this.state.article.id}><FontAwesomeIcon title="Discard Changes" icon={faTrash} style={{ fontSize: '25px' }} /></Link>
+                </div>
+
               </form>
             : <h1>Unauthorized</h1>
           )
