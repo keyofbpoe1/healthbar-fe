@@ -4,6 +4,11 @@ import DiscussionEdit from '../discussions/DiscussionEdit.js'
 import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faEdit,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class DiscussionView extends Component {
   constructor(props) {
     super(props)
@@ -19,7 +24,8 @@ export default class DiscussionView extends Component {
     }
   }
 
-  toggleEdit = () => {
+  toggleEdit = (e) => {
+    e.preventDefault();
     this.setState({ editMode: !this.state.editMode })
   }
 
@@ -41,18 +47,17 @@ export default class DiscussionView extends Component {
                   <div className="disccont" dangerouslySetInnerHTML={{__html: this.state.com.comment}}></div>
                   { this.state.userLoggedin
                     ? (this.state.curUser.id === this.state.com.author.id || this.state.curUser.role === 'admin'
-                      ? <>
-                          <Button type="button" onClick={this.toggleEdit}>Edit</Button>
+                      ? <div className="righttxt">
+                          <a href="" onClick={this.toggleEdit} title="Edit Comment"><FontAwesomeIcon icon={faEdit} /></a>
                           &nbsp;
                           <DiscussionDelete baseURL={this.state.baseURL} endpt={this.state.endpt} id={this.state.com.id} ind={this.state.ind} addComment={this.state.addComment} />
-                        </>
+                        </div>
                       :<></>
                     )
                     : <></>
                   }
                 </>
             }
-
           </td>
         </tr>
       </>

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSave,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class DiscussionEdit extends Component {
   constructor(props) {
     super(props)
@@ -83,9 +89,11 @@ export default class DiscussionEdit extends Component {
                 <label htmlFor="comment"></label>
                 <textarea id="comment" name="comment" rows="3" cols="50" onChange={this.handleChange} value={this.state.comment} placeholder="comment..."></textarea>
                 <br/>
-                <Button type="submit" value="Save">Save</Button>
+                <div className="righttxt">
+                <a href="" onClick={this.handleDiscUpdate} title="Save"><FontAwesomeIcon icon={faSave} /></a>
                 &nbsp;
-                <Button type="button" onClick={this.state.toggleEdit}>Cancel</Button>
+                <a href="" onClick={this.state.toggleEdit} title="Discard Changes"><FontAwesomeIcon icon={faTrash} /></a>
+                </div>
               </form>
             : <h1>Unauthorized</h1>
           )

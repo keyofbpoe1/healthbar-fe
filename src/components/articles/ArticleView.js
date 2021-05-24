@@ -3,7 +3,12 @@ import ArticleDelete from '../articles/ArticleDelete.js'
 import DiscussionView from '../discussions/DiscussionView.js'
 import NewDiscussion from '../discussions/NewDiscussion.js'
 import { Link } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import { Button, Collapse } from 'react-bootstrap';
+
+// import {
+//   CSSTransition,
+//   TransitionGroup,
+// } from 'react-transition-group';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -14,6 +19,9 @@ import {
   faShoePrints,
   faSpa,
   faWalking,
+  faEdit,
+  faTrash,
+  faComments,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default class ArticleView extends Component {
@@ -31,6 +39,7 @@ export default class ArticleView extends Component {
       isloaded: false,
       discussions: [],
       commentLoad: false,
+      open: false,
     }
   }
 
@@ -122,13 +131,28 @@ export default class ArticleView extends Component {
     return <FontAwesomeIcon icon={retVal} style={{ fontSize: '50px' }} />;
   }
 
+   setOpen = () => {
+  //   // let opVal = window.document.getElementById(idVal).getAttribute('in');
+  //   // console.log(opVal);
+  //   // window.document.getElementById(idVal).setAttribute('in', !opVal);
+  //   this.setState({
+  //     open: true
+  //   });
+   }
+
   render () {
+    let open = false;
+    // setOpen = () => {
+    //
+    // }
     return (
-      <>
+      <div className="tab-content">
         { this.state.userLoggedin
           ? (this.state.curUser.id === this.state.article.author.id || this.state.curUser.role === 'admin'
             ? <>
-                <Link to={"/editarticle?id=" + this.state.article.id}><Button type="button">Edit</Button></Link>
+                <Link to={"/editarticle?id=" + this.state.article.id} title="Edit Entry">
+                  <FontAwesomeIcon icon={faEdit} />
+                </Link>
                 &nbsp;
                 <ArticleDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.article.id} setErrorMsg={this.setErrorMsg} />
               </>
@@ -146,22 +170,41 @@ export default class ArticleView extends Component {
             </article>
           </>
         }
-        <h4>Comments</h4>
-        {this.state.isloaded &&
-          <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
-        }
-        <table>
-          <tbody>
-            {this.state.commentLoad &&
-               this.state.discussions.map((comment, ind) => {
-                return (
-                  <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
-                )
-              })
-            }
-          </tbody>
-        </table>
-      </>
+
+        <div className="fullcomsdiv">
+              <a href=""
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (document.getElementById('commentsdiv').classList.contains('show')) {
+                    document.getElementById('commentsdiv').classList.remove('show');
+                  }
+                  else {
+                    document.getElementById('commentsdiv').classList.add('show');
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon={faComments} /> Comments
+              </a>
+              <Collapse in={open}>
+                <div id="commentsdiv">
+                  {this.state.isloaded &&
+                    <NewDiscussion baseURL={this.state.baseURL} article={this.state.article} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} addComment={this.addComment} />
+                  }
+                  <table className="disctab">
+                    <tbody>
+                      {this.state.commentLoad &&
+                         this.state.discussions.map((comment, ind) => {
+                          return (
+                            <DiscussionView com={comment} baseURL={this.state.baseURL} curUser={this.state.curUser} userLoggedin={this.state.userLoggedin} ind={ind} addComment={this.addComment} />
+                          )
+                        })
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </Collapse>
+            </div>
+      </div>
     )
   }
 }

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faPlusCircle,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class NewDiscussion extends Component {
   constructor(props) {
     super(props)
@@ -66,7 +72,8 @@ export default class NewDiscussion extends Component {
       .catch(error => console.log('error', error));
   }
 
-  clearComment = () => {
+  clearComment = (e) => {
+    e.preventDefault();
     this.setState({ comment: '' });
   }
 
@@ -74,15 +81,16 @@ export default class NewDiscussion extends Component {
     return (
       <>
       { this.state.userLoggedin
-        ? <form onSubmit={this.handleNewDisc}>
-            <h5>New Comment</h5>
+        ? <form onSubmit={this.handleNewDisc} style={{width: "fit-content"}}>
             <p className="rederror">{this.state.errorMsg}</p>
             <label htmlFor="comment"></label>
-            <textarea id="comment" name="comment" rows="3" cols="50" onChange={this.handleChange} value={this.state.comment} placeholder="comment..."></textarea>
+            <textarea id="comment" name="comment" rows="3" cols="50" onChange={this.handleChange} value={this.state.comment} placeholder="new comment..."></textarea>
             <br/>
-            <Button type="submit" value="Add">Add</Button>
+            <div className="righttxt">
+            <a href="" onClick={this.handleNewDisc} title="Add Comment"><FontAwesomeIcon icon={faPlusCircle} /></a>
             &nbsp;
-            <Button type="button" onClick={this.clearComment}>Cancel</Button>
+            <a href="" onClick={this.clearComment} title="discard Comment"><FontAwesomeIcon icon={faTrash} /></a>
+            </div>
           </form>
         : <></>
       }

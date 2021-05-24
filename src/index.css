@@ -96,22 +96,44 @@ body {
   vertical-align: middle;
 } */
 
+.tab-content, .fullcomsdiv {
+  padding: 1em 3em 1em 3em;
+}
+
 .artimg {
   max-height: 100px;
 }
 
 .artstable {
-  margin-left: 3em;
+  /* margin-left: 3em; */
 }
 
-.artstable tr {
+.artstable tr, .disctab tr {
   border-bottom: 1px solid gray;
 }
 
-.artstable td {
+.artstable td, .disctab td {
   padding: 1em;
 }
 
 .disccont {
   white-space: pre-line;
+}
+
+.fullcomsdiv .collapse {
+  width: fit-content;
+  padding-right: 3em;
+  max-height: 500px;
+  overflow-y: scroll;
+}
+
+.disctab {
+  background-color: rgba(0,0,0,.8);
+  border-radius: .25rem;
+  margin-top: 1em;
+  margin-left: 4em;
+}
+
+.righttxt {
+  text-align: right;
 }

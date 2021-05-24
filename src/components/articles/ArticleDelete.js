@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons'
+
 export default class ArticleDelete extends Component {
   constructor(props) {
     super(props)
@@ -14,7 +19,8 @@ export default class ArticleDelete extends Component {
     }
   }
 
-  onArtDelete = () => {
+  onArtDelete = (e) => {
+    e.preventDefault();
     let confDelete = window.confirm('Are you sure you want to delete this article?');
     if (confDelete) {
       let reqURL = this.state.baseURL + this.state.endpt + this.state.id;
@@ -43,7 +49,7 @@ export default class ArticleDelete extends Component {
 
   render () {
     return (
-      <Button type="button" onClick={this.onArtDelete}>Delete</Button>
+      <a href="" onClick={this.onArtDelete} title="Delete Entry"><FontAwesomeIcon icon={faTrash} /></a>
     )
   }
 }
