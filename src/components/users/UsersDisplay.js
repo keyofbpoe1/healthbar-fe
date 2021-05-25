@@ -4,29 +4,22 @@ import { Button } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faSearch,
-  faBurn,
-  faHeartbeat,
-  faRunning,
-  faDumbbell,
-  faShoePrints,
-  faSpa,
-  faWalking,
+  faUser,
   faAngleRight,
   faAngleLeft,
   faAngleDoubleRight,
   faAngleDoubleLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
-export default class ArticlesDisplay extends Component {
+export default class UsersDisplay extends Component {
   constructor(props) {
     super(props)
     this.state = {
       baseURL: this.props.baseURL,
       endpt: this.props.endpt,
       errorMsg: '',
-      articles: [],
-      artLength: 0,
+      users: [],
+      usersLength: 0,
       page: 1,
       limit: 10,
       totalPages: 0,
@@ -34,7 +27,7 @@ export default class ArticlesDisplay extends Component {
     }
   }
 
-  searchArticles = () => {
+  searchUsers = () => {
     // let urlParams = new URLSearchParams(window.location.search);
     // let queryParam = urlParams.get('query');
 
@@ -48,11 +41,11 @@ export default class ArticlesDisplay extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data)
-        let totPages = Math.ceil(parseInt(data.artlength) / parseInt(this.state.limit));
+        let totPages = Math.ceil(parseInt(data.userlength) / parseInt(this.state.limit));
         console.log(totPages);
         this.setState({
-          articles : data.data,
-          artLength: data.artlength,
+          users : data.data,
+          usersLength: data.userlength,
           totalPages: totPages,
         })
       })
@@ -60,7 +53,7 @@ export default class ArticlesDisplay extends Component {
   }
 
   componentDidMount(){
-    this.searchArticles();
+    this.searchUsers();
   }
 
   iterPage = (e) => {
@@ -83,59 +76,57 @@ export default class ArticlesDisplay extends Component {
         newPg = 1;
     }
     this.setState({ page: newPg }, () => {
-      this.searchArticles();
+      this.searchUsers();
     });
   }
 
-  dateTrim = (val) => {
-    let d = new Date(val);
-    return d.toDateString();
-  }
-
-  categoryIcon = (val) => {
-    let retVal = faBurn;
-    switch (val) {
-      case 'cardio':
-        retVal = faHeartbeat;
-        break;
-      case 'dance':
-        retVal = faShoePrints;
-        break;
-      case 'endurance':
-        retVal = faRunning;
-        break;
-      case 'flexibility':
-        retVal = faWalking;
-        break;
-      case 'recovery':
-        retVal = faSpa;
-        break;
-      case 'strength':
-        retVal = faBurn;
-        break;
-      case 'weight':
-        retVal = faDumbbell;
-        break;
-      default:
-        //nothing
-    }
-    return <FontAwesomeIcon icon={retVal} style={{ fontSize: '100px' }} />;
-  }
+  // dateTrim = (val) => {
+  //   let d = new Date(val);
+  //   return d.toDateString();
+  // }
+  //
+  // categoryIcon = (val) => {
+  //   let retVal = faBurn;
+  //   switch (val) {
+  //     case 'cardio':
+  //       retVal = faHeartbeat;
+  //       break;
+  //     case 'dance':
+  //       retVal = faShoePrints;
+  //       break;
+  //     case 'endurance':
+  //       retVal = faRunning;
+  //       break;
+  //     case 'flexibility':
+  //       retVal = faWalking;
+  //       break;
+  //     case 'recovery':
+  //       retVal = faSpa;
+  //       break;
+  //     case 'strength':
+  //       retVal = faBurn;
+  //       break;
+  //     case 'weight':
+  //       retVal = faDumbbell;
+  //       break;
+  //     default:
+  //       //nothing
+  //   }
+  //   return <FontAwesomeIcon icon={retVal} style={{ fontSize: '100px' }} />;
+  // }
 
   render () {
     return (
       <table className="artstable">
         <tbody>
-          { this.state.articles.map((entry, ind) => {
+          { this.state.users.map((user, ind) => {
             return (
               <tr>
-                <td><Link to={"/articles?id=" + entry.id}>{this.categoryIcon(entry.category)}</Link></td>
                 <td>
-                  <Link to={"/articles?id=" + entry.id}>{entry.title}</Link>
-                  <br/>
-                  <Link to={"/users?id=" + entry.author.id}>{entry.author.username}</Link>
-                  <br/>
-                  {this.dateTrim(entry.created_date)}
+                  <FontAwesomeIcon icon={faUser} />&nbsp;&nbsp;&nbsp;{user.role}
+                </td>
+                <td>
+                  <Link to={"/users?id=" + user.id}>{user.username}</Link>
                 </td>
               </tr>
             )

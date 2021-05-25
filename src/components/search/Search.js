@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ArticlesDisplay from '../articles/ArticlesDisplay.js'
+import UsersDisplay from '../users/UsersDisplay.js'
 import { Link } from "react-router-dom";
 
 import {
@@ -116,18 +117,25 @@ export default class UserView extends Component {
           }
         </Tab>
         <Tab eventKey="users" title="Users">
-          <ul>
-            { this.state.users.map((user, ind) => {
-              return (
-                <li key={'users-' + ind}>
-                  <Link to={"/users?id=" + user.id}>{user.username}</Link>
-                </li>
-              )
-            })
-            }
-          </ul>
+          {this.state.searchQuery &&
+            <UsersDisplay
+              baseURL={this.state.baseURL}
+              endpt={this.state.userEndpt + '/' + this.state.searchQuery}
+            />
+          }
         </Tab>
       </Tabs>
     )
   }
 }
+
+// <ul>
+//   { this.state.users.map((user, ind) => {
+//     return (
+//       <li key={'users-' + ind}>
+//         <Link to={"/users?id=" + user.id}>{user.username}</Link>
+//       </li>
+//     )
+//   })
+//   }
+// </ul>
