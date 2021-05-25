@@ -28,55 +28,55 @@ export default class UserView extends Component {
     }
   }
 
-  searchArticles = () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    let queryParam = urlParams.get('query');
-    let requestOptions = {
-      credentials: 'include',
-      method: 'GET',
-      redirect: 'follow'
-    };
-
-    fetch(this.state.baseURL +  this.state.artEndpt + queryParam + '/' + this.state.page + '/' + this.state.limit, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.setState({
-          articles : data.data,
-          artLength: data.artlength,
-        })
-      })
-      .catch(error => console.log('error', error));
-  }
-
-  searchUsers = () => {
-    let urlParams = new URLSearchParams(window.location.search);
-    let queryParam = urlParams.get('query');
-    // let page = 1;
-    // let limit = 1;
-    // if (urlParams.get('page')) {
-    //   page = urlParams.get('page');
-    // }
-    // if (urlParams.get('limit')) {
-    //   limit = urlParams.get('limit');
-    // }
-    let requestOptions = {
-      credentials: 'include',
-      method: 'GET',
-      redirect: 'follow'
-    };
-
-    fetch(this.state.baseURL +  this.state.userEndpt + queryParam + '/' + this.state.page + '/' + this.state.limit, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.setState({
-          users : data.data,
-          usersLength: data.userlength,
-        })
-      })
-      .catch(error => console.log('error', error));
-  }
+  // searchArticles = () => {
+  //   let urlParams = new URLSearchParams(window.location.search);
+  //   let queryParam = urlParams.get('query');
+  //   let requestOptions = {
+  //     credentials: 'include',
+  //     method: 'GET',
+  //     redirect: 'follow'
+  //   };
+  //
+  //   fetch(this.state.baseURL +  this.state.artEndpt + queryParam + '/' + this.state.page + '/' + this.state.limit, requestOptions)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       this.setState({
+  //         articles : data.data,
+  //         artLength: data.artlength,
+  //       })
+  //     })
+  //     .catch(error => console.log('error', error));
+  // }
+  //
+  // searchUsers = () => {
+  //   let urlParams = new URLSearchParams(window.location.search);
+  //   let queryParam = urlParams.get('query');
+  //   // let page = 1;
+  //   // let limit = 1;
+  //   // if (urlParams.get('page')) {
+  //   //   page = urlParams.get('page');
+  //   // }
+  //   // if (urlParams.get('limit')) {
+  //   //   limit = urlParams.get('limit');
+  //   // }
+  //   let requestOptions = {
+  //     credentials: 'include',
+  //     method: 'GET',
+  //     redirect: 'follow'
+  //   };
+  //
+  //   fetch(this.state.baseURL +  this.state.userEndpt + queryParam + '/' + this.state.page + '/' + this.state.limit, requestOptions)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       this.setState({
+  //         users : data.data,
+  //         usersLength: data.userlength,
+  //       })
+  //     })
+  //     .catch(error => console.log('error', error));
+  // }
 
   setSearch = () => {
     let urlParams = new URLSearchParams(window.location.search);
@@ -89,7 +89,7 @@ export default class UserView extends Component {
   componentDidMount(){
     this.setSearch();
     // this.searchArticles();
-    this.searchUsers();
+    // this.searchUsers();
   }
 
   setErrorMsg = (msg) => {
@@ -98,12 +98,12 @@ export default class UserView extends Component {
     });
   }
 
-  iterPage = () => {
-    this.setState({ page: this.state.page + 1  }, () => {
-      this.searchArticles();
-      this.searchUsers();
-    });
-  }
+  // iterPage = () => {
+  //   this.setState({ page: this.state.page + 1  }, () => {
+  //     this.searchArticles();
+  //     this.searchUsers();
+  //   });
+  // }
 
   render () {
     return (
