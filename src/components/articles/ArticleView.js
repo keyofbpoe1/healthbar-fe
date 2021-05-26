@@ -140,6 +140,25 @@ export default class ArticleView extends Component {
   //   });
    }
 
+   getProfPic = (uav) => {
+     let retVal = '/user-circle-solid.svg';
+     fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + uav, {
+       method: 'GET',
+     })
+     .then(response => response.blob())
+     .then(data => {
+       console.log(data);
+       console.log(data.type);
+       if (data.type !== 'text/html') {
+         retVal = URL.createObjectURL(data);
+         // return retVal;
+       }
+       window.document.getElementById('icImage').setAttribute('src', retVal);
+     })
+     .catch(error => console.log('error', error));
+     // return retVal;
+   }
+
   render () {
     let open = false;
     // setOpen = () => {
@@ -164,7 +183,12 @@ export default class ArticleView extends Component {
           <>
             <p className="rederror">{this.state.errorMsg}</p>
             <h3>{this.categoryIcon(this.state.article.category)}&nbsp;{this.state.article.title}</h3>
-            <p><Link to={"/users?id=" + this.state.article.author.id}>{this.state.article.author.username}</Link></p>
+            <p>
+            &nbsp;&nbsp;&nbsp;by:&nbsp;&nbsp;&nbsp;
+            <img id={"icImage"} className="icImage" src="/user-circle-solid.svg" onLoad={this.getProfPic(this.state.article.author.user_avatar)} alt="Avatar"/>
+            &nbsp;
+            <Link to={"/users?id=" + this.state.article.author.id}>{this.state.article.author.username}
+            </Link></p>
             <article>
             <div className="content" dangerouslySetInnerHTML={{__html: this.state.article.body}}></div>
             </article>

@@ -122,6 +122,25 @@ export default class ArticlesDisplay extends Component {
     return <FontAwesomeIcon icon={retVal} style={{ fontSize: '100px' }} />;
   }
 
+  getProfPic = (uav, ind) => {
+    let retVal = '/user-circle-solid.svg';
+    fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + uav, {
+      method: 'GET',
+    })
+    .then(response => response.blob())
+    .then(data => {
+      console.log(data);
+      console.log(data.type);
+      if (data.type !== 'text/html') {
+        retVal = URL.createObjectURL(data);
+        // return retVal;
+      }
+      window.document.getElementById('icImage-' + ind).setAttribute('src', retVal);
+    })
+    .catch(error => console.log('error', error));
+    // return retVal;
+  }
+
   render () {
     return (
       <table className="artstable">
@@ -131,8 +150,10 @@ export default class ArticlesDisplay extends Component {
               <tr>
                 <td><Link to={"/articles?id=" + entry.id}>{this.categoryIcon(entry.category)}</Link></td>
                 <td>
-                  <Link to={"/articles?id=" + entry.id}>{entry.title}</Link>
+                  <Link style={{fontWeight: 'bold'}} to={"/articles?id=" + entry.id}>{entry.title}</Link>
                   <br/>
+                  <img id={"icImage-" + ind} className="icImage" src="/user-circle-solid.svg" onLoad={this.getProfPic(entry.author.user_avatar, ind)} alt="Avatar"/>
+                  &nbsp;
                   <Link to={"/users?id=" + entry.author.id}>{entry.author.username}</Link>
                   <br/>
                   {this.dateTrim(entry.created_date)}

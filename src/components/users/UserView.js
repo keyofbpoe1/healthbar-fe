@@ -95,6 +95,7 @@ export default class UserView extends Component {
                     <tr>
                       <td>
                         <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
+                        &nbsp;&nbsp;&nbsp;
                       </td>
                       <td>
                         <Link to={"/useredit?id=" + this.state.user.id}><FontAwesomeIcon icon={faUserEdit} title="Edit Account" /></Link>
