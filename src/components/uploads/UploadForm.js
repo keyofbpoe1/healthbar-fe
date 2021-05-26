@@ -16,12 +16,56 @@ export default class UploadForm extends Component {
       baseURL: this.props.baseURL,
       endpt: '/api/v1/uploads',
       file: '',
+      imageURL: '',
       // username: '',
       // password: '',
       // checkLogin: this.props.checkLogin,
       // redirectFunc: this.props.redirectFunc,
       // errorMsg: '',
     }
+  }
+
+  handleUploadImage = (ev) => {
+    ev.preventDefault();
+
+    const data = new FormData();
+    data.append('file', this.uploadInput.files[0]);
+    data.append('filename', this.fileName.value);
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+
+    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+      // credentials: 'include',
+      // headers: myHeaders,
+      method: 'POST',
+      body: data,
+      // redirect: 'follow'
+    })
+    .then(response => response.blob())
+    .then(data => {
+      // Here's a list of repos!
+      console.log(data);
+      this.setState({ imageURL: URL.createObjectURL(data) });
+    });
+
+
+    // .then(response => {
+    //   const reader = response.body.getReader();
+    // });
+
+      // this.setState({ imageURL: response.body });
+      // then(response => response.blob())
+      //       .then(blob => {
+      //           this.setState({ src: URL.createObjectURL(blob) })
+      //       })
+    //   response.blob().then((body) => {
+    //     // console.log(body);
+    //     this.setState({ imageURL: URL.createObjectURL(blob) });
+    //     // this.setState({ imageURL: body.path });
+    //   });
+    // });
   }
 
   uploadHandler = (event) => {
@@ -34,6 +78,7 @@ export default class UploadForm extends Component {
        axios.post(url, data)
          .then((res) => {
            console.log(res);
+           this.setState({ imageURL: res.data.file });
            // this.setState({ photos: [res.data, ...this.state.photos] });
            // console.log(this.state);
          });
@@ -97,13 +142,29 @@ export default class UploadForm extends Component {
           <h3>Upload</h3>
           <p className="rederror">{this.state.errorMsg}</p>
 
-          <input type="file" id="file" name="file"onChange={this.uploadHandler}
+          <input type="file" id="file" name="file"onChange={this.handleUploadImage}
           value={this.state.file}/>
 
             <Button type="submit" value="Login">Upload</Button>
             &nbsp;
             <Link to="/"><Button type="button">Cancel</Button></Link>
         </form>
+        <img src={this.state.imageURL} alt="img" />
+
+        <form onSubmit={this.handleUploadImage}>
+        <div>
+          <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+        </div>
+        <div>
+          <input ref={(ref) => { this.fileName = ref; }} type="text" placeholder="Enter the desired name of file" />
+        </div>
+        <br />
+        <div>
+          <button>Upload</button>
+        </div>
+        <img src={this.state.imageURL} alt="img" />
+      </form>
+
       </div>
     )
   }
