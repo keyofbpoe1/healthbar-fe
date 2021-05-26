@@ -12,6 +12,7 @@ import ArticleView from './components/articles/ArticleView.js'
 import ArticleEdit from './components/articles/ArticleEdit.js'
 import ArticlesDisplay from './components/articles/ArticlesDisplay.js'
 import Search from './components/search/Search.js'
+import UploadForm from './components/uploads/UploadForm.js'
 
 import {
   BrowserRouter as Router,
@@ -151,7 +152,7 @@ export default class App extends Component {
   componentDidMount(){
     this.checkLogin();
     this.getNews();
-    this.getEntries();
+    // this.getEntries();
   }
 
   clearRedirect = () => {
@@ -329,6 +330,9 @@ export default class App extends Component {
             </Route>
             <Route path="/about">
               <h1>about</h1>
+            </Route>
+            <Route path="/upload">
+              <UploadForm baseURL={this.state.baseURL}/>
             </Route>
             <Route path="/">
               <Tabs defaultActiveKey="entries" id="uncontrolled-tab-healthbar">
