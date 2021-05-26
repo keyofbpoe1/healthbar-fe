@@ -45,7 +45,8 @@ export default class RegForm extends Component {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password,
-      bio: this.state.bio
+      bio: this.state.bio,
+      avatar: 'ddd',
     });
 
     let requestOptions = {

@@ -29,6 +29,7 @@ export default class UserView extends Component {
       errorMsg: '',
       articles: [],
       artsEndPt: this.props.artsEndPt,
+      avatar: '/user-circle-solid.svg',
     }
   }
 
@@ -48,6 +49,8 @@ export default class UserView extends Component {
         this.setState({
           user: data.data,
           articles : data.articles,
+        }, () => {
+          this.getProfPic()
         })
       })
       .catch(error => console.log('error', error));
@@ -63,6 +66,22 @@ export default class UserView extends Component {
     });
   }
 
+  getProfPic = () => {
+    fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.user_avatar, {
+      method: 'GET',
+    })
+    .then(response => response.blob())
+    .then(data => {
+      console.log(data);
+      console.log(data.type);
+      if (data.type !== 'text/html') {
+        this.setState({ avatar: URL.createObjectURL(data) });
+      }
+
+    })
+    .catch(error => console.log('error', error));
+  }
+
   render () {
     return (
       <Tabs defaultActiveKey="about" id="uncontrolled-tab-usertabs">
@@ -74,7 +93,9 @@ export default class UserView extends Component {
                 ? (this.state.curUser.id === this.state.user.id || this.state.curUser.role === 'admin'
                   ? <>
                     <tr>
-                      <td></td>
+                      <td>
+                        <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
+                      </td>
                       <td>
                         <Link to={"/useredit?id=" + this.state.user.id}><FontAwesomeIcon icon={faUserEdit} title="Edit Account" /></Link>
                         &nbsp;

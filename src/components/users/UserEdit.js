@@ -38,6 +38,8 @@ export default class UserEdit extends Component {
       user: {},
       errorMsg: '',
       role: '',
+      avatar: '',
+      // newAvatar: '',
     }
   }
 
@@ -60,9 +62,27 @@ export default class UserEdit extends Component {
           email: data.data.email,
           bio: data.data.bio,
           role: data.data.role,
+        }, () => {
+          this.getProfPic()
         })
       })
       .catch(error => console.log('error', error));
+  }
+
+  getProfPic = () => {
+    fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.user_avatar, {
+      method: 'GET',
+    })
+    .then(response => response.blob())
+    .then(data => {
+      console.log(data);
+      console.log(data.type);
+      if (data.type !== 'text/html') {
+        this.setState({ avatar: URL.createObjectURL(data) });
+      }
+
+    })
+    .catch(error => console.log('error', error));
   }
 
   componentDidMount(){
@@ -80,17 +100,31 @@ export default class UserEdit extends Component {
       errorMsg: '',
     });
 
+    // let avatar = 'null';
+    //
+    // if (this.state.newAvatar.length > 4) {
+    //   avatar = this.state.newAvatar;
+    // }
+
     let reqURL = this.state.baseURL + this.state.endpt + this.state.user.id;
 
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({
+    let reqObj = {
       username: this.state.username,
       email: this.state.email,
       bio: this.state.bio,
       role: this.state.role,
-    });
+    }
+
+    if (this.state.newAvatar) {
+      reqObj.user_avatar = this.state.newAvatar;
+    }
+
+    let raw = JSON.stringify(reqObj);
+    
+    console.log(raw);
 
     let requestOptions = {
       credentials: 'include',
@@ -124,19 +158,32 @@ export default class UserEdit extends Component {
   }
 
   handleImage = () => {
-    const data = new FormData();
-    data.append('file', this.uploadInput.files[0]);
-    data.append('filename', this.fileName.value);
 
-    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
-      method: 'POST',
-      body: data,
-    })
-    .then(response => response.blob())
-    .then(data => {
-      console.log(data);
-      // this.setState({ imageURL: URL.createObjectURL(data) });
-    });
+    const data = new FormData();
+    // let myFile = window.document.getElementById('outImage').src;
+    // data.append('file', myFile);
+    // data.append('filename', 'testfile');
+    if (this.uploadInput.files[0]) {
+      data.append('file', this.uploadInput.files[0]);
+      // data.append('filename', 'avatar/' + this.state.user.username + '-profpic');
+
+      fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.username + '-profpic', {
+        method: 'POST',
+        body: data,
+      })
+      .then(response => response.blob())
+      .then(data => {
+        console.log(data);
+        // this.setState({ imageURL: URL.createObjectURL(data) });
+        this.state.checkLogin();
+        this.state.redirectFunc('/users?id=' + this.state.user.id);
+      });
+    }
+    else {
+      console.log('nope');
+      this.state.checkLogin();
+      this.state.redirectFunc('/users?id=' + this.state.user.id);
+    }
   }
 
   imgChange = (evt) => {
@@ -144,6 +191,18 @@ export default class UserEdit extends Component {
         files = tgt.files;
 
     console.log(files[0].size);
+    console.log(files[0].name);
+    let fTypeArr = files[0].name.split(/\./);
+    let fType = fTypeArr[fTypeArr.length - 1];
+    console.log(fType);
+
+    console.log(this.state.user.username + '-profpic.' + fType);
+
+    this.setState({
+      newAvatar: this.state.user.username + '-profpic.' + fType,
+    });
+
+    // this.state.user.username + '-profpic.' + this.uploadInput.files[0].type;
 
     // FileReader support
     if (FileReader && files && files.length) {
@@ -171,28 +230,22 @@ export default class UserEdit extends Component {
                 <p className="rederror">{this.state.errorMsg}</p>
 
                 <div>
-                  <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
-                  <div>
-                  <label for="avatar">Avatar</label>
-                  </div>
-                  <FormControl
+
+
+                  <Form.File
+                    className="sminp"
+                    label="Avatar"
+                    custom
                     id="avatar"
                     ref={(ref) => { this.uploadInput = ref; }}
                     type="file"
                     accept="image/*"
                     onChange={this.imgChange}
                   />
-                  <div>
-                    <img id="outImage" className="outImage" src="/user-circle-solid.svg" alt="healthBar"/>
-                  </div>
+                </div>
 
-                  <Form.File
-                    className="sminp"
-                    id="custom-file"
-                    label="Avatar"
-                    custom
-                    onChange={this.imgChange}
-                  />
+                <div>
+                  <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
                 </div>
 
                 <InputGroup className="sminp">
@@ -234,9 +287,9 @@ export default class UserEdit extends Component {
 
 
                 <label htmlFor="bio"></label>
-                <br/>
-                <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!"></textarea>
-                <br/>
+                <div className="txtcont">
+                  <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!"></textarea>
+                </div>
                 { this.state.curUser.role === 'admin' &&
                   <>
                     <FormControl className="sminp" as="select" name="role" id="role" title="Role" onChange={this.handleChange} value={this.state.role} required>
@@ -262,3 +315,18 @@ export default class UserEdit extends Component {
     )
   }
 }
+
+// <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+// <div>
+// <label for="avatar">Avatar</label>
+// </div>
+// <FormControl
+//   id="avatar"
+//   ref={(ref) => { this.uploadInput = ref; }}
+//   type="file"
+//   accept="image/*"
+//   onChange={this.imgChange}
+// />
+// <div>
+//   <img id="outImage" className="outImage" src="/user-circle-solid.svg" alt="healthBar"/>
+// </div>

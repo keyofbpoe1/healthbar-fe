@@ -191,6 +191,7 @@ body {
 
 textarea {
   border-radius: .25rem;
+  width: 100%;
 }
 
 .outImage {
