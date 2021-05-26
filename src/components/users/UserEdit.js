@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
+import Cropper from 'react-easy-crop'
 import { Link } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import { Button, InputGroup, Form, FormControl } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faSave,
   faTrash,
+  faUser,
+  faKey,
 } from '@fortawesome/free-solid-svg-icons'
+
+// const Demo = () => {
+//   const [crop, setCrop] = useState({ x: 0, y: 0 })
+//   const [zoom, setZoom] = useState(1)
+//
+//   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+//     console.log(croppedArea, croppedAreaPixels)
+//   }, [])
+// }
 
 export default class UserEdit extends Component {
   constructor(props) {
@@ -103,11 +115,50 @@ export default class UserEdit extends Component {
           })
         }
         else {
-          this.state.checkLogin()
-          this.state.redirectFunc('/users?id=' + this.state.user.id)
+          this.handleImage()
+          // this.state.checkLogin()
+          // this.state.redirectFunc('/users?id=' + this.state.user.id)
         }
       })
       .catch(error => console.log('error', error));
+  }
+
+  handleImage = () => {
+    const data = new FormData();
+    data.append('file', this.uploadInput.files[0]);
+    data.append('filename', this.fileName.value);
+
+    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+      method: 'POST',
+      body: data,
+    })
+    .then(response => response.blob())
+    .then(data => {
+      console.log(data);
+      // this.setState({ imageURL: URL.createObjectURL(data) });
+    });
+  }
+
+  imgChange = (evt) => {
+    var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+
+    console.log(files[0].size);
+
+    // FileReader support
+    if (FileReader && files && files.length) {
+        var fr = new FileReader();
+        fr.onload = function () {
+            window.document.getElementById('outImage').src = fr.result;
+        }
+        fr.readAsDataURL(files[0]);
+    }
+
+    // Not supported
+    else {
+        // fallback -- perhaps submit the input to an iframe and temporarily store
+        // them on the server until the user's session ends.
+    }
   }
 
   render () {
@@ -118,31 +169,89 @@ export default class UserEdit extends Component {
             ? <form onSubmit={this.handleUsUpdate}>
                 <h3>Edit Profile</h3>
                 <p className="rederror">{this.state.errorMsg}</p>
-                <label htmlFor="username"></label>
-                <input type="text" id="username" name="username" onChange={this.handleChange} value={this.state.username} placeholder="username" required/>
-                <br/>
-                <label htmlFor="email"></label>
-                <input type="email" id="email" name="email" onChange={this.handleChange} value={this.state.email} placeholder="email address" required/>
-                <br/>
+
+                <div>
+                  <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+                  <div>
+                  <label for="avatar">Avatar</label>
+                  </div>
+                  <FormControl
+                    id="avatar"
+                    ref={(ref) => { this.uploadInput = ref; }}
+                    type="file"
+                    accept="image/*"
+                    onChange={this.imgChange}
+                  />
+                  <div>
+                    <img id="outImage" className="outImage" src="/user-circle-solid.svg" alt="healthBar"/>
+                  </div>
+
+                  <Form.File
+                    className="sminp"
+                    id="custom-file"
+                    label="Avatar"
+                    custom
+                    onChange={this.imgChange}
+                  />
+                </div>
+
+                <InputGroup className="sminp">
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>
+                      <FontAwesomeIcon icon={faUser} />
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormControl
+                    type="text"
+                    id="username"
+                    name="username"
+                    onChange={this.handleChange}
+                    value={this.state.username}
+                    placeholder="Username"
+                    title="Username"
+                    required
+                  />
+                </InputGroup>
+
+                <InputGroup className="sminp">
+                  <InputGroup.Prepend>
+                    <InputGroup.Text style={{fontWeight: "bold"}}>
+                      @
+                    </InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <FormControl
+                    type="email"
+                    id="email"
+                    name="email"
+                    onChange={this.handleChange}
+                    value={this.state.email}
+                    placeholder="Email Address"
+                    title="Email Address"
+                    required
+                  />
+                </InputGroup>
+
+
+
                 <label htmlFor="bio"></label>
+                <br/>
                 <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!"></textarea>
                 <br/>
                 { this.state.curUser.role === 'admin' &&
                   <>
-                    <label htmlFor="role"></label>
-                    <select name="role" id="role" onChange={this.handleChange} value={this.state.role} required>
+                    <FormControl className="sminp" as="select" name="role" id="role" title="Role" onChange={this.handleChange} value={this.state.role} required>
                       <option disabled value=""> -- Select -- </option>
                       <option value="user">User</option>
                       <option value="professional">Professional</option>
                       <option value="admin">Admin</option>
-                    </select>
+                    </FormControl>
                     <br/>
                   </>
                 }
                 <div className="righttxt">
-                  <a href="" onClick={this.handleUsUpdate} title="Save"><FontAwesomeIcon icon={faSave} /></a>
+                  <a href="" onClick={this.handleUsUpdate} title="Save Changes"><FontAwesomeIcon icon={faSave} style={{ fontSize: '25px' }} /></a>
                   &nbsp;
-                  <Link to={"/users?id=" + this.state.user.id}><FontAwesomeIcon icon={faTrash} /></Link>
+                  <Link to={"/users?id=" + this.state.user.id} title="Discard Changes"><FontAwesomeIcon icon={faTrash} style={{ fontSize: '25px' }} /></Link>
                 </div>
               </form>
             : <h1>Unauthorized</h1>
