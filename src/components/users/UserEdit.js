@@ -38,7 +38,7 @@ export default class UserEdit extends Component {
       user: {},
       errorMsg: '',
       role: '',
-      avatar: '',
+      avatar: '/user-circle-solid.svg',
       // newAvatar: '',
     }
   }
@@ -123,7 +123,7 @@ export default class UserEdit extends Component {
     }
 
     let raw = JSON.stringify(reqObj);
-    
+
     console.log(raw);
 
     let requestOptions = {

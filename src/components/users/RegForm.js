@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Button, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, InputGroup, Form, FormControl } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -22,6 +22,7 @@ export default class RegForm extends Component {
       checkLogin: this.props.checkLogin,
       redirectFunc: this.props.redirectFunc,
       errorMsg: '',
+      avatar: '/user-circle-solid.svg',
     }
   }
 
@@ -41,13 +42,19 @@ export default class RegForm extends Component {
     let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({
+    let reqObj = {
       username: this.state.username,
       email: this.state.email,
       password: this.state.password,
       bio: this.state.bio,
-      avatar: 'ddd',
-    });
+      user_avatar: 'null',
+    }
+
+    if (this.state.newAvatar) {
+      reqObj.user_avatar = this.state.newAvatar;
+    }
+
+    let raw = JSON.stringify(reqObj);
 
     let requestOptions = {
       credentials: 'include',
@@ -61,23 +68,100 @@ export default class RegForm extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        this.setState({
-          username: '',
-          email: '',
-          password: '',
-          bio: ''
-        })
+        // this.setState({
+        //   // username: '',
+        //   // email: '',
+        //   password: '',
+        //   // bio: ''
+        // })
         if (data.status.code === 401) {
           this.setState({
             errorMsg: data.status.message,
           })
         }
         else {
-          this.state.checkLogin()
-          this.state.redirectFunc('/')
+          this.handleImage()
+          // this.state.checkLogin()
+          // this.state.redirectFunc('/')
         }
       })
       .catch(error => console.log('error', error));
+  }
+
+  handleImage = () => {
+
+    const data = new FormData();
+    if (this.uploadInput.files[0]) {
+      data.append('file', this.uploadInput.files[0]);
+
+      fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.username + '-profpic', {
+        credentials: 'include',
+        method: 'POST',
+        body: data,
+        redirect: 'follow',
+      })
+      .then(response => response.blob())
+      .then(data => {
+        console.log(data);
+        this.setState({
+          username: '',
+          email: '',
+          password: '',
+          bio: ''
+        }, () => {
+          this.state.checkLogin();
+          this.state.redirectFunc('/');
+        })
+
+      });
+    }
+    else {
+      console.log('nope');
+      this.setState({
+        username: '',
+        email: '',
+        password: '',
+        bio: ''
+      }, () => {
+        this.state.checkLogin();
+        this.state.redirectFunc('/');
+      })
+      
+    }
+  }
+
+  imgChange = (evt) => {
+    var tgt = evt.target || window.event.srcElement,
+        files = tgt.files;
+
+    console.log(files[0].size);
+    console.log(files[0].name);
+    let fTypeArr = files[0].name.split(/\./);
+    let fType = fTypeArr[fTypeArr.length - 1];
+    console.log(fType);
+
+    console.log(this.state.username + '-profpic.' + fType);
+
+    this.setState({
+      newAvatar: this.state.username + '-profpic.' + fType,
+    });
+
+    // this.state.user.username + '-profpic.' + this.uploadInput.files[0].type;
+
+    // FileReader support
+    if (FileReader && files && files.length) {
+        var fr = new FileReader();
+        fr.onload = function () {
+            window.document.getElementById('outImage').src = fr.result;
+        }
+        fr.readAsDataURL(files[0]);
+    }
+
+    // Not supported
+    else {
+        // fallback -- perhaps submit the input to an iframe and temporarily store
+        // them on the server until the user's session ends.
+    }
   }
 
   render () {
@@ -161,6 +245,23 @@ export default class RegForm extends Component {
             />
           </InputGroup>
 
+          <div>
+            <Form.File
+              className="sminp"
+              label="Avatar"
+              custom
+              id="avatar"
+              ref={(ref) => { this.uploadInput = ref; }}
+              type="file"
+              accept="image/*"
+              onChange={this.imgChange}
+            />
+          </div>
+
+          <div>
+            <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
+          </div>
+          <br/>
           <textarea id="bio" name="bio" rows="8" cols="80" onChange={this.handleChange} value={this.state.bio} placeholder="Tell us about yourself!" title="Tell us about yourself!"></textarea>
           <br/><br/>
             <Button type="submit" value="Register">Register</Button>
