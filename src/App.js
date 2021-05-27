@@ -12,7 +12,7 @@ import ArticleView from './components/articles/ArticleView.js'
 import ArticleEdit from './components/articles/ArticleEdit.js'
 import ArticlesDisplay from './components/articles/ArticlesDisplay.js'
 import Search from './components/search/Search.js'
-import UploadForm from './components/uploads/UploadForm.js'
+import CropForm from './components/uploads/CropForm.js'
 
 import {
   BrowserRouter as Router,
@@ -332,7 +332,7 @@ export default class App extends Component {
               <h1>about</h1>
             </Route>
             <Route path="/upload">
-              <UploadForm baseURL={this.state.baseURL}/>
+              <CropForm />
             </Route>
             <Route path="/">
               <Tabs defaultActiveKey="entries" id="uncontrolled-tab-healthbar">

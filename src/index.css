@@ -143,25 +143,25 @@ body {
 }
 
 /* width */
-::-webkit-scrollbar {
+.commentscroll::-webkit-scrollbar {
   width: 10px;
   border-radius: .25rem;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+.commentscroll::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: .25rem;
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+.commentscroll::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: .25rem;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.commentscroll::-webkit-scrollbar-thumb:hover {
   background: #555;
   border-radius: .25rem;
 }
@@ -204,4 +204,14 @@ textarea {
   width: 2em;
   height: 2em;
   border-radius: 25%;
+}
+
+/* [class*="reactEasyCrop"] {
+  height: 200px;
+  position: inherit !important;
+} */
+
+.crop-container {
+  position: relative;
+  height: 500px;
 }

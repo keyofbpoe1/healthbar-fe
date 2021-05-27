@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Cropper from 'react-easy-crop'
+// import Cropper from 'react-easy-crop'
+import CropForm from '../uploads/CropForm.js'
 import { Link } from "react-router-dom";
 import { Button, InputGroup, Form, FormControl } from 'react-bootstrap';
 
@@ -9,6 +10,7 @@ import {
   faTrash,
   faUser,
   faKey,
+  faCrop,
 } from '@fortawesome/free-solid-svg-icons'
 
 // const Demo = () => {
@@ -39,6 +41,8 @@ export default class UserEdit extends Component {
       errorMsg: '',
       role: '',
       avatar: '/user-circle-solid.svg',
+      custimg: false,
+      showCropper: false,
       // newAvatar: '',
     }
   }
@@ -78,7 +82,10 @@ export default class UserEdit extends Component {
       console.log(data);
       console.log(data.type);
       if (data.type !== 'text/html') {
-        this.setState({ avatar: URL.createObjectURL(data) });
+        this.setState({
+          avatar: URL.createObjectURL(data),
+          custimg: true,
+        });
       }
 
     })
@@ -157,14 +164,91 @@ export default class UserEdit extends Component {
       .catch(error => console.log('error', error));
   }
 
+  blobToFile = (theBlob, fileName) => {
+      //A Blob() is almost a File() - it's just missing the two properties below which we will add
+      theBlob.lastModifiedDate = new Date();
+      theBlob.name = fileName;
+      return theBlob;
+  }
   handleImage = () => {
 
+    //get image blob
+    fetch(window.document.getElementById('outImage').src, {
+      method: 'GET',
+    })
+    .then(response => response.blob())
+    .then(data => {
+      console.log(data);
+      let myFile = this.blobToFile(data, 'testname.png');
+      this.uplImg(myFile);
+
+      // const data = new FormData();
+      //
+      // if (this.state.custimg) {
+      //   data.append('file', myFile);
+      //
+      //   fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.username + '-profpic', {
+      //     method: 'POST',
+      //     body: data,
+      //   })
+      //   .then(response => response.blob())
+      //   .then(data => {
+      //     console.log(data);
+      //     // this.setState({ imageURL: URL.createObjectURL(data) });
+      //     this.state.checkLogin();
+      //     this.state.redirectFunc('/users?id=' + this.state.user.id);
+      //   });
+      // }
+      // else {
+      //   console.log('nope');
+      //   this.state.checkLogin();
+      //   this.state.redirectFunc('/users?id=' + this.state.user.id);
+      // }
+
+    });
+
+    // const data = new FormData();
+    //
+    // let myFile = this.blobToFile(this.state.objAv, 'testname');
+    //
+    // // if (this.uploadInput.files[0]) {
+    // //   data.append('file', this.uploadInput.files[0]);
+    //
+    // if (this.state.custimg) {
+    //   data.append('file', myFile);
+    //
+    //   // data.append('filename', 'avatar/' + this.state.user.username + '-profpic');
+    //
+    //   fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.username + '-profpic', {
+    //     method: 'POST',
+    //     body: data,
+    //   })
+    //   .then(response => response.blob())
+    //   .then(data => {
+    //     console.log(data);
+    //     // this.setState({ imageURL: URL.createObjectURL(data) });
+    //     this.state.checkLogin();
+    //     this.state.redirectFunc('/users?id=' + this.state.user.id);
+    //   });
+    // }
+    // else {
+    //   console.log('nope');
+    //   this.state.checkLogin();
+    //   this.state.redirectFunc('/users?id=' + this.state.user.id);
+    // }
+  }
+
+  uplImg = (myFile) => {
     const data = new FormData();
-    // let myFile = window.document.getElementById('outImage').src;
-    // data.append('file', myFile);
-    // data.append('filename', 'testfile');
-    if (this.uploadInput.files[0]) {
-      data.append('file', this.uploadInput.files[0]);
+
+    // let myFile = this.blobToFile(this.state.objAv, 'testname');
+
+    // if (this.uploadInput.files[0]) {
+    //   data.append('file', this.uploadInput.files[0]);
+
+    if (this.state.custimg) {
+      data.append('file', myFile);
+
       // data.append('filename', 'avatar/' + this.state.user.username + '-profpic');
 
       fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.username + '-profpic', {
@@ -190,25 +274,22 @@ export default class UserEdit extends Component {
     var tgt = evt.target || window.event.srcElement,
         files = tgt.files;
 
-    console.log(files[0].size);
     console.log(files[0].name);
     let fTypeArr = files[0].name.split(/\./);
     let fType = fTypeArr[fTypeArr.length - 1];
-    console.log(fType);
 
-    console.log(this.state.user.username + '-profpic.' + fType);
-
-    this.setState({
-      newAvatar: this.state.user.username + '-profpic.' + fType,
-    });
-
-    // this.state.user.username + '-profpic.' + this.uploadInput.files[0].type;
+    let newName = this.state.user.username + '-profpic.' + fType;
 
     // FileReader support
     if (FileReader && files && files.length) {
         var fr = new FileReader();
-        fr.onload = function () {
-            window.document.getElementById('outImage').src = fr.result;
+        fr.onload = () => {
+            // window.document.getElementById('outImage').src = fr.result;
+            this.setState({
+              avatar: fr.result,
+              newAvatar: newName,
+              custimg: true,
+            });
         }
         fr.readAsDataURL(files[0]);
     }
@@ -218,6 +299,20 @@ export default class UserEdit extends Component {
         // fallback -- perhaps submit the input to an iframe and temporarily store
         // them on the server until the user's session ends.
     }
+  }
+
+  toggleCrop = () => {
+    this.setState({
+      showCropper: !this.state.showCropper,
+    });
+  }
+
+  setCroppedImg = (img) => {
+    this.setState({
+      avatar: img,
+      objAv: img,
+      custimg: true,
+    });
   }
 
   render () {
@@ -246,7 +341,14 @@ export default class UserEdit extends Component {
 
                 <div>
                   <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
+                  <FontAwesomeIcon icon={faCrop} onClick={this.toggleCrop}/>
+                  &nbsp;
+                  <FontAwesomeIcon icon={faTrash} />
                 </div>
+
+                {this.state.showCropper &&
+                  <CropForm img={this.state.avatar} setCroppedImg={this.setCroppedImg} toggleCrop={this.toggleCrop} />
+                }
 
                 <InputGroup className="sminp">
                   <InputGroup.Prepend>
