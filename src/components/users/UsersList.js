@@ -16,50 +16,23 @@ export default class UsersList extends Component {
     }
   }
 
-  // blobToFile = (theBlob, fileName) => {
-  //     //A Blob() is almost a File() - it's just missing the two properties below which we will add
-  //     theBlob.lastModifiedDate = new Date();
-  //     theBlob.name = fileName;
-  //     console.log(theBlob);
-  //     return theBlob;
-  // }
-
   getProfPic = () => {
 
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append('folder', 'avatar/');
-    myHeaders.append('fname', this.state.user.user_avatar);
-
-    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+    fetch(this.state.baseURL + '/api/v1/uploads/upload/avatar/' + this.state.user.user_avatar, {
       credentials: 'include',
       method: 'GET',
-      headers: myHeaders,
       redirect: 'follow',
     })
     .then(response => response.blob())
     .then(data => {
       console.log(data);
         if (data.type !== 'text/html') {
-        // let myFile = this.blobToFile(data, this.state.user.user_avatar);
-        // let myUrl = URL.createObjectURL(myFile);
         this.setState({
           avatar: URL.createObjectURL(data),
         });
       }
     })
     .catch(error => console.log('error', error));
-
-    // .then(data => {
-    //   console.log(data);
-    //   console.log(data.type);
-    //   if (data.type !== 'text/html') {
-    //     this.setState({
-    //       avatar: URL.createObjectURL(data),
-    //     });
-    //   }
-    // })
-    // .catch(error => console.log('error', error));
 
   }
 

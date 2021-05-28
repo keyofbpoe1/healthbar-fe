@@ -64,27 +64,26 @@ export default class UsersDisplay extends Component {
       myHeaders.append('folder', 'avatar/');
       myHeaders.append('fname', user.user_avatar);
 
-      fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+      fetch(this.state.baseURL + '/api/v1/uploads/upload/avatar/' + user.user_avatar, {
         credentials: 'include',
         method: 'GET',
-        headers: myHeaders,
+        // headers: myHeaders,
         redirect: 'follow',
       })
       .then(response => response.blob())
       .then(data => {
         console.log(data);
-        let newPic = '/user-circle-solid.svg';
-        let copyPics = [...this.state.picsarr];
-          if (data.type !== 'text/html') {
-            newPic = URL.createObjectURL(data);
-          }
-          copyPics.push(newPic);
-          this.setState({ picsarr: copyPics })
+        // let newPic = '/user-circle-solid.svg';
+        // let copyPics = [...this.state.picsarr];
+        //   if (data.type !== 'text/html') {
+        //     newPic = URL.createObjectURL(data);
+        //   }
+        //   copyPics.push(newPic);
+        //   window.alert(newPic)
+        //   this.setState({ picsarr: copyPics })
       })
       .catch(error => console.log('error', error));
     });
-
-
 
   }
 
@@ -195,6 +194,13 @@ export default class UsersDisplay extends Component {
 
           { this.state.users.map((user, ind) => {
             return (
+              <UsersList baseURL={this.state.baseURL} user={user} />
+            )
+          })
+          }
+
+          {/* this.state.users.map((user, ind) => {
+            return (
               <tr>
                 <td>
                   <FontAwesomeIcon icon={faUser} />&nbsp;&nbsp;&nbsp;{user.role}
@@ -202,14 +208,14 @@ export default class UsersDisplay extends Component {
                 <td>
                   {this.state.picsarr[ind] &&
                     <img id={"icUsImage-" + ind} className="icImage" src={this.state.picsarr[ind]} alt="Avatar"/>
-                  }            
+                  }
                   &nbsp;
                   <Link to={"/users?id=" + user.id}>{user.username}</Link>
                 </td>
               </tr>
             )
           })
-          }
+          */}
 
           {this.state.page !== 1 &&
             <>
