@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UsersList from '../users/UsersList.js'
 import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 
@@ -24,6 +25,7 @@ export default class UsersDisplay extends Component {
       limit: 10,
       totalPages: 0,
       searchTerm: '',
+      picsarr: [],
     }
   }
 
@@ -47,9 +49,43 @@ export default class UsersDisplay extends Component {
           users : data.data,
           usersLength: data.userlength,
           totalPages: totPages,
+        }, () => {
+          this.getProfPics()
         })
       })
       .catch(error => console.log('error', error));
+  }
+
+  getProfPics = () => {
+
+    this.state.users.forEach((user, i) => {
+      let myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append('folder', 'avatar/');
+      myHeaders.append('fname', user.user_avatar);
+
+      fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+        credentials: 'include',
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      })
+      .then(response => response.blob())
+      .then(data => {
+        console.log(data);
+        let newPic = '/user-circle-solid.svg';
+        let copyPics = [...this.state.picsarr];
+          if (data.type !== 'text/html') {
+            newPic = URL.createObjectURL(data);
+          }
+          copyPics.push(newPic);
+          this.setState({ picsarr: copyPics })
+      })
+      .catch(error => console.log('error', error));
+    });
+
+
+
   }
 
   componentDidMount(){
@@ -117,45 +153,46 @@ export default class UsersDisplay extends Component {
 
 
 
-  getvals = (uav) => {
-
-    // let retVal = '/user-circle-solid.svg';
-
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append('folder', 'avatar/');
-    myHeaders.append('fname', uav);
-
-    return fetch(this.state.baseURL + '/api/v1/uploads/upload', {
-      credentials: 'include',
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    })
-    .then(response => response.blob())
-    .then(data => {
-      console.log(data);
-      console.log(data.type);
-      if (data.type !== 'text/html') {
-        return URL.createObjectURL(data);
-      }
-      else {
-        return '/user-circle-solid.svg'
-      }
-      // window.document.getElementById('icUsImage-' + ind).setAttribute('src', retVal);
-    })
-    .catch(error => console.log('error', error));
-
-  }
-
-  getProfPic = (uav, ind) => {
-    this.getvals(uav).then(response => console.log(response));
-  }
+  // getvals = (uav) => {
+  //
+  //   // let retVal = '/user-circle-solid.svg';
+  //
+  //   let myHeaders = new Headers();
+  //   myHeaders.append("Content-Type", "application/json");
+  //   myHeaders.append('folder', 'avatar/');
+  //   myHeaders.append('fname', uav);
+  //
+  //   return fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+  //     credentials: 'include',
+  //     method: 'GET',
+  //     headers: myHeaders,
+  //     redirect: 'follow',
+  //   })
+  //   .then(response => response.blob())
+  //   .then(data => {
+  //     console.log(data);
+  //     console.log(data.type);
+  //     if (data.type !== 'text/html') {
+  //       return URL.createObjectURL(data);
+  //     }
+  //     else {
+  //       return '/user-circle-solid.svg'
+  //     }
+  //     // window.document.getElementById('icUsImage-' + ind).setAttribute('src', retVal);
+  //   })
+  //   .catch(error => console.log('error', error));
+  //
+  // }
+  //
+  // getProfPic = (uav, ind) => {
+  //   this.getvals(uav).then(response => console.log(response));
+  // }
 
   render () {
     return (
       <table className="artstable">
         <tbody>
+
           { this.state.users.map((user, ind) => {
             return (
               <tr>
@@ -163,7 +200,9 @@ export default class UsersDisplay extends Component {
                   <FontAwesomeIcon icon={faUser} />&nbsp;&nbsp;&nbsp;{user.role}
                 </td>
                 <td>
-                  <img id={"icUsImage-" + ind} className="icImage" src={this.getProfPic(user.user_avatar, ind)} alt="Avatar"/>
+                  {this.state.picsarr[ind] &&
+                    <img id={"icUsImage-" + ind} className="icImage" src={this.state.picsarr[ind]} alt="Avatar"/>
+                  }            
                   &nbsp;
                   <Link to={"/users?id=" + user.id}>{user.username}</Link>
                 </td>
@@ -171,6 +210,7 @@ export default class UsersDisplay extends Component {
             )
           })
           }
+
           {this.state.page !== 1 &&
             <>
               <a id="firstpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleDoubleLeft} /></a>
@@ -191,3 +231,21 @@ export default class UsersDisplay extends Component {
     )
   }
 }
+
+// <tr>
+//   <td>
+//     <FontAwesomeIcon icon={faUser} />&nbsp;&nbsp;&nbsp;{user.role}
+//   </td>
+//   <td>
+//     <img id={"icUsImage-" + ind} className="icImage" src={this.getProfPic(user.user_avatar, ind)} alt="Avatar"/>
+//     &nbsp;
+//     <Link to={"/users?id=" + user.id}>{user.username}</Link>
+//   </td>
+// </tr>
+
+// { this.state.users.map((user, ind) => {
+//   return (
+//     <UsersList baseURL={this.state.baseURL} user={user} />
+//   )
+// })
+// }
