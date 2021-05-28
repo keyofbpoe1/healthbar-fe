@@ -123,9 +123,19 @@ export default class ArticlesDisplay extends Component {
   }
 
   getProfPic = (uav, ind) => {
+
     let retVal = '/user-circle-solid.svg';
-    fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + uav, {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('folder', 'avatar/');
+    myHeaders.append('fname', uav);
+
+    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+      credentials: 'include',
       method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
     })
     .then(response => response.blob())
     .then(data => {
@@ -133,12 +143,11 @@ export default class ArticlesDisplay extends Component {
       console.log(data.type);
       if (data.type !== 'text/html') {
         retVal = URL.createObjectURL(data);
-        // return retVal;
       }
       window.document.getElementById('icImage-' + ind).setAttribute('src', retVal);
     })
     .catch(error => console.log('error', error));
-    // return retVal;
+    
   }
 
   render () {

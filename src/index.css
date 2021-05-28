@@ -186,7 +186,7 @@ body {
 }
 
 .regdiv .sminp {
-  margin: 5px auto 5px auto;
+  /* margin: 5px auto 5px auto; */
 }
 
 textarea {
@@ -198,6 +198,7 @@ textarea {
   width: 7em;
   height: 7em;
   border-radius: 25%;
+  vertical-align: text-bottom;
 }
 
 .icImage {
@@ -214,4 +215,18 @@ textarea {
 .crop-container {
   position: relative;
   height: 500px;
+  /* width: 500px; */
+}
+
+.custom-file {
+  margin-bottom: 5px;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.leftdiv {
+  text-align: left;
 }

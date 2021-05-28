@@ -67,19 +67,46 @@ export default class UserView extends Component {
   }
 
   getProfPic = () => {
-    fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.user_avatar, {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('folder', 'avatar/');
+    myHeaders.append('fname', this.state.user.user_avatar);
+
+    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+      credentials: 'include',
       method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
     })
     .then(response => response.blob())
     .then(data => {
       console.log(data);
       console.log(data.type);
       if (data.type !== 'text/html') {
-        this.setState({ avatar: URL.createObjectURL(data) });
+        this.setState({
+          avatar: URL.createObjectURL(data),
+        });
       }
 
     })
     .catch(error => console.log('error', error));
+
+
+
+    // fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.user_avatar, {
+    //   method: 'GET',
+    // })
+    // .then(response => response.blob())
+    // .then(data => {
+    //   console.log(data);
+    //   console.log(data.type);
+    //   if (data.type !== 'text/html') {
+    //     this.setState({ avatar: URL.createObjectURL(data) });
+    //   }
+    //
+    // })
+    // .catch(error => console.log('error', error));
   }
 
   render () {
@@ -97,7 +124,7 @@ export default class UserView extends Component {
                         <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
                         &nbsp;&nbsp;&nbsp;
                       </td>
-                      <td>
+                      <td style={{verticalAlign: "bottom"}}>
                         <Link to={"/useredit?id=" + this.state.user.id}><FontAwesomeIcon icon={faUserEdit} title="Edit Account" /></Link>
                         &nbsp;
                         <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} setErrorMsg={this.setErrorMsg} />

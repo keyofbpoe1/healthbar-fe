@@ -43,7 +43,8 @@ export default class UserEdit extends Component {
       avatar: '/user-circle-solid.svg',
       custimg: false,
       showCropper: false,
-      // newAvatar: '',
+      cropConts: false,
+      // newAvatar: 'null',
     }
   }
 
@@ -74,8 +75,17 @@ export default class UserEdit extends Component {
   }
 
   getProfPic = () => {
-    fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.user_avatar, {
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('folder', 'avatar/');
+    myHeaders.append('fname', this.state.user.user_avatar);
+
+    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+      credentials: 'include',
       method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
     })
     .then(response => response.blob())
     .then(data => {
@@ -84,7 +94,7 @@ export default class UserEdit extends Component {
       if (data.type !== 'text/html') {
         this.setState({
           avatar: URL.createObjectURL(data),
-          custimg: true,
+          cropConts: true,
         });
       }
 
@@ -106,12 +116,6 @@ export default class UserEdit extends Component {
     this.setState({
       errorMsg: '',
     });
-
-    // let avatar = 'null';
-    //
-    // if (this.state.newAvatar.length > 4) {
-    //   avatar = this.state.newAvatar;
-    // }
 
     let reqURL = this.state.baseURL + this.state.endpt + this.state.user.id;
 
@@ -156,9 +160,20 @@ export default class UserEdit extends Component {
           })
         }
         else {
-          this.handleImage()
-          // this.state.checkLogin()
-          // this.state.redirectFunc('/users?id=' + this.state.user.id)
+          if (this.state.custimg) {
+            this.handleImage()
+          }
+          else {
+            this.setState({
+              avatar: '/user-circle-solid.svg',
+              custimg: false,
+              showCropper: false,
+              cropConts: false,
+            }, () => {
+              this.state.checkLogin();
+              this.state.redirectFunc('/users?id=' + this.state.user.id);
+            })
+          }
         }
       })
       .catch(error => console.log('error', error));
@@ -170,104 +185,50 @@ export default class UserEdit extends Component {
       theBlob.name = fileName;
       return theBlob;
   }
+
   handleImage = () => {
 
     //get image blob
     fetch(window.document.getElementById('outImage').src, {
+      credentials: 'include',
       method: 'GET',
+      redirect: 'follow',
     })
     .then(response => response.blob())
     .then(data => {
       console.log(data);
-      let myFile = this.blobToFile(data, 'testname.png');
+      let myFile = this.blobToFile(data, this.state.newAvatar);
       this.uplImg(myFile);
-
-      // const data = new FormData();
-      //
-      // if (this.state.custimg) {
-      //   data.append('file', myFile);
-      //
-      //   fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.username + '-profpic', {
-      //     method: 'POST',
-      //     body: data,
-      //   })
-      //   .then(response => response.blob())
-      //   .then(data => {
-      //     console.log(data);
-      //     // this.setState({ imageURL: URL.createObjectURL(data) });
-      //     this.state.checkLogin();
-      //     this.state.redirectFunc('/users?id=' + this.state.user.id);
-      //   });
-      // }
-      // else {
-      //   console.log('nope');
-      //   this.state.checkLogin();
-      //   this.state.redirectFunc('/users?id=' + this.state.user.id);
-      // }
-
     });
-
-    // const data = new FormData();
-    //
-    // let myFile = this.blobToFile(this.state.objAv, 'testname');
-    //
-    // // if (this.uploadInput.files[0]) {
-    // //   data.append('file', this.uploadInput.files[0]);
-    //
-    // if (this.state.custimg) {
-    //   data.append('file', myFile);
-    //
-    //   // data.append('filename', 'avatar/' + this.state.user.username + '-profpic');
-    //
-    //   fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.username + '-profpic', {
-    //     method: 'POST',
-    //     body: data,
-    //   })
-    //   .then(response => response.blob())
-    //   .then(data => {
-    //     console.log(data);
-    //     // this.setState({ imageURL: URL.createObjectURL(data) });
-    //     this.state.checkLogin();
-    //     this.state.redirectFunc('/users?id=' + this.state.user.id);
-    //   });
-    // }
-    // else {
-    //   console.log('nope');
-    //   this.state.checkLogin();
-    //   this.state.redirectFunc('/users?id=' + this.state.user.id);
-    // }
   }
 
   uplImg = (myFile) => {
     const data = new FormData();
 
-    // let myFile = this.blobToFile(this.state.objAv, 'testname');
+    data.append('file', myFile);
+    data.append('folder', 'avatar/');
+    data.append('fname', this.state.newAvatar);
 
-    // if (this.uploadInput.files[0]) {
-    //   data.append('file', this.uploadInput.files[0]);
-
-    if (this.state.custimg) {
-      data.append('file', myFile);
-
-      // data.append('filename', 'avatar/' + this.state.user.username + '-profpic');
-
-      fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + this.state.user.username + '-profpic', {
-        method: 'POST',
-        body: data,
-      })
-      .then(response => response.blob())
-      .then(data => {
-        console.log(data);
-        // this.setState({ imageURL: URL.createObjectURL(data) });
+    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+      credentials: 'include',
+      method: 'POST',
+      body: data,
+      redirect: 'follow',
+    })
+    .then(response => response.blob())
+    .then(data => {
+      console.log(data);
+      this.setState({
+        avatar: '/user-circle-solid.svg',
+        custimg: false,
+        showCropper: false,
+        cropConts: false,
+      }, () => {
         this.state.checkLogin();
         this.state.redirectFunc('/users?id=' + this.state.user.id);
-      });
-    }
-    else {
-      console.log('nope');
-      this.state.checkLogin();
-      this.state.redirectFunc('/users?id=' + this.state.user.id);
-    }
+      })
+    });
+
   }
 
   imgChange = (evt) => {
@@ -289,6 +250,7 @@ export default class UserEdit extends Component {
               avatar: fr.result,
               newAvatar: newName,
               custimg: true,
+              cropConts: true,
             });
         }
         fr.readAsDataURL(files[0]);
@@ -301,7 +263,9 @@ export default class UserEdit extends Component {
     }
   }
 
-  toggleCrop = () => {
+  toggleCrop = (e) => {
+    e.preventDefault();
+
     this.setState({
       showCropper: !this.state.showCropper,
     });
@@ -310,8 +274,19 @@ export default class UserEdit extends Component {
   setCroppedImg = (img) => {
     this.setState({
       avatar: img,
-      objAv: img,
+      newAvatar: this.state.user.username + '-profpic.png',
       custimg: true,
+    });
+  }
+
+  discardImg = (e) => {
+    e.preventDefault();
+
+    this.setState({
+      avatar: '/user-circle-solid.svg',
+      newAvatar: '/user-circle-solid.svg',
+      custimg: false,
+      cropConts: false,
     });
   }
 
@@ -325,8 +300,6 @@ export default class UserEdit extends Component {
                 <p className="rederror">{this.state.errorMsg}</p>
 
                 <div>
-
-
                   <Form.File
                     className="sminp"
                     label="Avatar"
@@ -341,9 +314,19 @@ export default class UserEdit extends Component {
 
                 <div>
                   <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
-                  <FontAwesomeIcon icon={faCrop} onClick={this.toggleCrop}/>
-                  &nbsp;
-                  <FontAwesomeIcon icon={faTrash} />
+
+                  {this.state.cropConts &&
+                    <>
+                      &nbsp;&nbsp;&nbsp;
+                      <a href="" onClick={this.toggleCrop}>
+                        <FontAwesomeIcon icon={faCrop} />
+                      </a>
+                      &nbsp;
+                      <a href="" onClick={this.discardImg}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </a>
+                    </>
+                  }
                 </div>
 
                 {this.state.showCropper &&

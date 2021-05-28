@@ -17,7 +17,7 @@ export default class App extends Component {
     imageSrc: this.props.img,
     crop: { x: 0, y: 0 },
     zoom: minZoom,
-    aspect: 4 / 3,
+    aspect: 3 / 3,
     croppedAreaPixels: null,
     croppedImage: null,
     setCroppedImg: this.props.setCroppedImg,
@@ -78,7 +78,7 @@ export default class App extends Component {
           onChange={(e, zoom) => this.onZoomChange(zoom)}
           classes={{ container: 'slider' }}
         />
-        <br/>
+        &nbsp;&nbsp;&nbsp;
           <Button onClick={this.showCroppedImage}>Crop</Button>
           &nbsp;
           <Button onClick={this.state.toggleCrop}>Close</Button>
