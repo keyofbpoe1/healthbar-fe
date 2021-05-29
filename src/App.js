@@ -118,15 +118,21 @@ export default class App extends Component {
       .then(response => response.json())
       .then(data => {
         console.log(data)
-        let totNewsPgs = Math.ceil(parseInt(data.totalResults) / 10);
-        if (totNewsPgs > 10) {
-          totNewsPgs = 10;
+        if (data.status === 'error') {
+          //do nothing
         }
-        this.setState({
-          news: data.articles,
-          totNewsPgs: data.totalResults,
-          totNewsPgs: totNewsPgs,
-        })
+        else {
+          let totNewsPgs = Math.ceil(parseInt(data.totalResults) / 10);
+          if (totNewsPgs > 10) {
+            totNewsPgs = 10;
+          }
+          this.setState({
+            news: data.articles,
+            totNewsPgs: data.totalResults,
+            totNewsPgs: totNewsPgs,
+          })
+        }
+
       })
       .catch(error => { console.log('error', error) });
   }
