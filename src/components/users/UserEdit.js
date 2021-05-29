@@ -76,15 +76,15 @@ export default class UserEdit extends Component {
 
   getProfPic = () => {
 
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append('folder', 'avatar/');
-    myHeaders.append('fname', this.state.user.user_avatar);
+    // let myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "application/json");
+    // myHeaders.append('folder', 'avatar/');
+    // myHeaders.append('fname', this.state.user.user_avatar);
 
-    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+    fetch(this.state.baseURL + '/api/v1/uploads/uploads/avatar/' + this.state.user.user_avatar, {
       credentials: 'include',
       method: 'GET',
-      headers: myHeaders,
+      // headers: myHeaders,
       redirect: 'follow',
     })
     .then(response => response.blob())

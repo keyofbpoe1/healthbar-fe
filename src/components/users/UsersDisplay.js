@@ -26,7 +26,16 @@ export default class UsersDisplay extends Component {
       totalPages: 0,
       searchTerm: '',
       picsarr: [],
+      isloaded: false,
     }
+  }
+
+  resetSearch = () => {
+    this.setState({
+      isloaded: false,
+    }, () => {
+      this.searchUsers();
+    });
   }
 
   searchUsers = () => {
@@ -46,49 +55,48 @@ export default class UsersDisplay extends Component {
         let totPages = Math.ceil(parseInt(data.userlength) / parseInt(this.state.limit));
         console.log(totPages);
         this.setState({
-          users : data.data,
+          users: data.data,
           usersLength: data.userlength,
           totalPages: totPages,
-        }, () => {
-          this.getProfPics()
+          isloaded: true,
         })
       })
       .catch(error => console.log('error', error));
   }
 
-  getProfPics = () => {
-
-    this.state.users.forEach((user, i) => {
-      let myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append('folder', 'avatar/');
-      myHeaders.append('fname', user.user_avatar);
-
-      fetch(this.state.baseURL + '/api/v1/uploads/upload/avatar/' + user.user_avatar, {
-        credentials: 'include',
-        method: 'GET',
-        // headers: myHeaders,
-        redirect: 'follow',
-      })
-      .then(response => response.blob())
-      .then(data => {
-        console.log(data);
-        // let newPic = '/user-circle-solid.svg';
-        // let copyPics = [...this.state.picsarr];
-        //   if (data.type !== 'text/html') {
-        //     newPic = URL.createObjectURL(data);
-        //   }
-        //   copyPics.push(newPic);
-        //   window.alert(newPic)
-        //   this.setState({ picsarr: copyPics })
-      })
-      .catch(error => console.log('error', error));
-    });
-
-  }
+  // getProfPics = () => {
+  //
+  //   this.state.users.forEach((user, i) => {
+  //     let myHeaders = new Headers();
+  //     myHeaders.append("Content-Type", "application/json");
+  //     myHeaders.append('folder', 'avatar/');
+  //     myHeaders.append('fname', user.user_avatar);
+  //
+  //     fetch(this.state.baseURL + '/api/v1/uploads/upload/avatar/' + user.user_avatar, {
+  //       credentials: 'include',
+  //       method: 'GET',
+  //       // headers: myHeaders,
+  //       redirect: 'follow',
+  //     })
+  //     .then(response => response.blob())
+  //     .then(data => {
+  //       console.log(data);
+  //       // let newPic = '/user-circle-solid.svg';
+  //       // let copyPics = [...this.state.picsarr];
+  //       //   if (data.type !== 'text/html') {
+  //       //     newPic = URL.createObjectURL(data);
+  //       //   }
+  //       //   copyPics.push(newPic);
+  //       //   window.alert(newPic)
+  //       //   this.setState({ picsarr: copyPics })
+  //     })
+  //     .catch(error => console.log('error', error));
+  //   });
+  //
+  // }
 
   componentDidMount(){
-    this.searchUsers();
+    this.resetSearch();
   }
 
   iterPage = (e) => {
@@ -111,7 +119,7 @@ export default class UsersDisplay extends Component {
         newPg = 1;
     }
     this.setState({ page: newPg }, () => {
-      this.searchUsers();
+      this.resetSearch();
     });
   }
 
@@ -191,13 +199,21 @@ export default class UsersDisplay extends Component {
     return (
       <table className="artstable">
         <tbody>
+          {this.state.isloaded &&
+             this.state.users.map((user, ind) => {
+              return (
+                <UsersList baseURL={this.state.baseURL} user={user} />
+              )
+            })
 
-          { this.state.users.map((user, ind) => {
+          }
+
+          {/* this.state.users.map((user, ind) => {
             return (
               <UsersList baseURL={this.state.baseURL} user={user} />
             )
           })
-          }
+          */}
 
           {/* this.state.users.map((user, ind) => {
             return (

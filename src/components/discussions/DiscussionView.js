@@ -21,6 +21,7 @@ export default class DiscussionView extends Component {
       ind: this.props.ind,
       addComment: this.props.addComment,
       editMode: false,
+      avatar: '/user-circle-solid.svg',
     }
   }
 
@@ -33,11 +34,41 @@ export default class DiscussionView extends Component {
     this.setState({ com: newcom });
   }
 
+  getProfPic = () => {
+
+    fetch(this.state.baseURL + '/api/v1/uploads/uploads/avatar/' + this.state.com.author.user_avatar, {
+      credentials: 'include',
+      method: 'GET',
+      redirect: 'follow',
+    })
+    .then(response => response.blob())
+    .then(data => {
+      console.log(data);
+        if (data.type !== 'text/html') {
+        this.setState({
+          avatar: URL.createObjectURL(data),
+        });
+      }
+    })
+    .catch(error => console.log('error', error));
+
+  }
+
+  componentDidMount(){
+    this.getProfPic();
+  }
+
   render () {
     return (
       <>
         <tr>
-          <td><Link to={"/users?id=" + this.state.com.author.id}>{this.state.com.author.username}</Link>:&nbsp;</td>
+          <td>
+            <Link to={"/users?id=" + this.state.com.author.id}>
+              <img id={"icImage-" + this.state.com.author.id} className="icImage" src={this.state.avatar} alt="Avatar"/>
+              &nbsp;
+              {this.state.com.author.username}
+            </Link>:&nbsp;
+          </td>
           <td>
             { this.state.editMode
               ? <>

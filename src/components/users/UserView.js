@@ -68,15 +68,15 @@ export default class UserView extends Component {
 
   getProfPic = () => {
 
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append('folder', 'avatar/');
-    myHeaders.append('fname', this.state.user.user_avatar);
+    // let myHeaders = new Headers();
+    // myHeaders.append("Content-Type", "application/json");
+    // myHeaders.append('folder', 'avatar/');
+    // myHeaders.append('fname', this.state.user.user_avatar);
 
-    fetch(this.state.baseURL + '/api/v1/uploads/upload', {
+    fetch(this.state.baseURL + '/api/v1/uploads/uploads/avatar/' + this.state.user.user_avatar, {
       credentials: 'include',
       method: 'GET',
-      headers: myHeaders,
+      // headers: myHeaders,
       redirect: 'follow',
     })
     .then(response => response.blob())
@@ -116,25 +116,26 @@ export default class UserView extends Component {
           <p className="rederror">{this.state.errorMsg}</p>
           <table>
             <tbody>
+            <tr>
+              <td>
+                <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
+                &nbsp;&nbsp;&nbsp;
+              </td>
               { this.state.userLoggedin
                 ? (this.state.curUser.id === this.state.user.id || this.state.curUser.role === 'admin'
                   ? <>
-                    <tr>
-                      <td>
-                        <img id="outImage" className="outImage" src={this.state.avatar} alt="Avatar"/>
-                        &nbsp;&nbsp;&nbsp;
-                      </td>
+
                       <td style={{verticalAlign: "bottom"}}>
                         <Link to={"/useredit?id=" + this.state.user.id}><FontAwesomeIcon icon={faUserEdit} title="Edit Account" /></Link>
                         &nbsp;
                         <UserDelete baseURL={this.state.baseURL} endpt={this.state.endpt} checkLogin={this.state.checkLogin} redirectFunc={this.state.redirectFunc} id={this.state.user.id} setErrorMsg={this.setErrorMsg} />
                       </td>
-                    </tr>
                     </>
-                  :<></>
+                  :<td></td>
                 )
-                : <></>
+                : <td></td>
               }
+              </tr>
               <tr>
                 <td>Username:</td>
                 <td>{this.state.user.username}</td>

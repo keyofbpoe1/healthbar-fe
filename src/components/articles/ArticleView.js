@@ -40,6 +40,7 @@ export default class ArticleView extends Component {
       discussions: [],
       commentLoad: false,
       open: false,
+      avatar: '/user-circle-solid.svg',
     }
   }
 
@@ -61,6 +62,8 @@ export default class ArticleView extends Component {
           discussions: data.discussions,
           isloaded: true,
           commentLoad: true,
+        }, () => {
+          this.getProfPic()
         })
       })
       .catch(error => console.log('error', error));
@@ -140,23 +143,26 @@ export default class ArticleView extends Component {
   //   });
    }
 
-   getProfPic = (uav) => {
-     let retVal = '/user-circle-solid.svg';
-     fetch(this.state.baseURL + '/api/v1/uploads/upload/' +  'avatar/' + uav, {
+   getProfPic = () => {
+
+     fetch(this.state.baseURL + '/api/v1/uploads/uploads/avatar/' + this.state.article.author.user_avatar, {
+       credentials: 'include',
        method: 'GET',
+       redirect: 'follow',
      })
      .then(response => response.blob())
      .then(data => {
        console.log(data);
        console.log(data.type);
        if (data.type !== 'text/html') {
-         retVal = URL.createObjectURL(data);
-         // return retVal;
+         this.setState({
+           avatar: URL.createObjectURL(data),
+         });
        }
-       window.document.getElementById('icImage').setAttribute('src', retVal);
+
      })
      .catch(error => console.log('error', error));
-     // return retVal;
+
    }
 
   render () {
@@ -185,7 +191,7 @@ export default class ArticleView extends Component {
             <h3>{this.categoryIcon(this.state.article.category)}&nbsp;{this.state.article.title}</h3>
             <p>
             &nbsp;&nbsp;&nbsp;by:&nbsp;&nbsp;&nbsp;
-            <img id={"icImage"} className="icImage" src="/user-circle-solid.svg" onLoad={this.getProfPic(this.state.article.author.user_avatar)} alt="Avatar"/>
+            <img id={"icImage"} className="icImage" src={this.state.avatar} alt="Avatar"/>
             &nbsp;
             <Link to={"/users?id=" + this.state.article.author.id}>{this.state.article.author.username}
             </Link></p>

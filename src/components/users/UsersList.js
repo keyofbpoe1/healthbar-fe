@@ -18,7 +18,7 @@ export default class UsersList extends Component {
 
   getProfPic = () => {
 
-    fetch(this.state.baseURL + '/api/v1/uploads/upload/avatar/' + this.state.user.user_avatar, {
+    fetch(this.state.baseURL + '/api/v1/uploads/uploads/avatar/' + this.state.user.user_avatar, {
       credentials: 'include',
       method: 'GET',
       redirect: 'follow',
@@ -47,9 +47,12 @@ export default class UsersList extends Component {
           <FontAwesomeIcon icon={faUser} />&nbsp;&nbsp;&nbsp;{this.state.user.role}
         </td>
         <td>
-          <img id={"icUsImage-" + this.state.user.id} className="icImage" src={this.state.avatar} alt="Avatar"/>
-          &nbsp;
-          <Link to={"/users?id=" + this.state.user.id}>{this.state.user.username}</Link>
+
+          <Link to={"/users?id=" + this.state.user.id}>
+            <img id={"icUsImage-" + this.state.user.id} className="icImage" src={this.state.avatar} alt="Avatar"/>
+            &nbsp;
+            {this.state.user.username}
+          </Link>
         </td>
       </tr>
     )
