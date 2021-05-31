@@ -71,6 +71,10 @@ body {
    text-align: center;
 }
 
+.sticky-footer a, .sticky-footer a:hover  {
+   color: rgba(0,0,0,.5) !important;
+}
+
 /* .artul, .newsul {
   list-style-type: none;
   width: fit-content;
@@ -229,4 +233,9 @@ textarea {
 
 .leftdiv {
   text-align: left;
+}
+
+.centerdiv {
+  margin: auto;
+  text-align: center;
 }

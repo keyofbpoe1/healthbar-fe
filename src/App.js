@@ -50,6 +50,11 @@ import {
   faAngleDoubleLeft,
 } from '@fortawesome/free-solid-svg-icons'
 
+import {
+  faGithub,
+  faLinkedin,
+} from '@fortawesome/free-brands-svg-icons';
+
 export default class App extends Component {
   constructor(props) {
     super(props)
@@ -287,6 +292,11 @@ export default class App extends Component {
     console.log(this.state);
   }
 
+  copyDate = () => {
+    let d = new Date();
+    return d.getFullYear();
+  }
+
   render () {
     return (
       <>
@@ -387,7 +397,17 @@ export default class App extends Component {
               }
             </Route>
             <Route path="/about">
-              <h1>about</h1>
+              <div className="editingdiv centerdiv">
+                <p>
+                  Welcome to the healthBar! Your source for health and fitness information and news!
+                </p>
+                <p>
+                  You can browse, search, and create your own account to track your exercise routines and goals!
+                </p>
+                <p>
+                  This app is powered by tinyMCE, Newscatcher, and you!
+                </p>
+              </div>
             </Route>
             <Route path="/upload">
               <CropForm />
@@ -453,7 +473,7 @@ export default class App extends Component {
       </Router>
       </div>
       <div className="sticky-footer">
-        footer
+        &#169; {this.copyDate()} | Max Maisey | <a href="https://github.com/keyofbpoe1" target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faGithub} /></a> | <a href="https://www.linkedin.com/in/smax-maisey/" target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faLinkedin} /></a>
       </div>
       </>
     )
