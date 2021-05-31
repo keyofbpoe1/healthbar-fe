@@ -67,13 +67,15 @@ export default class App extends Component {
       // searchType: 'article',
       // searchPage: 1,
       // searchLimit: 1,
-      newsapi: process.env.REACT_APP_NEWSURI,
+      newsapi: process.env.REACT_APP_NEWSKEY,
+      gnewsapi: process.env.REACT_APP_GNEWSRSS,
       entries: [],
       totalEntries: 0,
       news: [],
       totalNews: 0,
       newsPage: 1,
-      totNewsPgs: 10,
+      newslimit: 10,
+      totNewsPgs: 0,
     }
   }
 
@@ -108,34 +110,84 @@ export default class App extends Component {
   }
 
   getNews = () => {
-    let requestOptions = {
-      // credentials: 'include',
-      method: 'GET',
-      // redirect: 'follow'
-    };
-
-    fetch(this.state.newsapi + '&page=' + this.state.newsPage, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        if (data.status === 'error') {
-          //do nothing
-        }
-        else {
-          let totNewsPgs = Math.ceil(parseInt(data.totalResults) / 10);
-          if (totNewsPgs > 10) {
-            totNewsPgs = 10;
-          }
-          this.setState({
-            news: data.articles,
-            totNewsPgs: data.totalResults,
-            totNewsPgs: totNewsPgs,
-          })
-        }
-
-      })
-      .catch(error => { console.log('error', error) });
+    fetch("https://newscatcher.p.rapidapi.com/v1/search_free?q=fitness&lang=en&media=True&page_size=" + this.state.newslimit + "&page=" + this.state.newsPage, {
+    	"method": "GET",
+    	"headers": {
+    		"x-rapidapi-key": this.state.newsapi,
+    		"x-rapidapi-host": "newscatcher.p.rapidapi.com"
+    	}
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      if (data.status !== 'ok') {
+        //do nothing
+      }
+      else {
+        let totNewsPgs = data.total_pages;
+        this.setState({
+          news: data.articles,
+          totalNews: data.total_hits,
+          totNewsPgs: data.total_pages,
+        })
+      }
+    })
+    .catch(err => {
+    	console.error(err);
+    });
   }
+
+
+//   getGNews = () => {
+//     let requestOptions = {
+//       credentials: 'same-origin',
+//       referrer: "",
+//       method: 'GET',
+//       redirect: 'follow',
+//       // mode: 'no-cors',
+//     };
+//
+// // https://cors-anywhere.herokuapp.com/https://news.google.com/rss/search?q=health%20and%20fitness&hl=en-US&gl=US&ceid=US:en
+//
+//     fetch("https://news.google.com/rss/search?q=health%20and%20fitness&hl=en-US&gl=US&ceid=US:en", requestOptions)
+//       .then(response => response.text())
+//       .then(data => {
+//         const parser = new DOMParser();
+//         const xml = parser.parseFromString(data, "application/xml");
+//         console.log(xml);
+//       })
+//       .catch(console.error);
+//   }
+
+  // getNews = () => {
+  //   let requestOptions = {
+  //     // credentials: 'include',
+  //     method: 'GET',
+  //     // redirect: 'follow'
+  //   };
+  //
+  //   fetch(this.state.newsapi + '&page=' + this.state.newsPage, requestOptions)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       console.log(data)
+  //       if (data.status === 'error') {
+  //         //do nothing
+  //       }
+  //       else {
+  //         let totNewsPgs = Math.ceil(parseInt(data.totalResults) / 10);
+  //         if (totNewsPgs > 10) {
+  //           totNewsPgs = 10;
+  //         }
+  //         this.setState({
+  //           news: data.articles,
+  //           totNewsPgs: data.totalResults,
+  //           totNewsPgs: totNewsPgs,
+  //         })
+  //       }
+  //
+  //     })
+  //     .catch(error => { console.log('error', error) });
+  // }
 
   getEntries = () => {
     let requestOptions = {
@@ -355,18 +407,20 @@ export default class App extends Component {
                         return (
                           <tr>
                             <td>
-                              <a href={article.url} target="_blank" rel="noreferrer">
-                                <img src={article.urlToImage} alt="img" className="artimg" />
+                              <a href={article.link} target="_blank" rel="noreferrer">
+                                <img src={article.media} alt="img" className="artimg" />
                               </a>
                             </td>
                             <td>
-                              <a href={article.url} target="_blank" rel="noreferrer">
+                              <a href={article.link} target="_blank" rel="noreferrer">
                                 {article.title}
                               </a>
                               <br/>
-                              {this.authTrim(article.author)}
+                              {article.author &&
+                                this.authTrim(article.author)
+                              }
                               <br/>
-                              {this.dateTrim(article.publishedAt)}
+                              {this.dateTrim(article.published_date)}
                             </td>
                           </tr>
                         )
