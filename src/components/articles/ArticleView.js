@@ -89,14 +89,14 @@ export default class ArticleView extends Component {
       case 'add':
         copyDiscussions.push(com);
         break;
-        case 'remove':
-          myInd = copyDiscussions.findIndex(x => x.id === ind)
-          copyDiscussions.splice(myInd, 1);
-          break;
-        case 'update':
-          myInd = copyDiscussions.findIndex(x => x.id === ind)
-          copyDiscussions.splice(myInd, 1, com);
-          break;
+      case 'remove':
+        myInd = copyDiscussions.findIndex(x => x.id === ind)
+        copyDiscussions.splice(myInd, 1);
+        break;
+      case 'update':
+        myInd = copyDiscussions.findIndex(x => x.id === ind)
+        copyDiscussions.splice(myInd, 1, com);
+        break;
       default:
     }
     this.setState({

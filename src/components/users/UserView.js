@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import UserDelete from '../users/UserDelete.js'
 import ArticlesDisplay from '../articles/ArticlesDisplay.js'
+import CredForm from '../users/CredForm.js'
 import { Link } from "react-router-dom";
 
 import {
@@ -28,8 +29,10 @@ export default class UserView extends Component {
       user: {},
       errorMsg: '',
       articles: [],
+      credentials: [],
       artsEndPt: this.props.artsEndPt,
       avatar: '/user-circle-solid.svg',
+      isloaded: false,
     }
   }
 
@@ -49,6 +52,8 @@ export default class UserView extends Component {
         this.setState({
           user: data.data,
           articles : data.articles,
+          credentials: data.credentials,
+          isloaded: true,
         }, () => {
           this.getProfPic()
         })
@@ -181,6 +186,12 @@ export default class UserView extends Component {
               />
             }
         </Tab>
+        { this.state.isloaded &&
+          <Tab eventKey="credentials" title="Credentials">
+            <CredForm baseURL={this.state.baseURL} curUser={this.state.curUser} user={this.state.user} credentials={this.state.credentials}/>
+          </Tab>
+        }
+
       </Tabs>
     )
   }
