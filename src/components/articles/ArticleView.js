@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ArticleDelete from '../articles/ArticleDelete.js'
 import DiscussionView from '../discussions/DiscussionView.js'
 import NewDiscussion from '../discussions/NewDiscussion.js'
+import EndAdd from '../endorsements/EndAdd.js'
+import EndShow from '../endorsements/EndShow.js'
 import { Link } from "react-router-dom";
 import { Button, Collapse } from 'react-bootstrap';
 
@@ -38,6 +40,7 @@ export default class ArticleView extends Component {
       errorMsg: '',
       isloaded: false,
       discussions: [],
+      endorsements: [],
       commentLoad: false,
       open: false,
       avatar: '/user-circle-solid.svg',
@@ -60,6 +63,7 @@ export default class ArticleView extends Component {
         this.setState({
           article: data.data,
           discussions: data.discussions,
+          endorsements: data.endorsements,
           isloaded: true,
           commentLoad: true,
         }, () => {
@@ -165,6 +169,23 @@ export default class ArticleView extends Component {
 
    }
 
+   updEnds = (item, act) => {
+     let copyEnds = [...this.state.endorsements];
+     this.setState({ endorsements: [], });
+
+     switch (act) {
+       case 'add':
+         copyEnds.push(item);
+         break;
+       case 'remove':
+         let myInd = copyEnds.findIndex(x => x.id === item.id)
+         copyEnds.splice(myInd, 1);
+         break;
+       default:
+     }
+     this.setState({ endorsements: copyEnds, });
+   }
+
   render () {
     let open = false;
     // setOpen = () => {
@@ -200,6 +221,25 @@ export default class ArticleView extends Component {
             </article>
           </>
         }
+
+        <div>
+          <p style={{fontWeight: 'bold'}}>Endorsements</p>
+          {this.state.isloaded &&
+            <>
+            {this.state.curUser.role === 'professional' || this.state.curUser.role === 'admin'
+              ?<EndAdd baseURL={this.state.baseURL} curUser={this.state.curUser} curArt={this.state.article} updEnds={this.updEnds} />
+              :<></>
+            }
+              <ul>
+                {this.state.endorsements.map((endorsement, ind) => {
+                 return (
+                   <EndShow baseURL={this.state.baseURL} curEnd={endorsement} />
+                 )
+               })}
+              </ul>
+            </>
+          }
+        </div>
 
         <div className="fullcomsdiv">
               <a href=""
