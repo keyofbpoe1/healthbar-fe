@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ArticlesList from '../articles/ArticlesList.js'
 import { Link } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import { Button, FormControl } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -17,6 +17,8 @@ import {
   faAngleLeft,
   faAngleDoubleRight,
   faAngleDoubleLeft,
+  faFilter,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default class ArticlesDisplay extends Component {
@@ -25,6 +27,7 @@ export default class ArticlesDisplay extends Component {
     this.state = {
       baseURL: this.props.baseURL,
       endpt: this.props.endpt,
+      searchQuery: this.props.searchQuery,
       errorMsg: '',
       articles: [],
       artLength: 0,
@@ -33,20 +36,51 @@ export default class ArticlesDisplay extends Component {
       totalPages: 0,
       searchTerm: '',
       isloaded: false,
+      // isSearch: false,
+      // catfilt: '',
+      // endfilt: '',
     }
   }
 
   resetSearch = () => {
+    // let urlParams = new URLSearchParams(window.location.search);
+    // let queryParam = '';
+    // if (urlParams.get('query')) {
+    //   queryParam = urlParams.get('query');
+    // }
+    // let catFiltParam = '';
+    // if (urlParams.get('category')) {
+    //   catFiltParam = urlParams.get('category');
+    // }
+    // let endFiltParam = '';
+    // if (urlParams.get('endorsements')) {
+    //   endFiltParam = urlParams.get('endorsements');
+    // }
+    //
+    // let searchObj = JSON.stringify({
+    //   query: queryParam,
+    //   category: catFiltParam,
+    //   endorsements: endFiltParam,
+    // });
+
     this.setState({
       isloaded: false,
+      // searchQuery: searchObj,
+      // catfilt: this.state.searchQuery.category,
+      // endfilt: this.state.searchQuery.endorsements,
     }, () => {
       this.searchArticles();
     });
   }
 
   searchArticles = () => {
-    // let urlParams = new URLSearchParams(window.location.search);
-    // let queryParam = urlParams.get('query');
+    let url;
+    if (this.state.endpt) {
+      url = this.state.baseURL + this.state.endpt + '/' + this.state.page + '/' + this.state.limit
+    }
+    else {
+      url = this.state.baseURL +  '/api/v1/articles/search/' + this.state.page + '/' + this.state.limit + '/' + this.state.searchQuery
+    }
 
     let requestOptions = {
       credentials: 'include',
@@ -54,7 +88,7 @@ export default class ArticlesDisplay extends Component {
       redirect: 'follow'
     };
 
-    fetch(this.state.baseURL +  this.state.endpt + '/' + this.state.page + '/' + this.state.limit, requestOptions)
+    fetch(url, requestOptions)
       .then(response => response.json())
       .then(data => {
         console.log(data)
@@ -71,6 +105,10 @@ export default class ArticlesDisplay extends Component {
   }
 
   componentDidMount(){
+    // if (this.props.isSearch) {
+    //   this.setState({ isSearch: true, });
+    //   window.document.querySelector('.tab-content').setAttribute('style', 'width: 100%;')
+    // }
     this.resetSearch();
   }
 
@@ -161,34 +199,53 @@ export default class ArticlesDisplay extends Component {
   //
   // }
 
+  // handleChange = (event) => {
+  //   this.setState({ [event.currentTarget.id]: event.currentTarget.value});
+  // }
+  //
+  // parseJson = (j, val) => {
+  //   let obj = JSON.parse(j);
+  //   return obj[val]
+  // }
+
+  // stringJson = (obj) => {
+  //   return JSON.stringify(obj);
+  // }
+
+  logstate = () => {
+    console.log(this.state);
+  }
+
   render () {
     return (
-      <table className="artstable">
-        <tbody>
-          { this.state.isloaded &&
-              this.state.articles.map((entry, ind) => {
-              return (
-                <ArticlesList baseURL={this.state.baseURL} entry={entry} />
-              )
-            })
-          }
-          {this.state.page !== 1 &&
-            <>
-              <a id="firstpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleDoubleLeft} /></a>
-              &nbsp;
-              <a id="downpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleLeft} /></a>
-            </>
-          }
-          {this.state.page !== this.state.totalPages &&
-            <>
-              &nbsp;
-              <a id="uppage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleRight} /></a>
-              &nbsp;
-              <a id="lastpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleDoubleRight} /></a>
-            </>
-          }
-        </tbody>
-      </table>
+
+              <table className="artstable">
+                <tbody>
+                  { this.state.isloaded &&
+                      this.state.articles.map((entry, ind) => {
+                      return (
+                        <ArticlesList baseURL={this.state.baseURL} entry={entry} />
+                      )
+                    })
+                  }
+                  {this.state.page !== 1 &&
+                    <>
+                      <a id="firstpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleDoubleLeft} /></a>
+                      &nbsp;
+                      <a id="downpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleLeft} /></a>
+                    </>
+                  }
+                  {this.state.page !== this.state.totalPages &&
+                    <>
+                      &nbsp;
+                      <a id="uppage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleRight} /></a>
+                      &nbsp;
+                      <a id="lastpage" href="" onClick={this.iterPage}><FontAwesomeIcon icon={faAngleDoubleRight} /></a>
+                    </>
+                  }
+                </tbody>
+              </table>
+
     )
   }
 }

@@ -244,3 +244,15 @@ textarea {
 .form-control {
   margin-bottom: 5px;
 }
+
+article {
+  margin-bottom: 1em;
+}
+
+/* .filttab, .artstable {
+  display: inline-flex;
+}
+
+.filttab {
+  vertical-align: top;
+} */
