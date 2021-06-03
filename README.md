@@ -1,70 +1,155 @@
-# Getting Started with Create React App
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://healthbar-fe.herokuapp.com/">
+    <img src="public/hb-favicon.png" alt="Logo" width="80" height="80">
+  </a>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  <h3 align="center">healthBar</h3>
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<p align="center">
+  <a href="https://healthbar-fe.herokuapp.com/">
+    <img src="public/screenshot.png" alt="Screenshot">
+  </a>
+</p>
 
-### `npm run build`
+<p align="center">
+Welcome to the healthBar! Your source for health and fitness information and news!
+</p>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<p align="center">
+You can browse, search, and create your own account to track your exercise routines and goals!
+</p>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Built With
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* [Flask](https://flask.palletsprojects.com/en/2.0.x/)
+* [React](https://reactjs.org/)
+* [Bootstrap](https://getbootstrap.com)
+* [tinyMCE](https://tiny.cloud)
+* [NewsCatcher](https://newscatcherapi.com/)
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<!-- GETTING STARTED -->
+## Getting Started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+This is the react frontend for the healthBar app.
+To get a local copy up and running follow these simple example steps.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Prerequisites
 
-## Learn More
+Make sure you have npm installed and up to date:
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Installation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Get a free tinyMCE API Key at [https://tiny.cloud/](https://tiny.cloud/)
+2. Get a free NewsCatcher API Key at [https://newscatcherapi.com/](https://newscatcherapi.com/)
+3. Clone the repo
+   ```sh
+   git clone https://github.com/your_username_/Project-Name.git
+   ```
+4. Install NPM packages
+   ```sh
+   npm install
+   ```
+5. Enter the following variables in `.env`
+   ```JS
+   REACT_APP_BASEURL=http://localhost:8000
+   REACT_APP_USERENDPT=/users
+   REACT_APP_ARTICLEENDPT=/api/v1/articles
+   REACT_APP_NEWSKEY={YourNewsCatcherAPIKey}
+   REACT_APP_TINYKEY={YourtinyMCEAPIKey}
+   ```
+6. To spin up the database, cd into the project folder and run:
+   ```sh
+   npm start
+   ```
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+<!-- USAGE EXAMPLES -->
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. Users can search/browse through entries, other users, and news from the web.
+2. Users can register for an account, login to their accounts once registered, and update or delete their account information.
+3. There are different account tiers: 1) user, 2) professional, and 3) admin.
+4. Tier 1 users can add new entries, edit/delete their own entries, and comment on other users' entries.
+5. Tier 1 users can also upload their health/fitness credentials if they wish to be considered for tier 2.
+6. Tier 2 users have all the capabilities of tier 1 users, plus the ability to endorse entries. Their endorsement will show on the entry and allow users to filter entries based on endorsements.
+7. Tier 3 users have all the capabilities of tier 1 and 2 users, plus full admin capabilities. They can edit or delete any entry, credential, comment, or user.
+8. Tier 3 users also have the ability to change users' user type (between any of the three tiers).
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+<!-- ROADMAP -->
+## Roadmap
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+See the [open issues](https://github.com/keyofbpoe1/healthbar-be/issues) for a list of proposed features (and known issues).
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+<!-- CONTRIBUTING -->
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Github: [https://github.com/keyofbpoe1](https://github.com/keyofbpoe1)
+
+Linkedin: [https://www.linkedin.com/in/smax-maisey/](https://www.linkedin.com/in/smax-maisey/)
+
+Live Project Link: [https://healthbar-fe.herokuapp.com/](https://healthbar-fe.herokuapp.com/)
+
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[product-logo]: images/hb-favicon.png
+[product-screenshot]: images/screenshot.png
