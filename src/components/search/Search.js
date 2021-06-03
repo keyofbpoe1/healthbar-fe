@@ -117,7 +117,7 @@ export default class UserView extends Component {
   }
 
   componentDidMount(){
-    window.document.querySelector('.tab-content').setAttribute('style', 'width: 100%; overflow-x: auto;')
+    // window.document.querySelector('.tab-content').setAttribute('style', 'width: 100%; overflow-x: auto;')
     this.setSearch();
     // this.searchArticles();
     // this.searchUsers();

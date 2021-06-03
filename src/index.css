@@ -140,7 +140,7 @@ body {
 
 .commentscroll {
   max-height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .righttxt {
@@ -148,25 +148,26 @@ body {
 }
 
 /* width */
-.commentscroll::-webkit-scrollbar {
+.commentscroll::-webkit-scrollbar, .tab-content::-webkit-scrollbar {
+  height: 10px;
   width: 10px;
   border-radius: .25rem;
 }
 
 /* Track */
-.commentscroll::-webkit-scrollbar-track {
+.commentscroll::-webkit-scrollbar-track, .tab-content::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: .25rem;
 }
 
 /* Handle */
-.commentscroll::-webkit-scrollbar-thumb {
+.commentscroll::-webkit-scrollbar-thumb, .tab-content::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: .25rem;
 }
 
 /* Handle on hover */
-.commentscroll::-webkit-scrollbar-thumb:hover {
+.commentscroll::-webkit-scrollbar-thumb:hover, .tab-content::-webkit-scrollbar-thumb:hover {
   background: #555;
   border-radius: .25rem;
 }
@@ -255,4 +256,15 @@ article {
 
 .filttab {
   vertical-align: top;
+} */
+
+.tab-content {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* height */
+/* .tab-content::-webkit-scrollbar {
+  height: 10px;
+  border-radius: .25rem;
 } */
