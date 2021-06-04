@@ -26,7 +26,7 @@ export default class UsersList extends Component {
     .then(response => response.blob())
     .then(data => {
       console.log(data);
-        if (data.type !== 'text/html') {
+        if (!data.type.match(/text\/html/gmi)) {
         this.setState({
           avatar: URL.createObjectURL(data),
         });

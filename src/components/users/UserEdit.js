@@ -91,7 +91,7 @@ export default class UserEdit extends Component {
     .then(data => {
       console.log(data);
       console.log(data.type);
-      if (data.type !== 'text/html') {
+      if (!data.type.match(/text\/html/gmi)) {
         this.setState({
           avatar: URL.createObjectURL(data),
           cropConts: true,
